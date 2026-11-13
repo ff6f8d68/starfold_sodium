@@ -29,13 +29,13 @@ import dev.starfold.waypoint.WaypointClient;
 import dev.starfold.waypoint.WaypointClientHost;
 
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.common.Mod;
 
-@Mod(value = "starfold", dist = Dist.CLIENT)
 public final class StarfoldClient {
-    private final dev.starfold.render.ClientWorldSession worldSession;
-    public StarfoldClient(net.neoforged.bus.api.IEventBus modBus) {
+    private static dev.starfold.render.ClientWorldSession worldSession;
+
+    private StarfoldClient() {}
+
+    public static void initialize(net.neoforged.bus.api.IEventBus modBus) {
         installSkyHost();
         dev.starfold.planet.PlanetConditions.installClient(
                 pos -> {
