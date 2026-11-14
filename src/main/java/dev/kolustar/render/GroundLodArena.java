@@ -167,18 +167,26 @@ final class GroundLodArena implements AutoCloseable {
         if (commands.draws == 0) return;
         maxIndices = Math.max(maxIndices, commands.maxIndices);
         int type = bindIndices();
-        commands.prepare();
-        long start = System.nanoTime();
-        GL32.glMultiDrawElementsBaseVertex(GL11.GL_TRIANGLES, commands.counts, type, commands.offsets, commands.bases);
-        GroundRenderer.probeMultiNanos += System.nanoTime() - start;
-        GroundRenderer.probeDraws++;
-        GroundRenderer.probeSubDraws += commands.draws;
+        try {
+            commands.prepare();
+            long start = System.nanoTime();
+            GL32.glMultiDrawElementsBaseVertex(GL11.GL_TRIANGLES, commands.counts, type, commands.offsets, commands.bases);
+            GroundRenderer.probeMultiNanos += System.nanoTime() - start;
+            GroundRenderer.probeDraws++;
+            GroundRenderer.probeSubDraws += commands.draws;
+        } finally {
+            VertexBuffer.unbind();
+        }
     }
 
     void draw(Range range) {
         int type = bindIndices();
-        GL32.glDrawElementsBaseVertex(GL11.GL_TRIANGLES, range.indices(), type, 0L, range.first);
-        GroundRenderer.probeDraws++;
+        try {
+            GL32.glDrawElementsBaseVertex(GL11.GL_TRIANGLES, range.indices(), type, 0L, range.first);
+            GroundRenderer.probeDraws++;
+        } finally {
+            VertexBuffer.unbind();
+        }
     }
 
     private void bind() {

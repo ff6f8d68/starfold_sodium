@@ -17,6 +17,7 @@
   (terrain, north-up, waypoint bearing); the map screen opens straight on the surface layer with zoom, pan,
   coordinates and the north-up toggle. Map tiles are uploaded as GPU textures and drawn as quads, so the
   chart itself costs no per-frame CPU beyond what is already on screen.
+- Unbind the LOD vertex array after draws so custom render passes do not leave GL state behind for other mods.
 - Cap background LOD mesh workers and the in-flight tile queue so distant terrain rebuilds no longer
   saturate the CPU while moving (`kolustar.lodThreads` overrides the worker count). Tiles fill in more slowly
   under load, but the game thread and chunk work keep more headroom.
