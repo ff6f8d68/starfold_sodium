@@ -11,7 +11,8 @@
 - Add Particle Rain and Weather2 compatibility as optional, mod-gated client hooks: Particle Rain precipitation asks
   each planet's own weather instead of the level rain flag (so airless worlds and space stay dry), and Weather2's
   flat-world clouds, storm walls, fog override and precipitation sheets are skipped inside Starfold planet levels
-  while its simulation, wind, sounds, radar and particles keep running. Normal dimensions are untouched.
+  while its simulation, wind, radar and particles keep running. Weather2 ambient/rain/sandstorm sounds are also muted
+  where a planet has no weather (space, airless worlds, above the atmosphere). Normal dimensions are untouched.
 - Fix the Veil depth hook targeting two framebuffer wrapper classes that Veil 4.3-4.5 no longer contains, which made
   the whole patch fail to apply; only classes present across those versions are targeted now.
 - Make the default (Normal) world type a Starfold native universe so new worlds spawn players on an earth-like home planet by default.

@@ -19,6 +19,20 @@ final class StarfoldCommands {
                     net.minecraft.commands.CommandSourceStack>
             coreCommands() {
         return Commands.literal("starfold")
+                .executes(
+                        c -> {
+                            int result = PlanetPlayers.status(c.getSource().getPlayerOrException());
+                            if (result == 0)
+                                c.getSource()
+                                        .sendSuccess(
+                                                () ->
+                                                        net.minecraft.network.chat.Component.literal(
+                                                                "Starfold: /starfold terrain, leave,"
+                                                                        + " status, universe, orbit, nav,"
+                                                                        + " waypoint, face, spin"),
+                                                false);
+                            return result == 0 ? 1 : result;
+                        })
                 // Going to the planets, steering and marking are everyone's;
                 // the rest is for setting a world up and looking into it.
                 .then(

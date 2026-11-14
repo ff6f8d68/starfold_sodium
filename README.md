@@ -48,7 +48,7 @@ enabled; an active Iris shader pack, Embeddium or Canvas disables planet terrain
 this build. Particle Rain precipitation asks each planet's own weather instead of the level rain flag, so it
 stops on airless worlds and in space. Weather2's flat-world clouds, storm walls, fog override and
 precipitation sheets are skipped inside Starfold planet levels, while its simulation, wind, sounds, radar and
-particles keep running. Veil's depth and shader hooks are applied tolerantly across Veil 4.3-4.5, so a Veil
+particles keep running; its weather sounds are muted where a planet has no weather. Veil's depth and shader hooks are applied tolerantly across Veil 4.3-4.5, so a Veil
 version drift leaves Veil unpatched instead of failing the mixin. The mod declares itself incompatible with
 `gravity_changer`.
 
