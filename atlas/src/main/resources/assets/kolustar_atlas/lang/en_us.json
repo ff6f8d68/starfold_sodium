@@ -1,7 +1,6 @@
 {
   "key.kolustar_atlas.map": "Navigation atlas",
   "key.kolustar_atlas.ground_map": "Planet world map",
-  "key.kolustar_atlas.minimap": "Toggle planet minimap",
   "atlas.kolustar_atlas.planet": "SURFACE",
   "atlas.kolustar_atlas.system": "SYSTEM",
   "atlas.kolustar_atlas.galaxy": "INTERSTELLAR",

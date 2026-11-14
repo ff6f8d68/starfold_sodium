@@ -15,14 +15,8 @@ public final class PlanetMinimap {
     /** Blocks across the panel: a coarse regional view, not a chat-range radar. */
     private static final double BLOCKS = 192;
     private static final int BORDER = 0xff71dce0;
-    static boolean enabled = true;
     private static GroundView view;
     private static PlanetMapApi.Body body;
-
-    static void toggle() {
-        enabled = !enabled;
-        if (!enabled) close();
-    }
 
     /** Square panel side for a GUI-scaled viewport; small windows get a smaller panel, never none. */
     static int size(int guiWidth, int guiHeight) {
@@ -38,7 +32,6 @@ public final class PlanetMinimap {
     }
 
     static void render(GuiGraphics graphics) {
-        if (!enabled) return;
         var minecraft = Minecraft.getInstance();
         if (minecraft.player == null || minecraft.level == null || minecraft.screen != null) return;
         var observer = PlanetMapApi.observer();
