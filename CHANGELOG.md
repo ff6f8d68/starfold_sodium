@@ -3,6 +3,11 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.13 “Starward” — 2026-11-14
+
+- Fix HBM Continuum machines losing model parts as the camera turns on planets. Golem Core's GemRender learns each machine's model bounds and culls whole machines and individual parts against them (`dev.golem.core.render.Frustums.isVisible`); those bounds assume the flat vanilla chart, so parts dropped out and reappeared while looking around. Kolustar now skips that frustum test on planet levels only; the renderer still decides what to draw. (`-Dkolustar.hbmCompat=false` disables the compat mixins; Golem's own `-Dgolem.gem.cull=off` also disables its culling everywhere.)
+- Stop drawing the coarse far-terrain patch that contains the camera. That patch is covered by real chunks, and its downsampled heightfield could sit above the real surface and hide nearby blocks and block entities (machines, chests) depending on the view angle.
+
 ## 0.3.12 “Starward” — 2026-11-14
 
 - HBM Continuum machines on planets: the compatibility mixin no longer forces every `hbm:` block entity to render unconditionally. It bypasses only the flat-chart frustum bounds test and still honours the machine renderer's own visibility decision (incomplete/unformed machines, render distance), so partially built machines stop drawing model parts that belong to a state they are not in.

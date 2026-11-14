@@ -8,7 +8,8 @@
     "HbmRadarPlanetMixin"
   ],
   "client": [
-    "HbmPlanetRenderMixin"
+    "HbmPlanetRenderMixin",
+    "HbmFrustumPlanetMixin"
   ],
   "injectors": {
     "defaultRequire": 1

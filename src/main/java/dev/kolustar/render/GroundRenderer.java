@@ -550,6 +550,12 @@ public final class GroundRenderer {
         lodWorkers.readyBytes(readyBytes);
         selectionPose = shape.canonical(CubeSurfaceTopology.Face.VALUES[GroundClient.face()], GroundClient.eye()).pose();
         selectionCamera = shape.position(selectionPose);
+        // The patch under the camera always has resident chunks. Its coarse cover is a downsampled
+        // heightfield, which can sit above the real surface and hide nearby models (for example
+        // HBM machines) as the camera moves, so it is never drawn or rebuilt there.
+        int px = Math.clamp((int) selectionPose.point().x() / 256, 0, 7);
+        int pz = Math.clamp((int) selectionPose.point().z() / 256, 0, 7);
+        observerPatch = selectionPose.face().ordinal() * 64 + px + 8 * pz;
         for (int face = 0; face < 6 && System.nanoTime() < deadline; face++)
             if (masks[face] == null) {
                 masks[face] = buildMask(face, false);
@@ -676,6 +682,8 @@ public final class GroundRenderer {
 
     private static final GroundMipCache farPyramids = new GroundMipCache();
     private static final long[] farVersions = new long[GroundViewPolicy.PATCH_COUNT];
+    /** Patch containing the camera: resident chunks own it, so no coarse cover is drawn there. */
+    private static int observerPatch = -1;
     // Captured-column changes only: L1/L2 tiles read fine columns, never the coarse base mips.
     private static final long[] overlayVersions = new long[GroundViewPolicy.PATCH_COUNT];
     private static final long[] builtFarVersions = new long[GroundViewPolicy.PATCH_COUNT];
@@ -1291,6 +1299,9 @@ public final class GroundRenderer {
                         }
                         public void stitch(int face) { render(c, face, stitches[face], layer, true); }
                         public void surface(int face, int patch, boolean ready) {
+                            // Real chunks own this patch; a coarse approximation over them hides
+                            // block entities whenever the camera changes.
+                            if (patch == observerPatch) return;
                             if (ready) renderPatch(c, face, patch, layer);
                             else render(c, face, parents[patch], layer, true);
                         }
