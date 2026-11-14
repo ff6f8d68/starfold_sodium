@@ -109,7 +109,14 @@ public final class PlanetPlayers {
             return 0;
         }
         var level = player.getServer().getLevel(destination);
-        if (level == null || !GroundFlightServer.entryReady(player,level)) return 0;
+        if (level == null || !GroundFlightServer.entryReady(player, level)) {
+            player.sendSystemMessage(
+                    Component.translatable(
+                            level == null
+                                    ? "message.starfold.no_planet"
+                                    : "message.starfold.not_ready"));
+            return 0;
+        }
         if (!level.players().isEmpty()) {
             player.sendSystemMessage(Component.translatable("message.starfold.one_player"));
             return 0;
@@ -271,8 +278,15 @@ public final class PlanetPlayers {
 
     public static int face(ServerPlayer player, int face) {
         if (Space.in(player)) return GroundServer.regionMessage(player);
-        if (!PlanetLevels.is(player.level())) return 0;
-        if(!dev.starfold.worldgen.plan.PlanetPlanStore.ready(player.serverLevel(),PlanetSystem.planet(player)))return 0;
+        if (!PlanetLevels.is(player.level())) {
+            player.sendSystemMessage(Component.translatable("message.starfold.mark.enter"));
+            return 0;
+        }
+        if (!dev.starfold.worldgen.plan.PlanetPlanStore.ready(
+                player.serverLevel(), PlanetSystem.planet(player))) {
+            player.sendSystemMessage(Component.translatable("message.starfold.not_ready"));
+            return 0;
+        }
         border(player.serverLevel(), face);
         var spawn = PlanetSpawn.site(player.serverLevel(), PlanetSystem.planet(player), face);
         player.teleportTo(player.serverLevel(), spawn.x(), spawn.y(), spawn.z(), 0, 0);
@@ -282,7 +296,11 @@ public final class PlanetPlayers {
     }
 
     public static int spin(ServerPlayer player, boolean on) {
-        if (!PlanetLevels.is(player.level())) return 0;
+        if (Space.in(player)) return GroundServer.regionMessage(player);
+        if (!PlanetLevels.is(player.level())) {
+            player.sendSystemMessage(Component.translatable("message.starfold.mark.enter"));
+            return 0;
+        }
         var clock = GroundClock.get(player.serverLevel());
         clock.spin(on);
         send(player, clock);
@@ -326,7 +344,10 @@ public final class PlanetPlayers {
 
     public static int universe(ServerPlayer player) {
         if (Space.in(player)) return GroundServer.regionMessage(player);
-        if (!PlanetLevels.is(player.level())) return 0;
+        if (!PlanetLevels.is(player.level())) {
+            player.sendSystemMessage(Component.translatable("message.starfold.mark.enter"));
+            return 0;
+        }
         var level = player.serverLevel();
         var clock = GroundClock.get(level);
         var model = clock.clock.model;
@@ -359,7 +380,10 @@ public final class PlanetPlayers {
 
     public static int leave(ServerPlayer player) {
         if (Space.in(player)) return GroundServer.regionMessage(player);
-        if (!PlanetLevels.is(player.level())) return 0;
+        if (!PlanetLevels.is(player.level())) {
+            player.sendSystemMessage(Component.translatable("message.starfold.mark.enter"));
+            return 0;
+        }
         player.addTag(STAY);
         GroundServer.arrivalAttempted(player.getUUID());
         GroundFlightServer.detach(player);

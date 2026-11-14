@@ -15,6 +15,8 @@
   where a planet has no weather (space, airless worlds, above the atmosphere). Normal dimensions are untouched.
 - Fix the Veil depth hook targeting two framebuffer wrapper classes that Veil 4.3-4.5 no longer contains, which made
   the whole patch fail to apply; only classes present across those versions are targeted now.
+- Give clearer feedback from `/starfold` and flight commands when a planet is not ready, the player is not on a planet,
+  or there is no active flight session, instead of returning no output.
 - Make the default (Normal) world type a Starfold native universe so new worlds spawn players on an earth-like home planet by default.
 
 ## 0.3.0-alpha.1 “Starward” — 2026-11-09

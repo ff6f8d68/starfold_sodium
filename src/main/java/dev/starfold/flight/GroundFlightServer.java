@@ -495,11 +495,18 @@ public final class GroundFlightServer {
     public static int orbit(ServerPlayer player) {
         if (Space.in(player)) return GroundServer.regionMessage(player);
         var s = sessions.get(player.getUUID());
-        if (s == null) return 0;
+        if (s == null) {
+            player.sendSystemMessage(Component.translatable("message.starfold.no_flight"));
+            return 0;
+        }
         var clock = GroundClock.get(player.serverLevel());
         var at = view(clock, s.state);
         var pose = new PlanetShape.Pose(at.face(), new Point(at.point().x(), 4096, at.point().z()));
-        if (!new GroundTerrain(player.serverLevel(), player, clock.mask).clear(pose)) return 0;
+        if (!new GroundTerrain(player.serverLevel(), player, clock.mask).clear(pose)) {
+            player.sendSystemMessage(
+                    Component.translatable("message.starfold.orbit_blocked"));
+            return 0;
+        }
         var aim = s.state.space() ? new org.joml.Quaterniond() : GroundDynamics.chartAim(s.state);
         var state =
                 GroundDynamics.local(
@@ -521,7 +528,10 @@ public final class GroundFlightServer {
     public static int guidance(ServerPlayer player, int field, boolean on) {
         if (Space.in(player)) return GroundServer.regionMessage(player);
         var s = sessions.get(player.getUUID());
-        if (s == null) return 0;
+        if (s == null) {
+            player.sendSystemMessage(Component.translatable("message.starfold.no_flight"));
+            return 0;
+        }
         var g = s.state.guidance();
         var options =
                 new GroundGuidance.Options(
@@ -544,7 +554,10 @@ public final class GroundFlightServer {
     public static int target(ServerPlayer player, int target) {
         if (Space.in(player)) return GroundServer.regionMessage(player);
         var s = sessions.get(player.getUUID());
-        if (s == null) return 0;
+        if (s == null) {
+            player.sendSystemMessage(Component.translatable("message.starfold.no_flight"));
+            return 0;
+        }
         var clock = GroundClock.get(player.serverLevel());
         if (target < 0 || target >= clock.clock.model.count()) {
             player.sendSystemMessage(Component.translatable("message.starfold.no_planet"));
