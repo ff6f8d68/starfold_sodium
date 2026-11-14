@@ -8,6 +8,7 @@
 - Project planet terrain through Sodium 0.8: its chunk shader receives the same warp, projection uniforms
   and native-chunk coverage as the vanilla core shaders. Iris is supported while no shader pack is enabled;
   an active Iris pack, Embeddium or Canvas still disables planet terrain projection and far views.
+- Make the default (Normal) world type a Starfold native universe so new worlds spawn players on an earth-like home planet by default.
 
 ## 0.3.0-alpha.1 “Starward” — 2026-11-09
 

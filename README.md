@@ -49,7 +49,7 @@ this build. The mod declares itself incompatible with `gravity_changer`.
 
 ## Playing
 
-Create a new world and pick a world type:
+Create a new world. The default world type now spawns you on an earth-like home planet in a Starfold universe (the vanilla Normal preset is overridden with Starfold's native universe, so the planet system and auto-arrival work out of the box). Other world types remain available:
 
 - `starfold_worlds:experience`: the experience worlds; installing `starfold_extras` adds the starter ship.
 - `starfold:native_universe` ("Starfold: Generated Universe"): a generated universe without the pack.
