@@ -1,7 +1,6 @@
 package dev.starfold.render;
 
 import com.mojang.blaze3d.vertex.*;
-import dev.starfold.geometry.BentStripGeometry.Point;
 import net.minecraft.core.BlockPos;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.resources.ResourceLocation;
@@ -17,9 +16,28 @@ final class GroundCompact {
                     VertexFormatElement.Type.USHORT, VertexFormatElement.Usage.POSITION, 3))
             .add("Packed", VertexFormatElement.register(VertexFormatElement.findNextId(), 0,
                     VertexFormatElement.Type.USHORT, VertexFormatElement.Usage.UV, 3)).build();
-    private record Material(float u, float v, int bounds, int tint, int normal, float alpha) {}
-    private static final Map<Material, Integer> ids = new HashMap<>();
+    /** Palette entry; compared field by field so a lookup never allocates a probe object. */
+    private static final class Material {
+        final float u, v, alpha;
+        final int bounds, tint, normal;
+
+        Material(float u, float v, int bounds, int tint, int normal, float alpha) {
+            this.u = u; this.v = v; this.bounds = bounds; this.tint = tint;
+            this.normal = normal; this.alpha = alpha;
+        }
+
+        boolean same(float u, float v, int bounds, int tint, int normal, float alpha) {
+            return this.bounds == bounds && this.tint == tint && this.normal == normal
+                    && Float.compare(this.u, u) == 0 && Float.compare(this.v, v) == 0
+                    && Float.compare(this.alpha, alpha) == 0;
+        }
+    }
     private static final List<Material> materials = new ArrayList<>();
+    // Open-addressed palette index keyed on the material fields: a LOD tile interns thousands of
+    // vertices, and this is the only per-vertex lookup on the render thread.
+    private static Material[] slots = new Material[256];
+    private static int[] slotIds = new int[256];
+    private static int mask = 255, used;
     private static ShaderInstance shader;
     private static int texture, uploaded;
     private static long paletteBytes;
@@ -36,7 +54,8 @@ final class GroundCompact {
     }
 
     static void clear() {
-        ids.clear();
+        Arrays.fill(slots, null);
+        used = 0;
         materials.clear();
         uploaded = 0;
         paletteBytes = 0;
@@ -45,6 +64,52 @@ final class GroundCompact {
     }
 
     static long gpuBytes() { return paletteBytes; }
+
+    private static int hash(float u, float v, int bounds, int tint, int normal, float alpha) {
+        int h = Float.floatToRawIntBits(u) * 31 + Float.floatToRawIntBits(v);
+        h = h * 31 + Float.floatToRawIntBits(alpha);
+        h = h * 31 + bounds;
+        h = h * 31 + tint;
+        h = h * 31 + normal;
+        h ^= h >>> 16;
+        h *= 0x7feb352d;
+        h ^= h >>> 15;
+        return h;
+    }
+
+    private static void grow() {
+        var oldSlots = slots;
+        var oldIds = slotIds;
+        slots = new Material[oldSlots.length * 2];
+        slotIds = new int[slots.length];
+        mask = slots.length - 1;
+        for (int i = 0; i < oldSlots.length; i++) {
+            var entry = oldSlots[i];
+            if (entry == null) continue;
+            int h = hash(entry.u, entry.v, entry.bounds, entry.tint, entry.normal, entry.alpha) & mask;
+            while (slots[h] != null) h = (h + 1) & mask;
+            slots[h] = entry;
+            slotIds[h] = oldIds[i];
+        }
+    }
+
+    /** Palette id for one material, allocating only the first time that material is seen. */
+    static int index(float u, float v, int bounds, int tint, int normal, float alpha) {
+        int h = hash(u, v, bounds, tint, normal, alpha) & mask;
+        while (true) {
+            var entry = slots[h];
+            if (entry == null) break;
+            if (entry.same(u, v, bounds, tint, normal, alpha)) return slotIds[h];
+            h = (h + 1) & mask;
+        }
+        var entry = new Material(u, v, bounds, tint, normal, alpha);
+        materials.add(entry);
+        int id = materials.size() - 1;
+        slots[h] = entry;
+        slotIds[h] = id;
+        if (++used * 2 > slots.length) grow();
+        return id;
+    }
 
     static ShaderInstance shader() {
         if (uploaded != materials.size()) {
@@ -89,10 +154,9 @@ final class GroundCompact {
         for (int i = 0; i < count; i++) {
             if (i%4==0) light=GroundRenderer.surfaceLight(face,lightPosition(face,data,i*32));
             int p = i * 32;
-            var material = new Material(data.getFloat(p + 16), data.getFloat(p + 20), data.getInt(p + 24),
+            int id = index(data.getFloat(p + 16), data.getFloat(p + 20), data.getInt(p + 24),
                     data.getInt(p + 12) & 0xffffff, data.getInt(p + 28) & 0xffffff,
                     layer == net.minecraft.client.renderer.RenderType.translucent() ? .7f : -1f);
-            int id = ids.computeIfAbsent(material, m -> { materials.add(m); return materials.size() - 1; });
             put(target + i * 12L, data.getFloat(p), data.getFloat(p + 4), data.getFloat(p + 8),
                     id, Byte.toUnsignedInt(data.get(p + 15)), light);
             if (lodKey >= 0) {
@@ -112,14 +176,15 @@ final class GroundCompact {
             x+=vertices.getFloat(p);y+=vertices.getFloat(p+4);z+=vertices.getFloat(p+8);
             top=Math.max(top,vertices.getFloat(p+4));
         }
-        var a=new Point(vertices.getFloat(start),vertices.getFloat(start+4),vertices.getFloat(start+8));
-        var b=new Point(vertices.getFloat(start+32),vertices.getFloat(start+36),vertices.getFloat(start+40));
-        var c=new Point(vertices.getFloat(start+64),vertices.getFloat(start+68),vertices.getFloat(start+72));
-        var normal=b.sub(a).cross(c.sub(a));
+        // (b-a) x (c-a) in primitives; the quad corner Points were four allocations per face.
+        double ax=vertices.getFloat(start), ay=vertices.getFloat(start+4), az=vertices.getFloat(start+8);
+        double ux=vertices.getFloat(start+32)-ax, uy=vertices.getFloat(start+36)-ay, uz=vertices.getFloat(start+40)-az;
+        double vx=vertices.getFloat(start+64)-ax, vy=vertices.getFloat(start+68)-ay, vz=vertices.getFloat(start+72)-az;
+        double nx=uy*vz-uz*vy, ny=uz*vx-ux*vz, nz=ux*vy-uy*vx;
         // Closure walls extend underground; light their exposed rim, not their buried centre.
-        return BlockPos.containing(face*4096+x/4+Math.signum(normal.x())*.01,
-                normal.y()==0 ? Math.ceil(128+top) : normal.y()>0 ? Math.ceil(128+y/4) : 128+y/4-.01,
-                z/4+Math.signum(normal.z())*.01);
+        return BlockPos.containing(face*4096+x/4+Math.signum(nx)*.01,
+                ny==0 ? Math.ceil(128+top) : ny>0 ? Math.ceil(128+y/4) : 128+y/4-.01,
+                z/4+Math.signum(nz)*.01);
     }
 
     static void put(long p, double x, double y, double z, int material, int tag, int light) {

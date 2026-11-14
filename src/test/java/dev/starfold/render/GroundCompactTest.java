@@ -66,6 +66,24 @@ class GroundCompactTest {
         assertTrue(sample.contains("return GroundFarTexture.sky(depth) * 4096;"));
     }
 
+    @Test void paletteInternsByFieldAndKeepsIdsAcrossGrowth() {
+        GroundCompact.clear();
+        int first = GroundCompact.index(0.25f, 0.5f, 0x1234, 0xffffff, 0x00ff00, 0.7f);
+        assertEquals(first, GroundCompact.index(0.25f, 0.5f, 0x1234, 0xffffff, 0x00ff00, 0.7f));
+        assertEquals(0, first);
+        assertNotEquals(first, GroundCompact.index(0.25f, 0.5f, 0x1234, 0xffffff, 0x00ff00, -1f));
+        assertNotEquals(first, GroundCompact.index(0.5f, 0.25f, 0x1234, 0xffffff, 0x00ff00, 0.7f));
+        // Grows past the initial table without renumbering any resident id.
+        int[] ids = new int[900];
+        for (int i = 0; i < ids.length; i++) ids[i] = GroundCompact.index(i / 1024f, 0, i, 0, i * 7, -1f);
+        for (int i = 0; i < ids.length; i++)
+            assertEquals(ids[i], GroundCompact.index(i / 1024f, 0, i, 0, i * 7, -1f), "id " + i);
+        assertEquals(
+                new java.util.HashSet<>(java.util.Arrays.stream(ids).boxed().toList()).size(),
+                ids.length);
+        GroundCompact.clear();
+    }
+
     @Test void compactShaderUsesTheSameGroundWrapper() throws Exception {
         var dir = Path.of("build/match/shaders");
         Files.createDirectories(dir);

@@ -9,6 +9,10 @@
   runs per vertex on the GPU instead of 1225 CPU ray marches every frame. Fog, star extinction and remote limbs keep
   the CPU integrator, and both copies share the same constants. Measured on the same inputs: 1.16 ms to 0.01 ms of
   frame CPU, with the sky unchanged (float parity within 8-bit colour precision).
+- Cut the CPU cost of uploading a LOD tile: the tile extent is now one min/max pass instead of two
+  `AABB` allocations per vertex, and the material palette interns by field probing instead of allocating a
+  key object and hashing it for every vertex. Measured on a 4000-vertex tile: 0.38 ms to 0.17 ms of render-thread
+  CPU per upload (extent 0.124 to 0.059 ms, interning 0.252 to 0.109 ms).
 - Project planet terrain through Sodium 0.8: its chunk shader receives the same warp, projection uniforms
   and native-chunk coverage as the vanilla core shaders. Iris is supported while no shader pack is enabled;
   an active Iris pack, Embeddium or Canvas still disables planet terrain projection and far views.

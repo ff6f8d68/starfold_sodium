@@ -1740,15 +1740,8 @@ public final class GroundRenderer {
                     var data = e.getValue().build();
                     if (data == null) continue;
                     if (lodKey >= 0) {
-                        var vertices = data.vertexBuffer();
-                        for (int i = 0; i < data.drawState().vertexCount(); i++) {
-                            int p = i * 32;
-                            double x = Math.round(vertices.getFloat(p) * 16) / 16.0;
-                            double y = Math.round((vertices.getFloat(p + 4) + 2048.0) * 16) / 16.0 - 2048;
-                            double z = Math.round(vertices.getFloat(p + 8) * 16) / 16.0;
-                            var point = new AABB(x, y, z, x, y, z);
-                            bounds = bounds == null ? point : bounds.minmax(point);
-                        }
+                        var tile = meshBounds(data);
+                        if (tile != null) bounds = bounds == null ? tile : bounds.minmax(tile);
                     }
                     try (var packed = new ByteBufferBuilder(4096)) {
                         if (compact) data = GroundCompact.pack(data, packed, e.getKey(), surfaceFace, lodKey);
@@ -1789,6 +1782,28 @@ public final class GroundRenderer {
             }
         }
 
+    }
+
+    /** Tile extent straight from the packed floats; the old loop built two AABBs per vertex. */
+    static AABB meshBounds(MeshData data) {
+        var vertices = data.vertexBuffer();
+        int count = data.drawState().vertexCount();
+        if (count < 1) return null;
+        double minX = Double.MAX_VALUE, minY = Double.MAX_VALUE, minZ = Double.MAX_VALUE;
+        double maxX = -Double.MAX_VALUE, maxY = -Double.MAX_VALUE, maxZ = -Double.MAX_VALUE;
+        for (int i = 0; i < count; i++) {
+            int p = i * 32;
+            double x = Math.round(vertices.getFloat(p) * 16) / 16.0;
+            double y = Math.round((vertices.getFloat(p + 4) + 2048.0) * 16) / 16.0 - 2048;
+            double z = Math.round(vertices.getFloat(p + 8) * 16) / 16.0;
+            if (x < minX) minX = x;
+            if (x > maxX) maxX = x;
+            if (y < minY) minY = y;
+            if (y > maxY) maxY = y;
+            if (z < minZ) minZ = z;
+            if (z > maxZ) maxZ = z;
+        }
+        return new AABB(minX, minY, minZ, maxX, maxY, maxZ);
     }
 
     private static long tileKey(int face, int x, int z) {
