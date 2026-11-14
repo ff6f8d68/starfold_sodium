@@ -5,6 +5,10 @@
 
 ## Unreleased
 
+- Move the ground sky scattering integral from the CPU to the vertex shader (`atmosphere_color.vsh`), where it
+  runs per vertex on the GPU instead of 1225 CPU ray marches every frame. Fog, star extinction and remote limbs keep
+  the CPU integrator, and both copies share the same constants. Measured on the same inputs: 1.16 ms to 0.01 ms of
+  frame CPU, with the sky unchanged (float parity within 8-bit colour precision).
 - Project planet terrain through Sodium 0.8: its chunk shader receives the same warp, projection uniforms
   and native-chunk coverage as the vanilla core shaders. Iris is supported while no shader pack is enabled;
   an active Iris pack, Embeddium or Canvas still disables planet terrain projection and far views.

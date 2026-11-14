@@ -4,8 +4,10 @@ import dev.starfold.geometry.BentStripGeometry.Point;
 import dev.starfold.geometry.PlanetSpace;
 import dev.starfold.worldgen.PlanetAtmosphere;
 
-/** CPU single scattering in a spherical exponential atmosphere, also used to colour the sky mesh.
- * No colour tables, time-of-day ramps or GPU twin: fog, sky and orbital limb call this integrator. */
+/** CPU single scattering in a spherical exponential atmosphere. No colour tables or time-of-day
+ * ramps: fog, star extinction and orbital limbs call this integrator; the observer's sky dome runs
+ * the identical integral in the vertex shader (assets/starfold/shaders/core/atmosphere_color.vsh),
+ * so both copies and its constants must stay in step. */
 public final class AtmosphereScattering {
     private static final Point BLACK = new Point(0, 0, 0);
 

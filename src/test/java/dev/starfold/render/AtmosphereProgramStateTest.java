@@ -180,13 +180,25 @@ class AtmosphereProgramStateTest {
     @Test
     void atmosphereEncodesOnlyAtVertexAndFogBoundariesNotStarVisibility() throws Exception {
         String owner = "dev/starfold/render/GroundAtmosphere";
-        for (String name : List.of("drawSky", "rim", "fog")) {
+        for (String name : List.of("rim", "fog")) {
             var names = calls(method(owner, name)).stream().map(c -> c.name).toList();
             assertEquals(1, Collections.frequency(names, "display"), name);
             assertTrue(
                     names.indexOf(name.equals("fog") ? "fog" : "sky") < names.indexOf("display"),
                     name);
         }
+        // The dome encodes in the vertex shader now; no CPU integration or encoding remains there.
+        var dome = calls(method(owner, "drawSky")).stream().map(c -> c.name).toList();
+        assertFalse(dome.contains("sky"), "scattering left the CPU sky path");
+        assertFalse(dome.contains("display"), "encoding belongs to the shader");
+        var domeShader =
+                Files.readString(
+                        Path.of(
+                                "src/main/resources/assets/starfold/shaders/core/atmosphere_color.vsh"));
+        assertTrue(
+                domeShader.contains("exposed(sum.r * SkyTransmission)"),
+                "transmission precedes encoding");
+        assertTrue(domeShader.contains("return vec3(display(encoded.r)"));
         var stars = calls(method(owner, "stars")).stream().map(c -> c.name).toList();
         assertTrue(stars.indexOf("sky") < stars.indexOf("stars"));
         assertFalse(stars.contains("display"));
@@ -214,15 +226,16 @@ class AtmosphereProgramStateTest {
             assertEquals(2, calls(m).stream().filter(c -> c.name.equals("hasEffect")).count());
         }
         var names = calls(sky).stream().map(c -> c.name).toList();
-        assertTrue(names.lastIndexOf("hasEffect") < names.indexOf("sky"));
+        assertTrue(names.lastIndexOf("hasEffect") < names.indexOf("scatterUniforms"));
+        assertTrue(names.indexOf("scatterUniforms") < names.indexOf("draw"));
         var lastEffect =
                 calls(sky).stream().filter(c -> c.name.equals("hasEffect")).toList().getLast();
         boolean earlyReturn = false;
         for (var i = lastEffect.getNext(); i != null; i = i.getNext()) {
-            if (i instanceof MethodInsnNode c && c.name.equals("sky")) break;
+            if (i instanceof MethodInsnNode c && c.name.equals("scatterUniforms")) break;
             if (i.getOpcode() == Opcodes.RETURN) earlyReturn = true;
         }
-        assertTrue(earlyReturn, "effect blocks this pass before integration");
+        assertTrue(earlyReturn, "effect blocks this pass before the scattering draw");
     }
 
     @Test
@@ -256,7 +269,10 @@ class AtmosphereProgramStateTest {
         }
         var source = Files.readString(Path.of("src/main/java/dev/starfold/render/GroundAtmosphere.java"));
         assertTrue(source.contains("air.density() == 0 || highAltitude == 1 || gasTransmission == 0"));
-        assertTrue(source.contains("var color = black ? BLACK :"));
+        assertTrue(
+                source.contains(
+                        "scatterUniforms(air, eye, sun, gasTransmission, black ? 0 : 1 - highAltitude)"),
+                "the shader receives the black and high-altitude scale");
         assertTrue(source.contains("draw(null, skyMatrix(c), true)"), "keep the black background draw");
     }
 

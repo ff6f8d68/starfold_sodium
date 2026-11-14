@@ -89,12 +89,12 @@ class AtmosphereRimRenderTest {
         var names = sky.stream().map(c -> c.name).toList();
         assertEquals(1, Collections.frequency(names, "highAltitudeWeight"));
         assertEquals(1, Collections.frequency(names, "rim"));
-        assertTrue(names.indexOf("highAltitudeWeight") < names.indexOf("sky"));
+        assertTrue(names.indexOf("highAltitudeWeight") < names.indexOf("scatterUniforms"));
         assertTrue(names.indexOf("draw") < names.indexOf("rim"));
         var source =
                 Files.readString(Path.of("src/main/java/dev/starfold/render/GroundAtmosphere.java"))
                         .replaceAll("\\s+", "");
-        assertTrue(source.contains(".scale(1-highAltitude)"));
+        assertTrue(source.contains("black?0:1-highAltitude"));
         assertTrue(source.contains("if(highAltitude>0){"));
         assertTrue(
                 source.contains(

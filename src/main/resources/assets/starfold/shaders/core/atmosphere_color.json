@@ -75,13 +75,14 @@
         1
       ]
     },
-    {
-      "name": "Background",
-      "type": "float",
-      "count": 1,
-      "values": [
-        1
-      ]
-    }
+        {"name":"Background","type":"float","count":1,"values":[1]},
+    {"name":"SkyScatter","type":"float","count":1,"values":[0]},
+    {"name":"SkyRadius","type":"float","count":1,"values":[2048]},
+    {"name":"SkyDensity","type":"float","count":1,"values":[1]},
+    {"name":"SkyTransmission","type":"float","count":1,"values":[1]},
+    {"name":"SkyScale","type":"float","count":1,"values":[1]},
+    {"name":"SkyEye","type":"float","count":3,"values":[0,2048,0]},
+    {"name":"SkySun","type":"float","count":3,"values":[0,1,0]},
+    {"name":"SkyTint","type":"float","count":3,"values":[0.47,0.65,1]}
   ]
 }

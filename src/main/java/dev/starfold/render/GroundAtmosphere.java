@@ -20,7 +20,8 @@ import net.minecraft.resources.ResourceLocation;
 import org.joml.Matrix4f;
 import org.lwjgl.opengl.*;
 
-/** Low-resolution, vertex-integrated scattering. No fullscreen pass or per-pixel ray marching. */
+/** Low-resolution, vertex-integrated scattering. The sky dome integrates it in vertex shader
+ * atmosphere_color.vsh; fog, star extinction and remote limbs use the CPU copy. */
 public final class GroundAtmosphere {
     private static ShaderInstance shader;
     private static GroundSkyMesh skyMesh;
@@ -176,16 +177,12 @@ public final class GroundAtmosphere {
         var up = PlanetSpace.unit(eye);
         var east = AtmosphereScattering.horizon(up, new Point(1, 0, 0));
         var north = up.cross(east);
-        for (int i = 0; i < GroundSkyMesh.VERTICES; i++) {
-            var d = GroundSkyMesh.direction(i, east, up, north);
-            var color = black ? BLACK :
-                    AtmosphereScattering.display(
-                                    AtmosphereScattering.sky(
-                                            air, frameRadius, eye, d, sun, gasTransmission))
-                            .scale(1 - highAltitude);
-            skyMesh.vertex(d, color);
-        }
+        // Only the dome directions are CPU work: the scattering integral runs in the vertex
+        // shader (atmosphere_color.vsh), which is where this used to cost a millisecond a frame.
+        for (int i = 0; i < GroundSkyMesh.VERTICES; i++)
+            skyMesh.vertex(GroundSkyMesh.direction(i, east, up, north), BLACK);
         skyMesh.upload();
+        scatterUniforms(air, eye, sun, gasTransmission, black ? 0 : 1 - highAltitude);
         draw(null, skyMatrix(c), true);
         if (highAltitude > 0) {
             // The thin current-body limb replaces the broad background, even before the native
@@ -204,6 +201,20 @@ public final class GroundAtmosphere {
                     home.inverseVector(new Point(0, 0, 1)),
                     GroundClient.shape().radius());
         }
+    }
+
+    /** Inputs of the GPU scattering twin; the rim and fog keep the CPU integrator. */
+    private static void scatterUniforms(
+            PlanetAtmosphere air, Point eye, Point sun, double transmission, double scale) {
+        var tint = AtmosphereScattering.tint(air);
+        shader.getUniform("SkyRadius").set((float) frameRadius);
+        shader.getUniform("SkyDensity").set((float) air.density());
+        shader.getUniform("SkyTransmission").set((float) transmission);
+        shader.getUniform("SkyScale").set((float) scale);
+        shader.getUniform("SkyEye").set((float) eye.x(), (float) eye.y(), (float) eye.z());
+        shader.getUniform("SkySun").set((float) sun.x(), (float) sun.y(), (float) sun.z());
+        shader.getUniform("SkyTint")
+                .set((float) tint.x(), (float) tint.y(), (float) tint.z());
     }
 
     /** Remote/region bodies follow their meshes; the native current-body limb belongs to AFTER_SKY. */
@@ -323,6 +334,7 @@ public final class GroundAtmosphere {
             if (SpaceClient.active()) SpaceClient.lens(shader);
             else GroundClient.lensUniforms(shader);
             shader.getUniform("Background").set(background ? 1f : 0f);
+            shader.getUniform("SkyScatter").set(background ? 1f : 0f);
             // Immediate rim and persistent sky use the same uniforms and state boundary.
             RenderSystem.getModelViewMatrix().set(matrix);
             if (background) skyMesh.drawWithShader(matrix, shader);
