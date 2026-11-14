@@ -3,6 +3,10 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.12 “Starward” — 2026-11-14
+
+- HBM Continuum machines on planets: the compatibility mixin no longer forces every `hbm:` block entity to render unconditionally. It bypasses only the flat-chart frustum bounds test and still honours the machine renderer's own visibility decision (incomplete/unformed machines, render distance), so partially built machines stop drawing model parts that belong to a state they are not in.
+
 ## 0.3.11 “Starward” — 2026-11-14
 
 - Fix severe stutter while chunks generate: the GL 4.3 chunk-generation path dispatched compute work and synchronously read it back once per chunk from worldgen worker threads (where Minecraft's GL context is not current), serialising all chunk generation behind a global lock while the CPU fill still did the real work. Normal generation now uses the parallel CPU fill; the GPU readback path is opt-in with `-Dkolustar.chunkGenGpu=true`.

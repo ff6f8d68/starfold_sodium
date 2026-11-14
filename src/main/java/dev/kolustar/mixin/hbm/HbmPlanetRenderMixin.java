@@ -38,7 +38,10 @@ public abstract class HbmPlanetRenderMixin {
                         .location()
                         .getNamespace()
                         .equals("hbm")) {
-            return true;
+            // Bypass only the frustum bounds test, which assumes a flat overworld chart. Keep the
+            // renderer's own visibility decision (formed/incomplete machines, view distance) so
+            // HBM still decides what its model needs.
+            return renderer.shouldRender(blockEntity, new Vec3(x, y, z));
         }
         return original.call(renderer, blockEntity, frustum, x, y, z);
     }
