@@ -58,17 +58,31 @@ public final class PlanetPlanStore {
     }
     private static TraditionalPlanetPlanner.Archive loadArchive(Path file,PlanetChunkGenerator planet,StructureSandbox.Context context) {
         try {
-            if(Files.exists(file))return read(file,planet,context);
+            if(Files.exists(file)) {
+                PlanetPlanProgress.start(planetSlot(planet), "Loading planet plan...", 1);
+                try { return read(file,planet,context); }
+                finally { PlanetPlanProgress.clear(); }
+            }
             long start=System.nanoTime();
             boolean structures = planet.generation().structures()
                     && !"false".equalsIgnoreCase(System.getProperty("kolustar.planetStructures", "true"));
+            PlanetPlanProgress.start(planetSlot(planet), "Preparing universe...", structures ? 100 : 1);
             var archive=structures ? new TraditionalPlanetPlanner(planet,context).generate()
                     : new TraditionalPlanetPlanner.Archive(new PlanetPlan(planet.terrain().shape().size(),planet.terrain().terrainPlan(),List.of(),List.of()),Map.of(),Map.of());
+            PlanetPlanProgress.update("Saving planet plan...", 95, 100);
             write(file,planet,archive);
             LogUtils.getLogger().info("Planet plan {}: {} sites, {} ms, {} bytes; skipped {}",planet.seed(),archive.plan().sites().size(),
                     (System.nanoTime()-start)/1_000_000,Files.size(file),archive.skipped());
             return archive;
         } catch(IOException e) { throw new UncheckedIOException("Planet plan "+file,e); }
+        finally { PlanetPlanProgress.clear(); }
+    }
+    private static int planetSlot(PlanetChunkGenerator planet) {
+        try {
+            var f = planet.getClass().getDeclaredField("slot");
+            f.setAccessible(true);
+            return f.getInt(planet);
+        } catch (ReflectiveOperationException e) { return -1; }
     }
     public static void write(Path file,PlanetChunkGenerator planet,TraditionalPlanetPlanner.Archive archive) throws IOException {
         var root=new CompoundTag();

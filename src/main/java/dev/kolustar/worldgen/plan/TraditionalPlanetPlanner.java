@@ -49,6 +49,7 @@ public final class TraditionalPlanetPlanner {
         long selectionStart=System.nanoTime();
         long planBudgetMs = Long.getLong("kolustar.planBudgetMs", 12000L);
         long selectionDeadline = selectionStart + Math.max(2000L, planBudgetMs / 2) * 1_000_000L;
+        PlanetPlanProgress.update("Preparing universe: surveying sites...", 5, 100);
         var candidates=new ArrayList<Candidate>();
         int size=planet.terrain().shape().size();
         for(var holder:sets) {
@@ -121,6 +122,7 @@ public final class TraditionalPlanetPlanner {
         }
         candidates.sort(Comparator.comparingDouble(Candidate::score).thenComparing((a,b)->Long.compareUnsigned(a.id,b.id)));
         selectionNanos=System.nanoTime()-selectionStart;
+        PlanetPlanProgress.update("Preparing universe: placing structures...", 30, 100);
         long planDeadline = selectionStart + selectionNanos + Math.max(1000L, planBudgetMs) * 1_000_000L;
         var sites=new ArrayList<PlanetPlan.Site>();
         var footprints=new ArrayList<int[]>();
@@ -131,8 +133,13 @@ public final class TraditionalPlanetPlanner {
         long references=0,indexColumns=0,footprintColumns=0;int pieceCount=0;
         boolean budgetHit=false;
         // Vanilla jigsaw rotation caches are lazy and not safe for parallel assembly.
+        int candidateIndex=0;
         for(var candidate:candidates) {
             if(System.nanoTime()>=planDeadline) { budgetHit=true; break; }
+            if((++candidateIndex & 7)==0 && !candidates.isEmpty()) {
+                int pct = 30 + Math.min(60, candidateIndex * 60 / candidates.size());
+                PlanetPlanProgress.update("Preparing universe: placing structures...", pct, 100);
+            }
             long assemblyStart=System.nanoTime();Assembly assembly;
             try { assembly=assemble(candidate); }
             catch(RuntimeException e) {unsupported(skipped,candidate,e);continue;}

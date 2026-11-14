@@ -539,6 +539,7 @@ public final class GroundClient {
         net.neoforged.neoforge.common.NeoForge.EVENT_BUS.addListener(
                 (net.neoforged.neoforge.client.event.ClientTickEvent.Post cpEvent) -> {
                     var mc = net.minecraft.client.Minecraft.getInstance();
+                    dev.kolustar.client.UniversePreparingScreen.tickClient();
                     if (!active()) {
                         level = null;
                         observer.model = null;

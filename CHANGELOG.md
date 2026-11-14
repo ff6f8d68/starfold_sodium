@@ -3,6 +3,10 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.10 “Starward” — 2026-11-14
+
+- Show a “Preparing universe…” progress screen while planet plans are being generated/loaded, instead of stalling without feedback. Plan generation now reports progress stages (surveying, placing structures, saving) used by the loading UI.
+
 ## 0.3.9 “Starward” — 2026-11-14
 
 - Bound planet structure planning to reduce long world-load/join stalls: add a planning time budget (default 12s, `-Dkolustar.planBudgetMs` to adjust), cap selection work/samples per candidate, and allow skipping planet structures entirely with `-Dkolustar.planetStructures=false`. Plans are cached after generation, so existing cached plans are unaffected until regenerated.
