@@ -9,10 +9,11 @@
   and native-chunk coverage as the vanilla core shaders. Iris is supported while no shader pack is enabled;
   an active Iris pack, Embeddium or Canvas still disables planet terrain projection and far views.
 - Add Particle Rain and Weather2 compatibility as optional, mod-gated client hooks: Particle Rain precipitation asks
-  each planet's own weather instead of the level rain flag (so airless worlds and space stay dry), and Weather2's
-  flat-world clouds, storm walls, fog override and precipitation sheets are skipped inside Starfold planet levels
-  while its simulation, wind, radar and particles keep running. Weather2 ambient/rain/sandstorm sounds are also muted
-  where a planet has no weather (space, airless worlds, above the atmosphere). Normal dimensions are untouched.
+  each planet's own weather instead of the level rain flag (so airless worlds and space stay dry). Weather2's
+  flat-world cloud/storm-wall/fog rendering stays suppressed inside Starfold planet levels, but its particle and weather
+  spawning, simulation, wind, radar and sounds run on breathable, weathered planet surfaces so effects can appear through
+  Starfold's projected particle rendering; airless worlds and above-atmosphere regions stay dry and silent. Normal
+  dimensions are untouched.
 - Fix the Veil depth hook targeting two framebuffer wrapper classes that Veil 4.3-4.5 no longer contains, which made
   the whole patch fail to apply; only classes present across those versions are targeted now.
 - Give clearer feedback from `/starfold` and flight commands when a planet is not ready, the player is not on a planet,
