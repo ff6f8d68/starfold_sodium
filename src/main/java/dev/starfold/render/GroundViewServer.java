@@ -182,17 +182,23 @@ public final class GroundViewServer {
 
     private static void refreshIndices(ServerLevel level, GroundClock clock) {
         // A lead's destination gets the same non-loading refresh before it owns a chart observer.
+        var players = level.players();
+        int[] occupied = new int[players.size()];
+        int[] destinations = new int[players.size()];
+        int occupiedCount = 0;
+        int destinationCount = 0;
+        for (var p : players) {
+            if (Space.in(p)) destinations[destinationCount++] = SpaceApproach.destination(p);
+            else occupied[occupiedCount++] = PlanetSystem.planet(p);
+        }
         var ticked =
                 refreshSlots(
                         PlanetSystem.count(level),
-                        level.players().stream()
-                                .filter(p -> !Space.in(p))
-                                .mapToInt(PlanetSystem::planet),
-                        level.players().stream()
-                                .filter(Space::in)
-                                .mapToInt(SpaceApproach::destination));
+                        java.util.Arrays.stream(occupied, 0, occupiedCount),
+                        java.util.Arrays.stream(destinations, 0, destinationCount));
         ticked.addAll(GroundSurfaceIndex.pendingPlanets(level));
-        for (int id : ticked) GroundSurfaceIndex.get(level, id).tick(level, clock.clock.tick());
+        long tick = clock.clock.tick();
+        for (int id : ticked) GroundSurfaceIndex.get(level, id).tick(level, tick);
     }
 
     static SortedSet<Integer> refreshSlots(
