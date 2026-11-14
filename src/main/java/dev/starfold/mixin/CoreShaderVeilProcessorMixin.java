@@ -23,7 +23,7 @@ import java.util.Map;
  * wrappers go around what they return. */
 @Mixin(value = VanillaShaderProcessor.class, remap = false)
 public abstract class CoreShaderVeilProcessorMixin {
-    @WrapMethod(method = "modify", remap = false)
+    @WrapMethod(method = "modify", remap = false, require = 0)
     private static String starfold$veilSource(
             Map<String, Object> custom,
             String name,

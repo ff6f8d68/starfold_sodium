@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.*;
         },
         remap = false)
 public abstract class ReversedDepthVeilMixin {
-    @ModifyVariable(method = "clear(FFFFFI[I)V", at = @At("HEAD"), argsOnly = true, ordinal = 4)
+    @ModifyVariable(method = "clear(FFFFFI[I)V", at = @At("HEAD"), argsOnly = true, ordinal = 4, require = 0)
     private float starfold$clearDepth(float depth) {
         return ReversedDepth.ACTIVE ? 1 - depth : depth;
     }
