@@ -46,10 +46,12 @@ Install `starfold_worlds` for experience planets and presets; optionally add `st
 Planet rendering supports the vanilla renderer and Sodium 0.8. Iris is supported while no shader pack is
 enabled; an active Iris shader pack, Embeddium or Canvas disables planet terrain projection and far views in
 this build. Particle Rain precipitation asks each planet's own weather instead of the level rain flag, so it
-stops on airless worlds and in space. Weather2's flat-world cloud/storm-wall/fog rendering is skipped inside
-Starfold planet levels, but its weather spawning, simulation, wind, sounds, radar and particles run on
-breathable, weathered planet surfaces so effects can appear through projected particle rendering; its weather
-sounds are muted where a planet has no weather. Veil's depth and shader hooks are applied tolerantly across Veil 4.3-4.5, so a Veil
+stops on airless worlds and in space. The Starfold planet level is registered in Weather2's weather, cloud,
+storm and wind dimension lists, so those systems actually run on planets instead of being confined to the
+overworld; its precipitation, cloud and funnel particles wrap with the planet through Starfold's projected
+particle rendering, and the rain state it publishes there drives Particle Rain as well. Only Weather2's
+flat-world fog override is dropped inside planet levels, where the planet atmosphere owns fog, and its
+weather sounds are muted where a planet has no weather. Veil's depth and shader hooks are applied tolerantly across Veil 4.3-4.5, so a Veil
 version drift leaves Veil unpatched instead of failing the mixin. The mod declares itself incompatible with
 `gravity_changer`.
 

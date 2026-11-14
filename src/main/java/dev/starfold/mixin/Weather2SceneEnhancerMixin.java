@@ -4,7 +4,6 @@ import dev.starfold.compat.PlanetSky;
 import dev.starfold.sky.WeatherClient;
 
 import net.minecraft.client.Minecraft;
-import net.neoforged.neoforge.client.event.RenderLevelStageEvent;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,27 +12,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * Weather2 draws clouds, storm walls, tornado funnels and precipitation sheets with its own
- * world-space renderers. On a Starfold planet those flat passes would be painted through the
- * curved shell, so the custom sky/volume rendering is suppressed there. Particle and weather
- * spawning keeps running on breathable, weathered planet surfaces so precipitation and effects
- * can appear through Starfold's projected particle rendering, while airless space and
- * above-atmosphere regions stay dry and silent. Normal dimensions are untouched.
+ * Weather2 renders its clouds, funnels and precipitation as ordinary particles, and its render
+ * stage only mirrors the resulting rain and thunder amounts onto the client level. Both follow the
+ * planet through Starfold's projected particle shaders, so they keep running in planet levels:
+ * {@link Weather2DimensionsMixin} registers the planet for Weather2's weather, cloud, storm and
+ * wind systems, and that mirroring is what lets Particle Rain and Weather2 precipitation see the
+ * same storm. Only the flat-world fog override is dropped, because the planet atmosphere owns fog.
+ * Airless space and above-atmosphere regions stay dry and silent; normal dimensions are unchanged.
  */
 @Mixin(targets = "weather2.client.SceneEnhancer", remap = false)
 public abstract class Weather2SceneEnhancerMixin {
-    @Inject(
-            method = "renderTick(Lnet/neoforged/neoforge/client/event/RenderLevelStageEvent;)V",
-            at = @At("HEAD"),
-            cancellable = true,
-            require = 0)
-    private static void starfold$skipPlanetSky(RenderLevelStageEvent event, CallbackInfo ci) {
-        if (PlanetSky.occludes()) ci.cancel();
-    }
-
     /**
-     * Flat precipitation sheets do not follow the planet surface, but Weather2's other particle
-     * spawning can render through the projected particle shaders on weathered surfaces.
+     * Weather2's precipitation and cloud particles already ride the projected particle shaders, so
+     * they are only suppressed where the planet itself has no weather.
      */
     @Inject(
             method = {"tickEnvironmentalParticleSpawning", "tryParticleSpawning"},

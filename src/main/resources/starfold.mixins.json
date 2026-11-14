@@ -20,6 +20,7 @@
     "HelmServerActionsMixin",
     "AirstairCollisionMixin",
     "WeatherThunderMixin",
+    "Weather2DimensionsMixin",
     "SablePlayerSaveMixin",
     "CreateSeamRotationMixin",
     "SableUdpMixin",

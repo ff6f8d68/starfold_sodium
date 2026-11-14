@@ -23,7 +23,8 @@ public final class RendererCompatibility {
         // Both hook Sodium's own chunk program; without Sodium they cannot resolve a target.
         if (mixin.startsWith("dev.starfold.mixin.Sodium")) return loaded.test("sodium");
         // Third-party weather renderers target their own classes; only apply when they exist.
-        if (mixin.equals("dev.starfold.mixin.Weather2SceneEnhancerMixin"))
+        if (mixin.equals("dev.starfold.mixin.Weather2SceneEnhancerMixin")
+                || mixin.equals("dev.starfold.mixin.Weather2DimensionsMixin"))
             return loaded.test("weather2");
         if (mixin.equals("dev.starfold.mixin.ParticleRainSpawnerMixin"))
             return loaded.test("particlerain");

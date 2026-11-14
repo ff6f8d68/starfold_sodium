@@ -8,12 +8,13 @@
 - Project planet terrain through Sodium 0.8: its chunk shader receives the same warp, projection uniforms
   and native-chunk coverage as the vanilla core shaders. Iris is supported while no shader pack is enabled;
   an active Iris pack, Embeddium or Canvas still disables planet terrain projection and far views.
-- Add Particle Rain and Weather2 compatibility as optional, mod-gated client hooks: Particle Rain precipitation asks
-  each planet's own weather instead of the level rain flag (so airless worlds and space stay dry). Weather2's
-  flat-world cloud/storm-wall/fog rendering stays suppressed inside Starfold planet levels, but its particle and weather
-  spawning, simulation, wind, radar and sounds run on breathable, weathered planet surfaces so effects can appear through
-  Starfold's projected particle rendering; airless worlds and above-atmosphere regions stay dry and silent. Normal
-  dimensions are untouched.
+- Add Particle Rain and Weather2 compatibility as optional, mod-gated hooks: Particle Rain precipitation asks
+  each planet's own weather instead of the level rain flag (so airless worlds and space stay dry). The Starfold planet
+  level is registered in Weather2's weather, cloud, storm and wind dimension lists, so those systems now run on planets
+  rather than being confined to the overworld: precipitation, cloud and funnel particles wrap with the planet through
+  Starfold's projected particle rendering, and the rain state Weather2 publishes there drives Particle Rain too. Only
+  Weather2's flat-world fog override stays suppressed inside planet levels, where the planet atmosphere owns fog;
+  airless worlds and above-atmosphere regions stay dry and silent. Normal dimensions are untouched.
 - Fix the Veil depth hook targeting two framebuffer wrapper classes that Veil 4.3-4.5 no longer contains, which made
   the whole patch fail to apply; only classes present across those versions are targeted now.
 - Give clearer feedback from `/starfold` and flight commands when a planet is not ready, the player is not on a planet,

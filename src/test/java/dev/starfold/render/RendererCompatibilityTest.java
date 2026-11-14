@@ -32,6 +32,7 @@ class RendererCompatibilityTest {
                     "DevPortCameraMixin",
                     "DevPortClockMixin",
                     "Weather2SceneEnhancerMixin",
+                    "Weather2DimensionsMixin",
                     "ParticleRainSpawnerMixin");
 
     /** Wraps vanilla's section draw call, which these renderers overwrite with their own. */
@@ -82,6 +83,9 @@ class RendererCompatibilityTest {
                                             : "ParticleRainSpawnerMixin"),
                             mod::equals),
                     mod);
+        assertTrue(
+                RendererCompatibility.apply(
+                        "dev.starfold.mixin.Weather2DimensionsMixin", "weather2"::equals));
         assertTrue(
                 Sources.text("RendererMixinPlugin")
                         .contains("LoadingModList.get().getModFileById(id)!=null"));
