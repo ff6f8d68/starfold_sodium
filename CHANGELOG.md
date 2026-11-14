@@ -3,6 +3,12 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.11 “Starward” — 2026-11-14
+
+- Fix severe stutter while chunks generate: the GL 4.3 chunk-generation path dispatched compute work and synchronously read it back once per chunk from worldgen worker threads (where Minecraft's GL context is not current), serialising all chunk generation behind a global lock while the CPU fill still did the real work. Normal generation now uses the parallel CPU fill; the GPU readback path is opt-in with `-Dkolustar.chunkGenGpu=true`.
+- Keep Kolustar's own far terrain enabled when Distant Horizons is installed, because DH LODs do not follow the curved planet chart and showed up as detached sheets/holes over real chunks. Use `-Dkolustar.deferToDistantHorizons=true` to defer to DH again, or `-Dkolustar.lod=false` to disable Kolustar far terrain entirely. A log line now reports which path is active.
+- Add `-Dkolustar.hbmCompat=false` to disable the HBM Continuum culling compatibility mixin when diagnosing machine-model rendering.
+
 ## 0.3.10 “Starward” — 2026-11-14
 
 - Show a “Preparing universe…” progress screen while planet plans are being generated/loaded, instead of stalling without feedback. Plan generation now reports progress stages (surveying, placing structures, saving) used by the loading UI.

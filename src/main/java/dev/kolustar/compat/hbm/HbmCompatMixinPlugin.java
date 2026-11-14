@@ -21,6 +21,9 @@ public final class HbmCompatMixinPlugin implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        // HBM's multi-block renderers can double-draw or clip under the planet projection; the
+        // switch isolates the compatibility tweaks when diagnosing model problems.
+        if ("false".equalsIgnoreCase(System.getProperty("kolustar.hbmCompat", "true"))) return false;
         return LoadingModList.get().getModFileById("hbm") != null;
     }
 

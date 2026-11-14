@@ -582,7 +582,14 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
             for (var section : chunk.getSections()) section.acquire();
             long began = System.nanoTime();
             try {
-                if (mode == dev.kolustar.worldgen.ChunkGenMode.PERFORMANCE) {
+                // The GL compute path uploads column inputs, dispatches and synchronously reads
+                // the buffer back per chunk. It runs on worldgen worker threads, where Minecraft's
+                // GL context is not current, so it serialises all chunk generation behind a global
+                // lock and a GPU round-trip while producing nothing the CPU fill does not already
+                // compute. Keep it opt-in for experiments; normal chunk generation is the parallel
+                // CPU path.
+                if (mode == dev.kolustar.worldgen.ChunkGenMode.PERFORMANCE
+                        && Boolean.getBoolean("kolustar.chunkGenGpu")) {
                     try {
                         if (dev.kolustar.worldgen.GpuChunkGenerator.tryFill(
                                 chunk, start, id, planet(id).terrain())) {

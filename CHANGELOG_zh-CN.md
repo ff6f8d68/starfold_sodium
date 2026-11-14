@@ -3,6 +3,12 @@
 [English](CHANGELOG.md)
 
 
+## 0.3.11「向星而行」— 2026-11-14
+
+- 修复生成区块时的严重卡顿：GL 4.3 区块生成路径会在世界生成工作线程上（Minecraft 的 GL 上下文不在该线程）为每个区块提交 compute 并同步读回，导致所有区块生成被全局锁串行化，而真正的方块填充仍由 CPU 完成。现默认走并行 CPU 生成；GPU 读回路径改为 `-Dkolustar.chunkGenGpu=true` 手动开启。
+- 安装 Distant Horizons 时保持 Kolustar 自带远景地形：DH 的 LOD 不遵循弯曲星球投影，会在真实区块上出现漂浮薄片/空洞。可用 `-Dkolustar.deferToDistantHorizons=true` 恢复交给 DH，或用 `-Dkolustar.lod=false` 完全关闭 Kolustar 远景地形。日志会说明当前使用哪条路径。
+- 新增 `-Dkolustar.hbmCompat=false`，用于排查 HBM Continuum 机器模型渲染问题时关闭其剔除兼容 mixin。
+
 ## 0.3.10「向星而行」— 2026-11-14
 
 - 在生成/加载星球规划时显示“Preparing universe...”进度界面，避免无反馈卡顿。规划生成现在会上报进度阶段（勘察、放置结构、保存），供加载界面显示进度条。
