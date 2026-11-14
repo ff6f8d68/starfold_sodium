@@ -60,7 +60,9 @@ public final class PlanetPlanStore {
         try {
             if(Files.exists(file))return read(file,planet,context);
             long start=System.nanoTime();
-            var archive=planet.generation().structures() ? new TraditionalPlanetPlanner(planet,context).generate()
+            boolean structures = planet.generation().structures()
+                    && !"false".equalsIgnoreCase(System.getProperty("kolustar.planetStructures", "true"));
+            var archive=structures ? new TraditionalPlanetPlanner(planet,context).generate()
                     : new TraditionalPlanetPlanner.Archive(new PlanetPlan(planet.terrain().shape().size(),planet.terrain().terrainPlan(),List.of(),List.of()),Map.of(),Map.of());
             write(file,planet,archive);
             LogUtils.getLogger().info("Planet plan {}: {} sites, {} ms, {} bytes; skipped {}",planet.seed(),archive.plan().sites().size(),

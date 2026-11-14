@@ -3,6 +3,10 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.9 “Starward” — 2026-11-14
+
+- Bound planet structure planning to reduce long world-load/join stalls: add a planning time budget (default 12s, `-Dkolustar.planBudgetMs` to adjust), cap selection work/samples per candidate, and allow skipping planet structures entirely with `-Dkolustar.planetStructures=false`. Plans are cached after generation, so existing cached plans are unaffected until regenerated.
+
 ## 0.3.8 “Starward” — 2026-11-14
 
 - Replace voxel-box far terrain/LOD meshing in `GroundFarMesh` with a downsampled polygon heightfield: far tiles sample terrain surfaces at LOD step resolution (seed/worldgen-derived cached summaries) and emit continuous triangulated/quads with edge skirts instead of stacked box columns. This targets smoother, lighter far terrain; visual correctness and compatibility with Kolustar's curved planet charts/shaders still need in-game validation.

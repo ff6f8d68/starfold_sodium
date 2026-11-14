@@ -47,6 +47,8 @@ public final class TraditionalPlanetPlanner {
     }
     private Archive generateCached(Iterable<Holder<StructureSet>> sets) {
         long selectionStart=System.nanoTime();
+        long planBudgetMs = Long.getLong("kolustar.planBudgetMs", 12000L);
+        long selectionDeadline = selectionStart + Math.max(2000L, planBudgetMs / 2) * 1_000_000L;
         var candidates=new ArrayList<Candidate>();
         int size=planet.terrain().shape().size();
         for(var holder:sets) {
@@ -63,13 +65,14 @@ public final class TraditionalPlanetPlanner {
             int[] boundaries=boundaries(size,placement.spacing()*16);
             long salt=Scatter.mix(holder.unwrapKey().orElseThrow().location().toString().hashCode());
             for(var face:Face.VALUES) for(int iu=0;iu<boundaries.length-1;iu++) for(int iv=0;iv<boundaries.length-1;iv++) {
+                if((iu & 7)==0 && (iv & 7)==0 && System.nanoTime()>=selectionDeadline) { iu=boundaries.length; break; }
                 int gu=boundaries[iu],gv=boundaries[iv];
                 if(!placement.applyAdditionalChunkRestrictions(face.ordinal()*256+(gu>>4),gv>>4,planet.seed()))continue;
                 long hash=Scatter.mix(planet.seed() ^ salt ^ (long)face.ordinal()<<56 ^ (long)gu<<28 ^ gv);
                 if ((Scatter.mix(hash ^ 0x6465736f6c617465L) >>> 11) * 0x1.0p-53
                     < planet.generation().recipe().value("preferences", "desolation")) continue;
                 Candidate best=null;
-                for(int sample=0;sample<8;sample++) {
+                for(int sample=0;sample<4;sample++) {
                     long h=Scatter.mix(hash+sample);
                     int u=gu+(int)Long.remainderUnsigned(h,boundaries[iu+1]-gu);
                     int v=gv+(int)Long.remainderUnsigned(Scatter.mix(h),boundaries[iv+1]-gv);
@@ -118,6 +121,7 @@ public final class TraditionalPlanetPlanner {
         }
         candidates.sort(Comparator.comparingDouble(Candidate::score).thenComparing((a,b)->Long.compareUnsigned(a.id,b.id)));
         selectionNanos=System.nanoTime()-selectionStart;
+        long planDeadline = selectionStart + selectionNanos + Math.max(1000L, planBudgetMs) * 1_000_000L;
         var sites=new ArrayList<PlanetPlan.Site>();
         var footprints=new ArrayList<int[]>();
         var templates=new ArrayList<PlanetPlan.Template>();
@@ -125,8 +129,10 @@ public final class TraditionalPlanetPlanner {
         var recipes=new TreeMap<Long,CompoundTag>();
         var links = new ArrayList<Relation>();
         long references=0,indexColumns=0,footprintColumns=0;int pieceCount=0;
+        boolean budgetHit=false;
         // Vanilla jigsaw rotation caches are lazy and not safe for parallel assembly.
         for(var candidate:candidates) {
+            if(System.nanoTime()>=planDeadline) { budgetHit=true; break; }
             long assemblyStart=System.nanoTime();Assembly assembly;
             try { assembly=assemble(candidate); }
             catch(RuntimeException e) {unsupported(skipped,candidate,e);continue;}
@@ -182,6 +188,7 @@ public final class TraditionalPlanetPlanner {
         var villages = sites.stream().filter(site -> structureRegistry.getHolderOrThrow(
             net.minecraft.resources.ResourceKey.create(Registries.STRUCTURE,site.structure())).is(RIVER_SETTLEMENTS)).toList();
         var terrain = TerrainRoadPlanner.connect(planet.terrain().terrainPlan(),villages,links);
+        if(budgetHit) skipped.put("kolustar:planet_plan","time budget reached after "+sites.size()+" sites; increase -Dkolustar.planBudgetMs to place more");
         measuredPlan=new PlanetPlan(size,terrain,sites,templates);
         planet.terrain().initializeTerrain(terrain);
         return new Archive(measuredPlan,recipes,skipped);
