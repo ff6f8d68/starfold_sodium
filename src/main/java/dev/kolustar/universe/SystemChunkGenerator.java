@@ -602,6 +602,8 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
         var surface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
         var floor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
         var pos = new BlockPos.MutableBlockPos();
+        int terrainFloor = terrain.floor();
+        int low = Math.max(terrainFloor, chunk.getMinBuildHeight());
         for (int x = 0; x < 16; x++)
             for (int z = 0; z < 16; z++) {
                 int wx = start.getMinBlockX() + x, wz = start.getMinBlockZ() + z;
@@ -609,16 +611,13 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
                         GroundTopology.cell(new BlockPos(wx - originX(id), 128, wz - originZ(id)));
                 var generated = function.blocks(cell.face(), cell.u(), cell.v());
                 var liquid = terrain.liquid(cell.face(), cell.u(), cell.v());
-                int ceiling = PlanetTerrain.MAX_Y - 1;
                 // Written straight into the sections, from the top: the generation heightmaps are
-                // kept here, so the chunk's
-                // own per-block bookkeeping would only repeat them for every layer of a deep
-                // column.
-                for (int y = Math.min(ceiling, chunk.getMaxBuildHeight() - 1),
-                                low = Math.max(terrain.floor(), chunk.getMinBuildHeight());
-                        y >= low;
-                        y--) {
-                    var state = generated[y - terrain.floor()];
+                // kept here, so the chunk's own per-block bookkeeping would only repeat them for
+                // every layer of a deep column.
+                int hi = Math.min(PlanetTerrain.MAX_Y - 1, chunk.getMaxBuildHeight() - 1);
+                while (hi > low && generated[hi - terrainFloor].is(net.minecraft.world.level.block.Blocks.AIR)) hi--;
+                for (int y = hi; y >= low; y--) {
+                    var state = generated[y - terrainFloor];
                     if (state.is(net.minecraft.world.level.block.Blocks.AIR)) continue;
                     chunk.getSection(chunk.getSectionIndex(y))
                             .setBlockState(x, y & 15, z, state, false);

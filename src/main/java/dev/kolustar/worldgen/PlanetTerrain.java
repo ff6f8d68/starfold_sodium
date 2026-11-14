@@ -45,7 +45,7 @@ public final class PlanetTerrain {
     private java.util.function.Supplier<PlanetPlan> plan;
     private PlanetPlan localPlan;
     private java.util.function.Supplier<dev.kolustar.worldgen.surface.BiomeScatter> scatter;
-    private final LinkedHashMap<Long, Column> columns = new LinkedHashMap<>(16, .75f, true);
+    private final java.util.concurrent.ConcurrentHashMap<Long, Column> columns = new java.util.concurrent.ConcurrentHashMap<>(512);
     public PlanetTerrain(long seed) {
         this(seed, VERSION);
     }
@@ -211,16 +211,19 @@ public final class PlanetTerrain {
     public Column column(Face f, int u, int v) {
         var c = canonical(f, u, v);
         long key = c.u() + 2048L * (c.v() + 2048L * c.face().ordinal());
-        synchronized (columns) {
-            var cached = columns.get(key);
-            if (cached != null)
-                return cached;
-        }
+        var cached = columns.get(key);
+        if (cached != null)
+            return cached;
         var value = buildColumn(c.face(), c.u(), c.v(), floor, MAX_Y, false, groundY(c.face(), c.u(), c.v()));
-        synchronized (columns) {
-            columns.put(key, value);
-            if (columns.size() > 2048)
-                columns.remove(columns.keySet().iterator().next());
+        var prior = columns.putIfAbsent(key, value);
+        if (prior != null)
+            return prior;
+        if (columns.size() > 4096) {
+            var it = columns.keySet().iterator();
+            for (int i = 0; i < 512 && it.hasNext(); i++) {
+                it.next();
+                it.remove();
+            }
         }
         return value;
     }
@@ -397,9 +400,7 @@ public final class PlanetTerrain {
         return surface(c.face(), c.u(), c.v(), groundY(c.face(), c.u(), c.v())).state;
     }
     public int cachedColumns() {
-        synchronized (columns) {
-            return columns.size();
-        }
+        return columns.size();
     }
     private static long mix(long x) {
         x = (x ^ (x >>> 30)) * 0xbf58476d1ce4e5b9L;

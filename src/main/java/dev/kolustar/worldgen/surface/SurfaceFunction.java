@@ -157,13 +157,17 @@ public final class SurfaceFunction {
         face = owner.face(); u = owner.u(); v = owner.v();
         var column = column(face,u,v,ground(face,u,v),bottom);
         var result = new BlockState[PlanetTerrain.MAX_Y-terrain.floor()];
+        java.util.Arrays.fill(result, Blocks.AIR.defaultBlockState());
         int top = groundTop(face,u,v);
-        for (int y = terrain.floor(); y < PlanetTerrain.MAX_Y; y++)
-            result[y-terrain.floor()] = y <= top ? column.state(y) : Blocks.AIR.defaultBlockState();
+        int floorY = terrain.floor();
+        int lo = Math.max(floorY, column.bottom());
+        int hi = Math.min(top, column.end() - 1);
+        for (int y = lo; y <= hi; y++)
+            result[y-floorY] = column.state(y);
         for (var run : objects(face,u,v,column,top))
-            for (int y = Math.max(top+1,run.bottom()); y <= Math.min(PlanetTerrain.MAX_Y-1,run.top()); y++) result[y-terrain.floor()] = run.block();
-        for(var e:plan.column(face,u,v).entrySet())if(e.getKey()>=terrain.floor() && e.getKey()<PlanetTerrain.MAX_Y)
-            result[e.getKey()-terrain.floor()]=e.getValue();
+            for (int y = Math.max(top+1,run.bottom()); y <= Math.min(PlanetTerrain.MAX_Y-1,run.top()); y++) result[y-floorY] = run.block();
+        for(var e:plan.column(face,u,v).entrySet())if(e.getKey()>=floorY && e.getKey()<PlanetTerrain.MAX_Y)
+            result[e.getKey()-floorY]=e.getValue();
         return result;
     }
 

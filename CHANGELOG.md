@@ -3,7 +3,15 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
-## 0.3.2 “Starward” — 2026-11-14
+## 0.3.3 “Starward” — 2026-11-14
+
+- Add optional HBM Continuum compatibility scaffolding for NeoForge 1.21.1: local development/build jars in `libs/hbm/` (`hbm-neoforge-1.0.5-1.21.1.jar`, `gemrender-0.1.20-neoforge-1.21.1.jar`, `golemcore-neoforge-1.0.5+1.21.1.jar`) are on the compile/test/runtime classpath, and `kolustar.hbm.mixins.json` loads only when HBM is installed.
+- On Kolustar planet levels, HBM-namespaced block-entity renderers are forced through the block-entity render dispatcher to reduce model flicker/disappearing from frustum/culling mismatches. This HBM integration is partial and not verified in-game here; height detection and radar behavior on curved planet charts may still need targeted fixes.
+- Reduce chunk-generation CPU work when generating many chunks in parallel: the planet terrain column cache is now concurrent with bounded eviction, chunk fill skips the leading empty air range per column, and surface block generation avoids redundant full-column writes. Minecraft chunk/block world generation remains CPU-bound in this pipeline (GL 3.3 provides no compute shaders for worldgen), so this release does not move chunk generation itself to the GPU.
+- Cap background LOD mesh workers and the in-flight tile queue so distant terrain rebuilds no longer saturate the CPU while moving (`kolustar.lodThreads` overrides the worker count). Tiles fill in more slowly under load, but the game thread and chunk work keep more headroom.
+- Keep the planet minimap always visible on a planet surface; the world map remains on `K`.
+- Unbind the LOD vertex array after draws so custom render passes do not leave GL state behind for other mods.
+
 
 ## 0.3.1 “Starward” — 2026-11-14
 

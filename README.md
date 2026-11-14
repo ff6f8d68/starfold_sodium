@@ -7,7 +7,7 @@ over a face edge without a teleport or a reload, several planets and suns share 
 them without a loading screen, in a ship built with Create and Create Aeronautics or on a thruster pack.
 
 **Status: alpha.** Development targets single-player; multiplayer and compatibility with other mods are not a goal
-yet. Current prerelease: **0.3.2 — Starward**. **Saves from 0.2.0 are not supported; create a new world.** Keep backups of older worlds.
+yet. Current prerelease: **0.3.3 — Starward**. **Saves from 0.2.0 are not supported; create a new world.** Keep backups of older worlds.
 
 ## What is in it
 

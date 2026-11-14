@@ -13,6 +13,9 @@ description='''Planets you can walk all the way around, built from real Minecraf
 [[mixins]]
 config="kolustar.mixins.json"
 
+[[mixins]]
+config="kolustar.hbm.mixins.json"
+
 [[dependencies.kolustar]]
 modId="neoforge"
 type="required"

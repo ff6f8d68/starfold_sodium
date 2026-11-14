@@ -1,0 +1,15 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "plugin": "dev.kolustar.compat.hbm.HbmCompatMixinPlugin",
+  "package": "dev.kolustar.mixin.hbm",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+  ],
+  "client": [
+    "HbmPlanetRenderMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
