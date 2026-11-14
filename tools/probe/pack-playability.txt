@@ -55,35 +55,35 @@ cmd data get block 5283 142 850
 # Minimal-A hull, basic scope (not the off-world-gated navigation scope).
 cmd fill 5285 140 855 5300 155 870 minecraft:air
 cmd setblock 5290 141 860 minecraft:oak_planks
-cmd setblock 5291 141 860 starfold:thruster[facing=north]
-cmd setblock 5292 141 860 starfold:airstair[facing=north]
-cmd setblock 5293 141 860 starfold:thruster[facing=north]
+cmd setblock 5291 141 860 kolustar:thruster[facing=north]
+cmd setblock 5292 141 860 kolustar:airstair[facing=north]
+cmd setblock 5293 141 860 kolustar:thruster[facing=north]
 cmd setblock 5294 141 860 minecraft:oak_planks
-cmd setblock 5290 141 861 starfold:thruster[facing=west]
+cmd setblock 5290 141 861 kolustar:thruster[facing=west]
 cmd setblock 5291 141 861 minecraft:oak_planks
-cmd setblock 5292 141 861 starfold:thruster[facing=down]
+cmd setblock 5292 141 861 kolustar:thruster[facing=down]
 cmd setblock 5293 141 861 minecraft:oak_planks
-cmd setblock 5294 141 861 starfold:thruster[facing=east]
+cmd setblock 5294 141 861 kolustar:thruster[facing=east]
 cmd setblock 5290 141 862 minecraft:oak_planks
-cmd setblock 5291 141 862 starfold:thruster[facing=up]
+cmd setblock 5291 141 862 kolustar:thruster[facing=up]
 cmd setblock 5292 141 862 minecraft:oak_planks
-cmd setblock 5293 141 862 starfold:thruster[facing=up]
+cmd setblock 5293 141 862 kolustar:thruster[facing=up]
 cmd setblock 5294 141 862 minecraft:oak_planks
-cmd setblock 5290 141 863 starfold:thruster[facing=west]
+cmd setblock 5290 141 863 kolustar:thruster[facing=west]
 cmd setblock 5291 141 863 minecraft:oak_planks
-cmd setblock 5292 141 863 starfold:thruster[facing=down]
+cmd setblock 5292 141 863 kolustar:thruster[facing=down]
 cmd setblock 5293 141 863 minecraft:oak_planks
-cmd setblock 5294 141 863 starfold:thruster[facing=east]
+cmd setblock 5294 141 863 kolustar:thruster[facing=east]
 cmd setblock 5290 141 864 minecraft:oak_planks
-cmd setblock 5291 141 864 starfold:thruster[facing=south]
-cmd setblock 5292 141 864 starfold:airstair[facing=south]
-cmd setblock 5293 141 864 starfold:thruster[facing=south]
+cmd setblock 5291 141 864 kolustar:thruster[facing=south]
+cmd setblock 5292 141 864 kolustar:airstair[facing=south]
+cmd setblock 5293 141 864 kolustar:thruster[facing=south]
 cmd setblock 5294 141 864 minecraft:oak_planks
-cmd setblock 5290 142 862 starfold:gyro
-cmd setblock 5292 142 862 starfold:helm[facing=west]
-cmd setblock 5294 142 862 starfold:gyro
+cmd setblock 5290 142 862 kolustar:gyro
+cmd setblock 5292 142 862 kolustar:helm[facing=west]
+cmd setblock 5294 142 862 kolustar:gyro
 cmd setblock 5290 143 862 minecraft:lever[face=floor,facing=north,powered=true]
-cmd setblock 5292 143 862 starfold:scope[facing=west]
+cmd setblock 5292 143 862 kolustar:scope[facing=west]
 cmd setblock 5294 143 862 minecraft:lever[face=floor,facing=north,powered=true]
 cmd setblock 5293 142 863 create:fluid_tank{TankContent:{Fluid:{id:"createdieselgenerators:diesel",amount:8000}}}
 wait 40
@@ -97,7 +97,7 @@ fly off
 wait 60
 cmd gamemode survival
 wait 30
-find starfold:helm
+find kolustar:helm
 wait 5
 usehit helm
 wait 30

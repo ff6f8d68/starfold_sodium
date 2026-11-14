@@ -43,7 +43,7 @@ def gen(key,tag):
     return out
 head="""waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 100
 waitworld
 cmd effect give @s minecraft:night_vision infinite 0 true
@@ -52,5 +52,5 @@ cmd gamerule doDaylightCycle false
 cmd gamerule doMobSpawning false
 cmd time set noon
 fly on""".split("\n")
-lines=head+gen('A','simA')+gen('B','simB')+["cmd starfold status","wait 10","quit"]
+lines=head+gen('A','simA')+gen('B','simB')+["cmd kolustar status","wait 10","quit"]
 open(sys.argv[1],'w').write("\n".join(lines)+"\n")

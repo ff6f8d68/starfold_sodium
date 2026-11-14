@@ -3,20 +3,20 @@ loaderVersion="[4,)"
 license="MIT"
 
 [[mods]]
-modId="starfold_biotech"
+modId="kolustar_biotech"
 version="${version}"
-displayName="Starfold: Biotech"
+displayName="Kolustar: Biotech"
 description='''Flesh hive terrain, organic materials and the Host encounter. Balance values are provisional.'''
 
-[[dependencies.starfold_biotech]]
+[[dependencies.kolustar_biotech]]
 modId="geckolib"
 type="required"
 versionRange="[4.8.2]"
 ordering="AFTER"
 side="BOTH"
 
-[[dependencies.starfold_biotech]]
-modId="starfold_worlds"
+[[dependencies.kolustar_biotech]]
+modId="kolustar_worlds"
 type="required"
 versionRange="[0,)"
 ordering="AFTER"

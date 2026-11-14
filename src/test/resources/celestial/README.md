@@ -4,7 +4,7 @@
 `dd02e67780730ad7487664a960e62b12ba99c39d` and committed before production changes
 in `11aafb5`. It has never been regenerated.
 
-`dev.starfold.planet.CelestialBaselineTest` has no update mode. It requires the
+`dev.kolustar.planet.CelestialBaselineTest` has no update mode. It requires the
 exact key set and array lengths and compares every literal using
 `1e-9 * max(abs(expected), 1e-12)` (absolute tolerance `1e-21` at zero).
 

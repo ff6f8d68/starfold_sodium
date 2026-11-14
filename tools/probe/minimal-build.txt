@@ -4,7 +4,7 @@ strict
 waitworld
 wait 100
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 100
 cmd tp @s 5288.5 156 862.5 90 20
 fly on
@@ -87,29 +87,29 @@ cmd setblock 5292 143 864 minecraft:cobblestone
 cmd setblock 5293 143 864 minecraft:cobblestone
 cmd setblock 5294 143 864 minecraft:cobblestone
 cmd setblock 5290 144 860 minecraft:cobblestone
-cmd setblock 5291 144 860 starfold:thruster[facing=north]
+cmd setblock 5291 144 860 kolustar:thruster[facing=north]
 cmd setblock 5292 144 860 minecraft:cobblestone
-cmd setblock 5293 144 860 starfold:thruster[facing=north]
+cmd setblock 5293 144 860 kolustar:thruster[facing=north]
 cmd setblock 5294 144 860 minecraft:cobblestone
-cmd setblock 5290 144 861 starfold:thruster[facing=west]
+cmd setblock 5290 144 861 kolustar:thruster[facing=west]
 cmd setblock 5291 144 861 minecraft:cobblestone
 cmd setblock 5292 144 861 minecraft:cobblestone
 cmd setblock 5293 144 861 minecraft:cobblestone
-cmd setblock 5294 144 861 starfold:thruster[facing=east]
+cmd setblock 5294 144 861 kolustar:thruster[facing=east]
 cmd setblock 5290 144 862 minecraft:cobblestone
 cmd setblock 5291 144 862 minecraft:cobblestone
 cmd setblock 5292 144 862 minecraft:cobblestone
 cmd setblock 5293 144 862 minecraft:cobblestone
 cmd setblock 5294 144 862 minecraft:cobblestone
-cmd setblock 5290 144 863 starfold:thruster[facing=west]
+cmd setblock 5290 144 863 kolustar:thruster[facing=west]
 cmd setblock 5291 144 863 minecraft:cobblestone
 cmd setblock 5292 144 863 minecraft:cobblestone
 cmd setblock 5293 144 863 minecraft:cobblestone
-cmd setblock 5294 144 863 starfold:thruster[facing=east]
+cmd setblock 5294 144 863 kolustar:thruster[facing=east]
 cmd setblock 5290 144 864 minecraft:cobblestone
-cmd setblock 5291 144 864 starfold:thruster[facing=south]
+cmd setblock 5291 144 864 kolustar:thruster[facing=south]
 cmd setblock 5292 144 864 minecraft:cobblestone
-cmd setblock 5293 144 864 starfold:thruster[facing=south]
+cmd setblock 5293 144 864 kolustar:thruster[facing=south]
 cmd setblock 5294 144 864 minecraft:cobblestone
 cmd setblock 5290 145 860 minecraft:cobblestone
 cmd setblock 5291 145 860 minecraft:cobblestone
@@ -163,37 +163,37 @@ cmd setblock 5293 146 864 minecraft:cobblestone
 cmd setblock 5294 146 864 minecraft:cobblestone
 cmd setblock 5290 147 860 minecraft:oak_planks
 cmd setblock 5291 147 860 minecraft:oak_planks
-cmd setblock 5292 147 860 starfold:airstair[facing=north]
+cmd setblock 5292 147 860 kolustar:airstair[facing=north]
 cmd setblock 5293 147 860 minecraft:oak_planks
 cmd setblock 5294 147 860 minecraft:oak_planks
 cmd setblock 5290 147 861 minecraft:oak_planks
 cmd setblock 5291 147 861 minecraft:oak_planks
-cmd setblock 5292 147 861 starfold:thruster[facing=down]
+cmd setblock 5292 147 861 kolustar:thruster[facing=down]
 cmd setblock 5293 147 861 minecraft:oak_planks
 cmd setblock 5294 147 861 minecraft:oak_planks
 cmd setblock 5290 147 862 minecraft:oak_planks
-cmd setblock 5291 147 862 starfold:thruster[facing=up]
+cmd setblock 5291 147 862 kolustar:thruster[facing=up]
 cmd setblock 5292 147 862 minecraft:oak_planks
-cmd setblock 5293 147 862 starfold:thruster[facing=up]
+cmd setblock 5293 147 862 kolustar:thruster[facing=up]
 cmd setblock 5294 147 862 minecraft:oak_planks
 cmd setblock 5290 147 863 minecraft:oak_planks
 cmd setblock 5291 147 863 minecraft:oak_planks
-cmd setblock 5292 147 863 starfold:thruster[facing=down]
+cmd setblock 5292 147 863 kolustar:thruster[facing=down]
 cmd setblock 5293 147 863 minecraft:oak_planks
 cmd setblock 5294 147 863 minecraft:oak_planks
 cmd setblock 5290 147 864 minecraft:oak_planks
 cmd setblock 5291 147 864 minecraft:oak_planks
-cmd setblock 5292 147 864 starfold:airstair[facing=south]
+cmd setblock 5292 147 864 kolustar:airstair[facing=south]
 cmd setblock 5293 147 864 minecraft:oak_planks
 cmd setblock 5294 147 864 minecraft:oak_planks
 cmd setblock 5292 148 860 minecraft:oak_door[facing=north,half=lower,open=true]
-cmd setblock 5290 148 862 starfold:gyro
-cmd setblock 5292 148 862 starfold:helm[facing=west]
-cmd setblock 5294 148 862 starfold:gyro
+cmd setblock 5290 148 862 kolustar:gyro
+cmd setblock 5292 148 862 kolustar:helm[facing=west]
+cmd setblock 5294 148 862 kolustar:gyro
 cmd setblock 5292 148 864 minecraft:oak_door[facing=south,half=lower,open=true]
 cmd setblock 5292 149 860 minecraft:oak_door[facing=north,half=upper,open=true]
 cmd setblock 5290 149 862 minecraft:lever[face=floor,facing=north,powered=true]
-cmd setblock 5292 149 862 starfold:scope_nav[facing=west]
+cmd setblock 5292 149 862 kolustar:scope_nav[facing=west]
 cmd setblock 5294 149 862 minecraft:lever[face=floor,facing=north,powered=true]
 cmd setblock 5292 149 864 minecraft:oak_door[facing=south,half=upper,open=true]
 wait 40

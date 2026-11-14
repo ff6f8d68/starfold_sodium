@@ -1,7 +1,7 @@
 # 船体材料第一版：暂定初值
 
 所有质量、耐压、配方产量、硬度与爆炸抗性均为**暂定初值**，功能齐备后统一平衡。
-这些是 Sable / Starfold 游戏单位，不声称等同现实合金的物性。
+这些是 Sable / Kolustar 游戏单位，不声称等同现实合金的物性。
 
 | 部件 | 完整方块质量 | 半砖质量 | 双半砖质量 | 损坏压力 ≥ |
 | --- | ---: | ---: | ---: | ---: |
@@ -32,10 +32,10 @@
 
 ## 本体耐压数据
 
-路径：`data/<namespace>/starfold/hull_pressure/<name>.json`。
+路径：`data/<namespace>/kolustar/hull_pressure/<name>.json`。
 
 ```json
-{ "blocks": "#starfold_materials:pressure_hulls", "pressure": 0.85 }
+{ "blocks": "#kolustar_materials:pressure_hulls", "pressure": 0.85 }
 ```
 
 `blocks` 接受单个方块 ID 或 `#方块标签`；`pressure` 为有限正数。未匹配默认 0.5，多个定义匹配取最大耐压（与文件顺序无关）。高于 1 的值可表示不被当前气压场损坏。

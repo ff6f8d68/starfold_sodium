@@ -17,7 +17,7 @@ try:
  for k,v in {'level-name':'port1-'+name,'view-distance':8,'simulation-distance':6,'max-tick-time':-1,'force-gamemode':'false','level-type':preset.replace(':',r'\:'),'level-seed':'20261009','difficulty':'normal','enable-rcon':'false'}.items():
   text=re.sub('^'+k+'=.*$',lambda m:k+'='+str(v),text,flags=re.M)
  p.write_text(text);o.write_text(re.sub(r'^renderDistance:.*$','renderDistance:8',ob.decode(),flags=re.M))
- env=os.environ.copy();env['JAVA_TOOL_OPTIONS']='-Dstarfold.portProbe=true -Dstarfold.packProbe=true -Dstarfold.helmProbe=true'
+ env=os.environ.copy();env['JAVA_TOOL_OPTIONS']='-Dkolustar.portProbe=true -Dkolustar.packProbe=true -Dkolustar.helmProbe=true'
  with (base/'run.log').open('w') as out:
   result=subprocess.run(['timeout','2400','bash','tools/probe/dev.sh',script,sys.argv[4] if len(sys.argv)>4 else '650'],env=env,stdout=out,stderr=subprocess.STDOUT)
  for kind in ('client','server'):

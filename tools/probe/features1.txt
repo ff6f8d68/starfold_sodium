@@ -6,7 +6,7 @@ cmd effect give @s minecraft:night_vision infinite 0 true
 wait 500
 census 80
 shot features-home
-cmd starfold face 2
+cmd kolustar face 2
 wait 900
 census 80
 look 0 25

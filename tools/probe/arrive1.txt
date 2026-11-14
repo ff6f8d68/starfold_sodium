@@ -2,7 +2,7 @@ waitworld
 wait 200
 waitworld
 nav arrived
-cmd starfold status
+cmd kolustar status
 cmd gamemode survival
 wait 40
 cmd tp @s ~40 ~ ~40
@@ -16,13 +16,13 @@ waitworld
 nav reborn
 abilities reborn
 cmd gamemode creative
-cmd starfold leave
+cmd kolustar leave
 wait 100
 nav left
 log left
 wait 100
 log stays
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 nav back

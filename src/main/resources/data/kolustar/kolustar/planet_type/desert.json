@@ -1,0 +1,201 @@
+{
+  "shape": {
+    "size": {
+      "min": 512,
+      "max": 2048
+    },
+    "depth_ratio": 0.5
+  },
+  "terrain": {
+    "version": 2,
+    "planner": {
+      "stages": [
+        "kolustar:plates",
+        "kolustar:landforms",
+        "kolustar:erosion",
+        "kolustar:climate",
+        "kolustar:biomes",
+        "kolustar:volumes"
+      ]
+    },
+    "land_fraction": 1,
+    "relief": {
+      "mountains": 8,
+      "hills": 5,
+      "roughness": 0.3
+    },
+    "landforms": [
+      {
+        "type": "kolustar:canyon",
+        "parameters": {
+          "density": 5,
+          "radius_min": 64,
+          "radius_max": 160,
+          "amplitude": 72,
+          "operation": "raise"
+        }
+      },
+      {
+        "type": "kolustar:dunes",
+        "parameters": {
+          "density": 3,
+          "radius_min": 32,
+          "radius_max": 96,
+          "amplitude": 12,
+          "operation": "raise"
+        }
+      }
+    ],
+    "erosion": {
+      "rivers": false,
+      "strength": 1,
+      "river_threshold": 48
+    },
+    "climate": {
+      "temperature": 40,
+      "latitude_gradient": 47,
+      "humidity": -0.8,
+      "lapse_rate": 0.0065
+    },
+    "biomes": [
+      {
+        "type": "kolustar:terrain",
+        "parameters": {
+          "biome": "minecraft:desert",
+          "height_min": -1024,
+          "height_max": 320,
+          "slope_min": 0,
+          "slope_max": 200,
+          "landform_min": -2048,
+          "landform_max": 2048,
+          "region_min": 0.3,
+          "region_max": 1
+        }
+      },
+      {
+        "type": "kolustar:terrain",
+        "parameters": {
+          "biome": "minecraft:badlands",
+          "height_min": -1024,
+          "height_max": 320,
+          "slope_min": 0,
+          "slope_max": 200,
+          "landform_min": -2048,
+          "landform_max": 2048
+        }
+      }
+    ],
+    "materials": [
+      {
+        "type": "kolustar:surface",
+        "parameters": {
+          "block": "minecraft:red_sand",
+          "depth_min": 0,
+          "depth_max": 3,
+          "temperature_min": -300,
+          "temperature_max": 300,
+          "slope_min": 0,
+          "shore": false,
+          "biome": ""
+        }
+      }
+    ],
+    "strata": [
+      {
+        "block": "minecraft:sandstone"
+      },
+      {
+        "block": "minecraft:terracotta",
+        "from": 0.3
+      },
+      {
+        "block": "minecraft:stone",
+        "from": 0.55
+      },
+      {
+        "block": "minecraft:deepslate",
+        "from": 0.8
+      }
+    ],
+    "ores": [
+      {
+        "block": "minecraft:gold_ore",
+        "deep": "minecraft:deepslate_gold_ore",
+        "from": 0.2,
+        "rarity": 0.86
+      },
+      {
+        "block": "minecraft:copper_ore",
+        "deep": "minecraft:deepslate_copper_ore",
+        "to": 0.6,
+        "rarity": 0.85
+      },
+      {
+        "block": "minecraft:iron_ore",
+        "deep": "minecraft:deepslate_iron_ore",
+        "rarity": 0.88
+      },
+      {
+        "block": "minecraft:redstone_ore",
+        "deep": "minecraft:deepslate_redstone_ore",
+        "from": 0.5,
+        "rarity": 0.88
+      },
+      {
+        "block": "minecraft:diamond_ore",
+        "deep": "minecraft:deepslate_diamond_ore",
+        "from": 0.8,
+        "rarity": 0.96
+      }
+    ],
+    "caves": {
+      "width": 0.08,
+      "scale": 36
+    },
+    "water": {
+      "block": "minecraft:air",
+      "sea_level": 128,
+      "freeze": false
+    },
+    "preferences": {
+      "desolation": 0.3,
+      "damage": 0.2,
+      "burial": 0.1,
+      "overlap": 0.2,
+      "road_continuity": 0.8,
+      "density": 1
+    },
+    "volumes": [
+      {
+        "type": "kolustar:arch",
+        "parameters": {
+          "density": 0.18,
+          "radius": 24,
+          "height": 18,
+          "operation": "fill",
+          "slope_min": 0.3,
+          "slope_max": 200,
+          "cave_connection": false,
+          "offset": 5
+        }
+      },
+      {
+        "type": "kolustar:overhang",
+        "parameters": {
+          "density": 0.18,
+          "radius": 18,
+          "height": 6,
+          "operation": "fill",
+          "slope_min": 0.5,
+          "slope_max": 200,
+          "cave_connection": false,
+          "offset": 1
+        }
+      }
+    ]
+  },
+  "life": {
+    "biome": "minecraft:desert"
+  },
+  "environment": {}
+}

@@ -45,7 +45,7 @@ cmd setblock 5309 142 853 create:fluid_pipe[east=false,waterlogged=false,south=f
 cmd setblock 5309 142 854 create:cogwheel[waterlogged=false,axis=x]
 cmd setblock 5304 145 858 createdieselgenerators:pumpjack_bearing_b[facing=north]
 cmd setblock 5305 145 854 createdieselgenerators:pumpjack_bearing[facing=west]
-check natural-core-floor if block 5304 -525 850 starfold:core_shell
+check natural-core-floor if block 5304 -525 850 kolustar:core_shell
 cmd fill 5304 -524 850 5304 141 850 create:fluid_pipe[up=true,down=true]
 cmd summon create:super_glue 5304 145 854 {From:[5304.0d,145.0d,850.0d],To:[5305.0d,146.0d,859.0d]}
 cmd setblock 5310 142 854 create:creative_motor[facing=west]{ScrollValue:32}

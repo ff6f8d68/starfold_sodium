@@ -1,6 +1,6 @@
 # Supervisor-only visual check; not executed by flesh-planet worker.
-# Fresh starfold_worlds:experience world; Biotech installed; Flesh slot 12, seed 20261101, size 768.
-# Requires server JAVA_TOOL_OPTIONS: -Dstarfold.helmProbe=true -Dstarfold.packProbe=true.
+# Fresh kolustar_worlds:experience world; Biotech installed; Flesh slot 12, seed 20261101, size 768.
+# Requires server JAVA_TOOL_OPTIONS: -Dkolustar.helmProbe=true -Dkolustar.packProbe=true.
 # Storage slot 12: column 0, row 3. Nest is on SOUTH (4), unit centre
 # (0.13771908354991086,-0.03917753728164486,0.9896962031849562), radius 58.67710222827394.
 waitworld
@@ -20,7 +20,7 @@ cmd tp @s 16537.5 150 24760.5 0 60
 wait 400
 look 0 60
 shot flesh-pool-above
-cmd give @s starfold_biotech:blood_bucket
+cmd give @s kolustar_biotech:blood_bucket
 cmd tp @s 16537.5 125 24760.5 0 0
 wait 200
 shot flesh-pool-under

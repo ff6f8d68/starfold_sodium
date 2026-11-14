@@ -3,7 +3,7 @@ strict
 wait 80
 cmd tick rate 20
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 80
 cmd effect clear @s
 look free
@@ -35,7 +35,7 @@ wait 100
 solar night-10
 corner night-10
 shot verify2-5-night-10
-cmd starfold spin on
+cmd kolustar spin on
 cmd effect give @s minecraft:night_vision infinite 0 true
 cmd tp @s 1000.5 180 1000.5 0 0
 wait 120
@@ -72,7 +72,7 @@ input A-held-mine-6
 hit A-held-mine-6
 wait 100
 wait 40
-check A-held-mine-all9 if block 999 -525 999 starfold:core_shell if block 999 -525 1000 starfold:core_shell if block 999 -525 1001 starfold:core_shell if block 1000 -525 999 starfold:core_shell if block 1000 -525 1000 starfold:core_shell if block 1000 -525 1001 starfold:core_shell if block 1001 -525 999 starfold:core_shell if block 1001 -525 1000 starfold:core_shell if block 1001 -525 1001 starfold:core_shell
+check A-held-mine-all9 if block 999 -525 999 kolustar:core_shell if block 999 -525 1000 kolustar:core_shell if block 999 -525 1001 kolustar:core_shell if block 1000 -525 999 kolustar:core_shell if block 1000 -525 1000 kolustar:core_shell if block 1000 -525 1001 kolustar:core_shell if block 1001 -525 999 kolustar:core_shell if block 1001 -525 1000 kolustar:core_shell if block 1001 -525 1001 kolustar:core_shell
 cmd gamemode creative
 look free
 cmd tp @s 1003.5 -523 1000.5 90 20
@@ -80,7 +80,7 @@ wait 40
 cmd summon minecraft:wither 1000.5 -524 1000.5 {Tags:["verify2_wither"],Invul:1,NoAI:1b}
 wait 120
 cmd data get entity @e[type=wither,tag=verify2_wither,limit=1] Invul
-check A-wither-birth-blast-all9 if block 999 -525 999 starfold:core_shell if block 999 -525 1000 starfold:core_shell if block 999 -525 1001 starfold:core_shell if block 1000 -525 999 starfold:core_shell if block 1000 -525 1000 starfold:core_shell if block 1000 -525 1001 starfold:core_shell if block 1001 -525 999 starfold:core_shell if block 1001 -525 1000 starfold:core_shell if block 1001 -525 1001 starfold:core_shell
+check A-wither-birth-blast-all9 if block 999 -525 999 kolustar:core_shell if block 999 -525 1000 kolustar:core_shell if block 999 -525 1001 kolustar:core_shell if block 1000 -525 999 kolustar:core_shell if block 1000 -525 1000 kolustar:core_shell if block 1000 -525 1001 kolustar:core_shell if block 1001 -525 999 kolustar:core_shell if block 1001 -525 1000 kolustar:core_shell if block 1001 -525 1001 kolustar:core_shell
 cmd kill @e[type=wither,tag=verify2_wither]
 wait 20
 cmd tp @s 33280.5 180 512.5 0 0
@@ -118,7 +118,7 @@ input B-held-mine-6
 hit B-held-mine-6
 wait 100
 wait 40
-check B-held-mine-all9 if block 33279 -199 511 starfold:core_shell if block 33279 -199 512 starfold:core_shell if block 33279 -199 513 starfold:core_shell if block 33280 -199 511 starfold:core_shell if block 33280 -199 512 starfold:core_shell if block 33280 -199 513 starfold:core_shell if block 33281 -199 511 starfold:core_shell if block 33281 -199 512 starfold:core_shell if block 33281 -199 513 starfold:core_shell
+check B-held-mine-all9 if block 33279 -199 511 kolustar:core_shell if block 33279 -199 512 kolustar:core_shell if block 33279 -199 513 kolustar:core_shell if block 33280 -199 511 kolustar:core_shell if block 33280 -199 512 kolustar:core_shell if block 33280 -199 513 kolustar:core_shell if block 33281 -199 511 kolustar:core_shell if block 33281 -199 512 kolustar:core_shell if block 33281 -199 513 kolustar:core_shell
 cmd gamemode creative
 look free
 cmd tp @s 33283.5 -197 512.5 90 20
@@ -126,7 +126,7 @@ wait 40
 cmd summon minecraft:wither 33280.5 -198 512.5 {Tags:["verify2_wither"],Invul:1,NoAI:1b}
 wait 120
 cmd data get entity @e[type=wither,tag=verify2_wither,limit=1] Invul
-check B-wither-birth-blast-all9 if block 33279 -199 511 starfold:core_shell if block 33279 -199 512 starfold:core_shell if block 33279 -199 513 starfold:core_shell if block 33280 -199 511 starfold:core_shell if block 33280 -199 512 starfold:core_shell if block 33280 -199 513 starfold:core_shell if block 33281 -199 511 starfold:core_shell if block 33281 -199 512 starfold:core_shell if block 33281 -199 513 starfold:core_shell
+check B-wither-birth-blast-all9 if block 33279 -199 511 kolustar:core_shell if block 33279 -199 512 kolustar:core_shell if block 33279 -199 513 kolustar:core_shell if block 33280 -199 511 kolustar:core_shell if block 33280 -199 512 kolustar:core_shell if block 33280 -199 513 kolustar:core_shell if block 33281 -199 511 kolustar:core_shell if block 33281 -199 512 kolustar:core_shell if block 33281 -199 513 kolustar:core_shell
 cmd kill @e[type=wither,tag=verify2_wither]
 wait 20
 cmd tp @s 33280.5 -198 512.5 -90 29.25
@@ -142,12 +142,12 @@ cmd give @s redstone 1
 cmd give @s compass 1
 cmd give @s amethyst_shard 1
 cmd data get entity @s Inventory
-cmd tellraw @s "VERIFY2 recipe starfold:thruster"
-cmd recipe take @s starfold:thruster
-cmd recipe give @s starfold:thruster
-cmd tellraw @s "VERIFY2 recipe starfold:gyro"
-cmd recipe take @s starfold:gyro
-cmd recipe give @s starfold:gyro
+cmd tellraw @s "VERIFY2 recipe kolustar:thruster"
+cmd recipe take @s kolustar:thruster
+cmd recipe give @s kolustar:thruster
+cmd tellraw @s "VERIFY2 recipe kolustar:gyro"
+cmd recipe take @s kolustar:gyro
+cmd recipe give @s kolustar:gyro
 cmd setblock 33282 -198 514 crafting_table
 use 33282 -198 514 up
 wait 40
@@ -157,11 +157,11 @@ press 256 1
 press 256 0
 wait 40
 cmd kill @e[type=item,distance=..12]
-cmd item replace entity @s weapon.mainhand with starfold:thruster
+cmd item replace entity @s weapon.mainhand with kolustar:thruster
 wait 10
 use 33282 -199 512 up
 wait 40
-check thruster-iron-placed if block 33282 -198 512 starfold:thruster
+check thruster-iron-placed if block 33282 -198 512 kolustar:thruster
 cmd item replace entity @s weapon.mainhand with minecraft:iron_pickaxe
 cmd data get entity @s SelectedItem
 look -90 29.25
@@ -177,14 +177,14 @@ wait 100
 wait 40
 check thruster-iron-mined if block 33282 -198 512 air
 cmd execute as @e[type=item,distance=..12] run data get entity @s Item
-check thruster-iron-drop if entity @e[type=item,distance=..12,nbt={Item:{id:"starfold:thruster"}}]
+check thruster-iron-drop if entity @e[type=item,distance=..12,nbt={Item:{id:"kolustar:thruster"}}]
 shot verify2-5-thruster-iron
 cmd kill @e[type=item,distance=..12]
-cmd item replace entity @s weapon.mainhand with starfold:thruster
+cmd item replace entity @s weapon.mainhand with kolustar:thruster
 wait 10
 use 33282 -199 512 up
 wait 40
-check thruster-stone-placed if block 33282 -198 512 starfold:thruster
+check thruster-stone-placed if block 33282 -198 512 kolustar:thruster
 cmd item replace entity @s weapon.mainhand with minecraft:stone_pickaxe
 cmd data get entity @s SelectedItem
 look -90 29.25
@@ -200,14 +200,14 @@ wait 100
 wait 40
 check thruster-stone-mined if block 33282 -198 512 air
 cmd execute as @e[type=item,distance=..12] run data get entity @s Item
-check thruster-stone-drop unless entity @e[type=item,distance=..12,nbt={Item:{id:"starfold:thruster"}}]
+check thruster-stone-drop unless entity @e[type=item,distance=..12,nbt={Item:{id:"kolustar:thruster"}}]
 shot verify2-5-thruster-stone
 cmd kill @e[type=item,distance=..12]
-cmd item replace entity @s weapon.mainhand with starfold:gyro
+cmd item replace entity @s weapon.mainhand with kolustar:gyro
 wait 10
 use 33282 -199 512 up
 wait 40
-check gyro-iron-placed if block 33282 -198 512 starfold:gyro
+check gyro-iron-placed if block 33282 -198 512 kolustar:gyro
 cmd item replace entity @s weapon.mainhand with minecraft:iron_pickaxe
 cmd data get entity @s SelectedItem
 look -90 29.25
@@ -223,14 +223,14 @@ wait 100
 wait 40
 check gyro-iron-mined if block 33282 -198 512 air
 cmd execute as @e[type=item,distance=..12] run data get entity @s Item
-check gyro-iron-drop if entity @e[type=item,distance=..12,nbt={Item:{id:"starfold:gyro"}}]
+check gyro-iron-drop if entity @e[type=item,distance=..12,nbt={Item:{id:"kolustar:gyro"}}]
 shot verify2-5-gyro-iron
 cmd kill @e[type=item,distance=..12]
-cmd item replace entity @s weapon.mainhand with starfold:gyro
+cmd item replace entity @s weapon.mainhand with kolustar:gyro
 wait 10
 use 33282 -199 512 up
 wait 40
-check gyro-stone-placed if block 33282 -198 512 starfold:gyro
+check gyro-stone-placed if block 33282 -198 512 kolustar:gyro
 cmd item replace entity @s weapon.mainhand with minecraft:stone_pickaxe
 cmd data get entity @s SelectedItem
 look -90 29.25
@@ -246,7 +246,7 @@ wait 100
 wait 40
 check gyro-stone-mined if block 33282 -198 512 air
 cmd execute as @e[type=item,distance=..12] run data get entity @s Item
-check gyro-stone-drop unless entity @e[type=item,distance=..12,nbt={Item:{id:"starfold:gyro"}}]
+check gyro-stone-drop unless entity @e[type=item,distance=..12,nbt={Item:{id:"kolustar:gyro"}}]
 shot verify2-5-gyro-stone
 look free
 cmd gamemode creative

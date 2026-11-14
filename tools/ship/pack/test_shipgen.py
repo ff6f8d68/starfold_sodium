@@ -24,7 +24,7 @@ class RuntimeShipTests(unittest.TestCase):
 
     def test_hangar_sky_capture_walkway_walls_and_markings(self):
         for v in (self.ships['B'],g.armed_hauler(self.ships['B'])):
-            self.assertEqual([p for p,s in v.b.items() if s=='starfold:aircraft_dock'],[(8,7,0)])
+            self.assertEqual([p for p,s in v.b.items() if s=='kolustar:aircraft_dock'],[(8,7,0)])
             # Entire 3x5 well is open to sky, including the 3x3 rotor pad.
             for x in range(7,10):
                 for z in range(-2,3):
@@ -85,7 +85,7 @@ class RuntimeShipTests(unittest.TestCase):
 
     def test_hangar_preserves_other_hardware_and_weapon_overlay(self):
         from unittest.mock import patch
-        def old_dock(v):v.put(8,7,0,'starfold:aircraft_dock')
+        def old_dock(v):v.put(8,7,0,'kolustar:aircraft_dock')
         with patch.object(g,'aircraft_hangar',old_dock):before=g.runtime_build('B')
         after=self.ships['B']
         allowed={(x,y,z) for x in range(7,11) for y in (8,9) for z in (-3,3)}
@@ -350,9 +350,9 @@ class RuntimeShipTests(unittest.TestCase):
             self.assertNotIn('minecraft:waxed_copper',ids)
             self.assertNotIn('create:rose_quartz_lamp',ids)
             self.assertEqual(ids.count('minecraft:waxed_exposed_copper' if key=='B' else 'minecraft:waxed_copper_block'),24)
-            self.assertEqual(ids.count('starfold:thruster'),46 if key=='B' else 24)
+            self.assertEqual(ids.count('kolustar:thruster'),46 if key=='B' else 24)
             if key=='B':
-                self.assertEqual(ids.count('starfold:gyro'),2)
+                self.assertEqual(ids.count('kolustar:gyro'),2)
                 self.assertEqual({k:t['count'] for k,t in g.stats(v)['thrust'].items()},dict(up=10,down=4,west=8,east=8,north=8,south=8))
 
     def test_observed_vanilla_stair_corners(self):

@@ -1,5 +1,5 @@
-# Hold read: fresh starfold_worlds:experience world, home spin enabled, starter is 0:0.
-# Enable -Dstarfold.shipProbe=true on the server (client JVM too for integrated play).
+# Hold read: fresh kolustar_worlds:experience world, home spin enabled, starter is 0:0.
+# Enable -Dkolustar.shipProbe=true on the server (client JVM too for integrated play).
 # Only one player/hull; no other forces or redstone-latched thrust. Do not disable its gyro.
 # Client waits only give a budget; server audits gate exact 100/400/1200-tick hold readings.
 # Commands read only the live hold; no leases, forced sleep or hull teleport.
@@ -18,7 +18,7 @@ boardblock helm
 # Assumes local boarding/tracking fences finish in 30 ticks.
 wait 30
 # Assumes the helm is visible below the player in the probe's search range.
-find starfold:helm
+find kolustar:helm
 # Assumes crosshair/rotation propagation in 6 ticks.
 wait 6
 # Assumes empty hand and the helm under the crosshair; uses the real block interaction.
@@ -46,41 +46,41 @@ wait 20
 # Requires authority to be gone; mere missing input is not an unpiloted hull.
 requirenohelm
 # Assumes 0:0 is still the original starter, live in space, with a captured hold.
-cmd execute store result score @s s3_ok run starfold shipprobe "0:0" motion
+cmd execute store result score @s s3_ok run kolustar shipprobe "0:0" motion
 # Checks the server read succeeded; does not assert a drift threshold.
 check hold-0 if score @s s3_ok matches 1
 # Assumes ~20 seconds at 20 TPS; compare printed tick and release_tick.
 wait 400
 # Same live held starter; prints current/release place and block/degree difference.
-cmd execute store result score @s s3_ok run starfold shipprobe "0:0" motion
+cmd execute store result score @s s3_ok run kolustar shipprobe "0:0" motion
 check hold-20 if score @s s3_ok matches 1
 # Assumes another ~20 seconds; no steering, player movement or redstone edits.
 wait 400
-cmd execute store result score @s s3_ok run starfold shipprobe "0:0" motion
+cmd execute store result score @s s3_ok run kolustar shipprobe "0:0" motion
 check hold-40 if score @s s3_ok matches 1
 # Same assumption, elapsed budget ~60 seconds.
 wait 400
-cmd execute store result score @s s3_ok run starfold shipprobe "0:0" motion
+cmd execute store result score @s s3_ok run kolustar shipprobe "0:0" motion
 check hold-60 if score @s s3_ok matches 1
 # Same assumption, elapsed budget ~80 seconds.
 wait 400
-cmd execute store result score @s s3_ok run starfold shipprobe "0:0" motion
+cmd execute store result score @s s3_ok run kolustar shipprobe "0:0" motion
 check hold-80 if score @s s3_ok matches 1
 # Same assumption, elapsed budget ~100 seconds.
 wait 400
-cmd execute store result score @s s3_ok run starfold shipprobe "0:0" motion
+cmd execute store result score @s s3_ok run kolustar shipprobe "0:0" motion
 check hold-100 if score @s s3_ok matches 1
 # Same assumption, elapsed budget ~120 seconds. Residual uses successive reads, not release offset alone.
 wait 400
-cmd execute store result score @s s3_ok run starfold shipprobe "0:0" motion
+cmd execute store result score @s s3_ok run kolustar shipprobe "0:0" motion
 check hold-120 if score @s s3_ok matches 1
 # All three server-tick samples must exist and be below .1 block AND .1 degree.
-cmd execute store result score @s s3_ok run starfold shipprobe "0:0" assert hold-window
+cmd execute store result score @s s3_ok run kolustar shipprobe "0:0" assert hold-window
 check held-place-window if score @s s3_ok matches 1
 # Assumes the starter remains in reach; board the existing helm, never spawn another hull.
 boardblock helm
 wait 30
-find starfold:helm
+find kolustar:helm
 wait 6
 usehit helm
 wait 30

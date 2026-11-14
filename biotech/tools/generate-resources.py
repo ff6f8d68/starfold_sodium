@@ -4,8 +4,8 @@ from pathlib import Path
 
 MODULE = Path(__file__).resolve().parents[1]
 ROOT = MODULE / 'src/main/resources'
-WORLDS = MODULE.parent / 'worlds/src/main/resources/data/starfold_worlds'
-NS = 'starfold_biotech'
+WORLDS = MODULE.parent / 'worlds/src/main/resources/data/kolustar_worlds'
+NS = 'kolustar_biotech'
 
 
 def write(path, value):
@@ -54,14 +54,14 @@ biome['effects'].pop('music')
 write(f'data/{NS}/worldgen/biome/flesh_hive.json', biome)
 
 # Ordinary planets are allocated before every moon. Append to the last moon list to retain all slots.
-system = json.loads((WORLDS / 'starfold/system/experience.json').read_text())
+system = json.loads((WORLDS / 'kolustar/system/experience.json').read_text())
 system['suns'][0]['gas_giants'][0]['moons'].append({
     'type': f'{NS}:flesh', 'size': 768, 'seed': 20261101, 'name': f'planet.{NS}.flesh',
     'orbit': {'radius': 110000, 'phase': 0}, 'spin': {'period': 162000, 'tilt': 0}})
-write('data/starfold_worlds/starfold/system/experience.json', system)
-universe = json.loads((WORLDS / 'starfold/universe/experience.json').read_text())
+write('data/kolustar_worlds/kolustar/system/experience.json', system)
+universe = json.loads((WORLDS / 'kolustar/universe/experience.json').read_text())
 universe['types'].append({'type': f'{NS}:flesh', 'weight': 1})
-write('data/starfold_worlds/starfold/universe/experience.json', universe)
+write('data/kolustar_worlds/kolustar/universe/experience.json', universe)
 for lang, labels in {
     'en_us': ['Chitin', 'Hive Flesh', 'Resin', 'Pulse Sac', 'Chitin Plate', 'Resin Lump', 'Flesh', 'Flesh Hive'],
     'zh_cn': ['几丁质', '巢肉', '树脂', '搏动囊', '几丁质片', '树脂块', '血肉', '血肉巢区']

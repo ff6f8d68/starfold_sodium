@@ -1,10 +1,10 @@
 waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 cmd effect give @s minecraft:night_vision infinite 0 true
-cmd starfold face 0
+cmd kolustar face 0
 wait 60
 cmd tp @s 1024 170 2030 0 15
 wait 3
@@ -28,12 +28,12 @@ wait 300
 log high
 shot compat-high
 cmd gamerule doDaylightCycle false
-cmd starfold orbit
+cmd kolustar orbit
 wait 300
 nav orbit
 log orbit
 shot compat-orbit
-cmd starfold nav target 1
+cmd kolustar nav target 1
 wait 10
 aim target
 wait 100

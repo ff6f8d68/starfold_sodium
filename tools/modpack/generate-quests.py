@@ -16,7 +16,7 @@ root = Path(temporary.name) if temporary else args.output
 # kind, registry ID, count, EN title, ZH title, EN readout/instruction, ZH readout/instruction
 chapters = [
 ('Surface contact', '落地', [
- ('dimension','starfold:native_planet',1,'Surface contact','地表信号','Planet level detected. The experience preset starts on the home planet without a supplied ship.','当前位于星球维度。体验预设从母星开始，未配发出生飞船。'),
+ ('dimension','kolustar:native_planet',1,'Surface contact','地表信号','Planet level detected. The experience preset starts on the home planet without a supplied ship.','当前位于星球维度。体验预设从母星开始，未配发出生飞船。'),
  ('item','minecraft:oak_log',4,'Local timber','木材储备','Timber sample required. Folded faces belong to one continuous planet. Other planets are visible in the sky.','等待木材样本。六个面构成连续星球，天空可见其他星球。'),
  ('item','minecraft:crafting_table',1,'Field bench','野外工作台','Assembly surface required. Craft a workbench from local timber.','等待组装台面。使用本地木材制作工作台。'),
  ('item','minecraft:wooden_pickaxe',1,'First excavation','开始开采','Excavation tool required. Stone and andesite support the first workshop.','等待开采工具。石料与安山岩用于建设第一间工坊。'),
@@ -59,22 +59,22 @@ chapters = [
  ('item','create:fluid_tank',4,'Fuel processing','燃料加工','Fluid tanks and a Distillation Controller required. Convert placed Create tanks into a distillation tower; the distillation-tank block has no separate inventory item. Supply heat for tier-one diesel or gasoline.','等待流体储罐与蒸馏控制器。将已放置的 Create 储罐转换为蒸馏塔；蒸馏罐方块没有独立背包物品。接入热源后生产第一级柴油或汽油。'),
  ('item','createdieselgenerators:diesel_bucket',1,'First fuel batch','首批燃料','Diesel sample required for this tutorial route. Gasoline is also accepted by thrusters. Initial ascent budget target: about eight buckets, subject to tuning.','等待柴油样本。推进器也接受汽油。初始入轨预算目标约八桶，仍需实测调整。'),
  ('item','create:fluid_tank',4,'Onboard storage','船载储罐','Fluid tank stock required. Tanks must belong to the same assembled ship as the thrusters. Leave return fuel in reserve.','等待流体储罐。储罐与推进器必须属于同一组装船体，保留返航燃料。'),
- ('item','starfold:thruster',1,'Thrust hardware','推力设备','Thruster acquired. No fuel means no thrust after the merged fuel system is installed. Thrust and ship mass determine ascent performance.','推进器已获取。合并燃料系统后，无燃料则无推力。推力与船体质量决定爬升表现。'),
- ('item','starfold:gyro',1,'Attitude control','姿态控制','Gyro acquired. Mount it on the assembled ship; the gyro does not consume propulsion fuel.','陀螺仪已获取。安装至组装船体；陀螺仪不消耗推进燃料。'),
- ('item','starfold:helm',1,'Command station','驾驶控制台','Helm acquired. Check ship connections, clearances and reverse thrust before departure.','驾驶台已获取。起飞前检查船体连接、离地间隙与反向推进。'),
- ('item','starfold:scope',1,'Visual instruments','目视仪表','Basic scope acquired. Upgrade with a precision mechanism, an electron tube and two brass sheets before the first trip.','基础观察镜已获取。首航前使用精密构件、电子管与两块黄铜板升级为导航观察镜。'),
- ('advancement','starfold:ship/lift_off',1,'Lift-off record','离地记录','Lift-off advancement required. Perform a controlled ascent before committing to orbit.','等待离地进度记录。先完成可控爬升，再继续入轨。'),
- ('advancement','starfold:ship/space',1,'Space-region record','太空区域记录','Space-entry advancement required. Status on completion: currently in the space region. Keep the helm occupied and monitor fuel.','等待进入太空的进度记录。完成后状态：当前位于太空区域。保持驾驶，监测燃料。'),
- ('item','starfold:airstair',1,'Boarding route','登船路线','Airstair acquired. Rehearse landing and boarding at home. The existing home-return advancement only certifies a later off-world round trip, not this rehearsal.','登船梯已获取。在母星演练着陆与登船。现有母星返航进度仅认证后续外星往返，不认证本次演练。')]),
+ ('item','kolustar:thruster',1,'Thrust hardware','推力设备','Thruster acquired. No fuel means no thrust after the merged fuel system is installed. Thrust and ship mass determine ascent performance.','推进器已获取。合并燃料系统后，无燃料则无推力。推力与船体质量决定爬升表现。'),
+ ('item','kolustar:gyro',1,'Attitude control','姿态控制','Gyro acquired. Mount it on the assembled ship; the gyro does not consume propulsion fuel.','陀螺仪已获取。安装至组装船体；陀螺仪不消耗推进燃料。'),
+ ('item','kolustar:helm',1,'Command station','驾驶控制台','Helm acquired. Check ship connections, clearances and reverse thrust before departure.','驾驶台已获取。起飞前检查船体连接、离地间隙与反向推进。'),
+ ('item','kolustar:scope',1,'Visual instruments','目视仪表','Basic scope acquired. Upgrade with a precision mechanism, an electron tube and two brass sheets before the first trip.','基础观察镜已获取。首航前使用精密构件、电子管与两块黄铜板升级为导航观察镜。'),
+ ('advancement','kolustar:ship/lift_off',1,'Lift-off record','离地记录','Lift-off advancement required. Perform a controlled ascent before committing to orbit.','等待离地进度记录。先完成可控爬升，再继续入轨。'),
+ ('advancement','kolustar:ship/space',1,'Space-region record','太空区域记录','Space-entry advancement required. Status on completion: currently in the space region. Keep the helm occupied and monitor fuel.','等待进入太空的进度记录。完成后状态：当前位于太空区域。保持驾驶，监测燃料。'),
+ ('item','kolustar:airstair',1,'Boarding route','登船路线','Airstair acquired. Rehearse landing and boarding at home. The existing home-return advancement only certifies a later off-world round trip, not this rehearsal.','登船梯已获取。在母星演练着陆与登船。现有母星返航进度仅认证后续外星往返，不认证本次演练。')]),
 ('First off-world metals', '第一次跨星：锇', [
- ('advancement','starfold:ship/other_planet',1,'Off-world landing','外星着陆','Other-planet advancement required. Seek a rocky planet or asteroid for osmium and rare deep diamonds. Diamonds occur in the bottom 35% of mineable depth; abundance is a first guess. These worlds are within the current system.','等待外星着陆进度记录。岩质星球与小行星提供锇及深层稀有钻石；钻石位于可挖深度底部35%，丰度为待调初猜。这些星球仍在当前恒星系内。'),
+ ('advancement','kolustar:ship/other_planet',1,'Off-world landing','外星着陆','Other-planet advancement required. Seek a rocky planet or asteroid for osmium and rare deep diamonds. Diamonds occur in the bottom 35% of mineable depth; abundance is a first guess. These worlds are within the current system.','等待外星着陆进度记录。岩质星球与小行星提供锇及深层稀有钻石；钻石位于可挖深度底部35%，丰度为待调初猜。这些星球仍在当前恒星系内。'),
  ('item','mekanism:raw_osmium',8,'Osmium cargo','锇矿货物','Osmium sample required. Reserve part of the cargo for circuits and the return logistics line.','等待锇矿样本。为电路与返航物流预留部分货物。'),
  ('item','mekanism:ingot_osmium',8,'Refined osmium','精炼锇材','Osmium ingots required. Mekanism begins after this off-world supply is available.','等待锇锭。取得外星供料后启动 Mekanism 工业线。'),
- ('advancement','starfold:ship/home',1,'Home landing record','母星着陆记录','Off-world round-trip advancement required. Land back on the home planet after the other-planet and return-to-space records.','等待外星往返进度记录。取得外星着陆与再次入太空记录后，返回母星着陆。'),
+ ('advancement','kolustar:ship/home',1,'Home landing record','母星着陆记录','Off-world round-trip advancement required. Land back on the home planet after the other-planet and return-to-space records.','等待外星往返进度记录。取得外星着陆与再次入太空记录后，返回母星着陆。'),
  ('item','createaddition:alternator',1,'Mechanical to electrical','机械能转电能','Alternator required. Connect Create rotation to the electrical production line.','等待交流发电机。将 Create 旋转动力接入电气生产线。'),
  ('item','mekanism:metallurgic_infuser',1,'Circuit processing','电路加工','Metallurgic Infuser required. Supply power and the specified infusion material.','等待冶金灌注机。接入电力并提供配方所需灌注材料。'),
  ('item','mekanism:basic_control_circuit',2,'Basic control circuits','基础控制电路','Control circuits required. Osmium starts Mekanism processing and later advanced circuits for precision optics.','等待基础控制电路。锇用于启动 Mekanism 加工，并进一步制作精密观察镜所需的高级电路。'),
- ('item','starfold:scope_nav',1,'Navigation optics','导航光学','Navigation scope acquired through Create only, without osmium. Check target locking and relative approach speed before the first departure.','导航观察镜通过 Create 路线制造，无须锇。首次起飞前检查目标锁定与相对接近速度。'),
+ ('item','kolustar:scope_nav',1,'Navigation optics','导航光学','Navigation scope acquired through Create only, without osmium. Check target locking and relative approach speed before the first departure.','导航观察镜通过 Create 路线制造，无须锇。首次起飞前检查目标锁定与相对接近速度。'),
  ('item','mekanism:electrolytic_separator',1,'Hydrogen production','氢气生产','Electrolytic Separator required. Supply water and power; chemical hydrogen is not yet a thruster fluid.','等待电解分离器。供应水与电力；化学形态氢不能直接作为推进器流体。'),
  ('item','mekanism:rotary_condensentrator',1,'Fluid conversion','流体转换','Rotary Condensentrator required. Condense hydrogen into its fluid form before filling ship tanks.','等待旋转冷凝器。先将氢转为流体形态，再向船载储罐加注。'),
  ('item','mekanism:hydrogen_bucket',1,'Second-tier sample','第二级燃料样本','Liquid hydrogen sample required. Target ascent economy is about three buckets for the reference ship; this is a first guess, not a measured result.','等待液氢样本。参考船入轨目标约三桶，仅为待调初值，未经过实测。')]),
@@ -83,7 +83,7 @@ chapters = [
  ('item','mekanism:raw_lead',8,'Frozen-world lead','冰冻星铅矿','Lead cargo required. Establish a transport route rather than relying on one small expedition.','等待铅矿货物。建立运输路线，避免只依赖单次小规模采集。'),
  ('item','mekanism:fluorite_gem',8,'Crystal-world fluorite','晶体星萤石','Fluorite sample required. Crystal worlds also provide quartz, amethyst and a smaller deep-diamond supply (bottom 35%; first-guess abundance).','等待萤石样本。晶体类星球还提供石英、紫水晶及更少量深层钻石（可挖深度底部35%，丰度为待调初猜）。'),
  ('item','mekanism:advanced_control_circuit',2,'Advanced circuitry','高级控制电路','Advanced circuits required. Prepare the electronics for precision optics.','等待高级控制电路。为精密光学准备电子元件。'),
- ('item','starfold:scope_precise',1,'Precision optics','精密光学','Precision scope acquired. This recipe upgrades optics. Leaving the home system requires an interstellar drive and deuterium; boss permission is not enforced.','精密观察镜已获取。该配方升级光学设备。离开母恒星系需要星际引擎和氘；boss 许可尚未强制。'),
+ ('item','kolustar:scope_precise',1,'Precision optics','精密光学','Precision scope acquired. This recipe upgrades optics. Leaving the home system requires an interstellar drive and deuterium; boss permission is not enforced.','精密观察镜已获取。该配方升级光学设备。离开母恒星系需要星际引擎和氘；boss 许可尚未强制。'),
  ('item','mekanism:raw_uranium',8,'Dry-world uranium','干旱星铀矿','Uranium cargo required. Dry-world ore tables provide uranium and gold; plan shielding and processing before reactor work.','等待铀矿货物。干旱类星球矿表提供铀与金；建设反应堆前规划屏蔽与加工。'),
  ('item','minecraft:ancient_debris',2,'Volcanic salvage','火山星残骸','Ancient debris required. Volcanic ore tables include debris, gold and quartz. Avoid lava during excavation.','等待远古残骸。火山类星球矿表包含残骸、金与石英；开采时避开岩浆。'),
  ('item','minecraft:netherite_scrap',2,'Heat-resistant stock','耐热材料储备','Netherite scrap required. This material is not a pressure-hull certification.','等待下界合金碎片。该材料不构成抗压船体认证。'),
@@ -100,7 +100,7 @@ chapters = [
  ('item','minecraft:iron_block',16,'Structural reserve','结构材料储备','Structural stock required. Ordinary iron still fails at pressure 0.5; replace exposed structure with pressure hull before deep collection.','等待结构材料补给。普通铁块仍从压力0.5开始损坏；深层采集前将暴露结构换为耐压壳。'),
  ('item','mekanism:elite_control_circuit',2,'Long-range controls','远程控制组件','Elite circuit stock required. Reserve four elite circuits for the interstellar drive after skimming deuterium.','等待精英控制电路。掠取氘后，为星际引擎预留四块精英电路。'),
  ('item','mekanism:ultimate_fluid_tank',1,'High-capacity storage','大容量储存','Storage hardware required. Verify ship fuel extraction support before relying on this tank in flight.','等待储存设备。依赖该储罐飞行前，验证船载燃料抽取支持情况。'),
- ('item','starfold:gas_scoop',1,'Build the gas scoop','制造气体采集口','Intake required. Assemble a precision mechanism, two advanced circuits, a Create tank and a rotary condensentrator. Hydrogen machinery must be available first. Mount the scoop and an empty compatible tank on the same Sable hull.','等待采集口。使用精密构件、两块高级电路、Create 储罐和旋转冷凝器制造，需先建立液氢工业。采集口与空的兼容储罐必须安装在同一艘 Sable 船体。'),
+ ('item','kolustar:gas_scoop',1,'Build the gas scoop','制造气体采集口','Intake required. Assemble a precision mechanism, two advanced circuits, a Create tank and a rotary condensentrator. Hydrogen machinery must be available first. Mount the scoop and an empty compatible tank on the same Sable hull.','等待采集口。使用精密构件、两块高级电路、Create 储罐和旋转冷凝器制造，需先建立液氢工业。采集口与空的兼容储罐必须安装在同一艘 Sable 船体。'),
  ('item','mekanismgenerators:deuterium_bucket',1,'Skim deuterium at Amber','在 Amber 掠取氘','Approach Amber and dip the intake into its pressure field, then take a deuterium bucket sample from the filled tank. Heavy-water separation is disabled; rotary conversion only recycles existing deuterium. Reference rate is 10 mB/tick at pressure 0.5 (first guess); ordinary blocks fail at 0.5, osmium pressure hull at 0.85 (provisional). The bucket detector does not certify location.','接近 Amber，让采集口进入气压场，再从产出罐取一桶氘样本。重水电解已禁用，旋转转换只处理已有氘。压力0.5时参考产率10 mB/tick（待调初猜），普通方块从0.5损坏，锇耐压壳从0.85损坏（暂定）。桶检测不认证采集地点。'),
  ('checkmark','',1,'Fill the onboard tank','装满船载储罐','Manual flight-log confirmation, not automatic telemetry: return the sample and fill a Create tank to 8000 mB of deuterium. Check the actual tank gauge before marking complete. Keep separate return fuel; whole-hull pressure can exceed intake pressure.','手动飞行记录，非自动遥测：归还样本，将一个 Create 船载储罐装至8000 mB氘。核对实际液位后再勾选。另留返航燃料；整舰气压可能高于采集口气压。'),
  ('checkmark','',1,'Leave the home system','离开母恒星系','Manual flight-log confirmation: install an interstellar drive on the same hull, leave the home system with deuterium available and verify thrust beyond its boundary, then mark complete. Every experience planet orbits the home sun. Outside home, thrust requires both an interstellar drive and deuterium; coasting is not blocked. Impulse starts at 25 times diesel, not a measured one-bucket ascent. Host ganglion is required to fabricate the drive.','手动飞行记录：在同一船体安装星际引擎，携带氘离开母恒星系，核对边界外仍有推力后再勾选。体验行星都围绕母恒星运行。边界外推进需要星际引擎和氘，不禁止惯性滑行。冲量初值为柴油25倍，不声称一桶入轨已标定。引擎制造需要宿主神经节。')])
@@ -119,21 +119,21 @@ flesh = [
  ('checkmark', '', 1, 'Enter the hive crater', '进入巢穴巨坑',
   'Manual survey record: follow the hive ridges into the giant crater. Record a retreat route before approaching the Host. The checkmark does not detect entry.',
   '手动勘测记录：沿巢脊进入巨坑后登记。接近宿主前记录撤离路线。勾选不自动检测进入。'),
- ('kill', 'starfold_biotech:host', 1, 'Defeat the Host', '击败宿主',
+ ('kill', 'kolustar_biotech:host', 1, 'Defeat the Host', '击败宿主',
   'Combat record required: defeat the Host in the hive crater. The encounter yields four Host Ganglia, the biological component required by the mechanical interstellar drive.',
   '等待战斗记录：在巢穴巨坑击败宿主。遭遇掉落四个宿主神经节，为机械线星际引擎提供必需的生物部件。'),
- ('item', 'starfold_biotech:host_ganglion', 1, 'Recover a Host Ganglion', '获得宿主神经节',
+ ('item', 'kolustar_biotech:host_ganglion', 1, 'Recover a Host Ganglion', '获得宿主神经节',
   'Ganglion sample required. Reserve one for mechanical crafting of the interstellar drive; the remaining samples can support later drive construction. Quantity is provisional.',
   '等待神经节样本。保留一个用于机械合成星际引擎，其余样本可供后续引擎制造。用量暂定。')]
 for i, entry in enumerate(flesh, 8):
     entry_ids[id(entry)] = 0x1000000000070000 + i * 0x100
 chapters[7][2].extend(flesh)
 # Append new identifiers after assigning the old ones; insertion must not renumber old tasks.
-aluminum = ('item', 'starfold_materials:aluminum_hull_plating', 4,
+aluminum = ('item', 'kolustar_materials:aluminum_hull_plating', 4,
             'Fabricate aluminum hull plating', '制作铝合金外壳板',
             'Lightweight panel stock required. Find bauxite ore on desert planets and smelt it. Eight aluminum ingots yield four panels. Mass 0.5 per full block; default pressure limit 0.5. Values are provisional.',
             '等待轻质面板。采集沙漠类星球的铝土矿，冶炼后使用八块铝锭制造四块板材。完整方块质量0.5，默认耐压0.5，数值暂定。')
-pressure_hull = ('item', 'starfold_materials:osmium_pressure_hull', 4,
+pressure_hull = ('item', 'kolustar_materials:osmium_pressure_hull', 4,
                  'Fabricate osmium pressure hull', '制作锇合金耐压壳',
                  'Pressure hull stock required before gas collection. Five osmium ingots and four iron ingots yield four blocks. Provisional mass 4 per full block, pressure limit 0.85. Slabs use half mass, double slabs full mass. Other exposed components retain their own limits; no whole-ship pressure shield.',
                  '采气前等待耐压壳储备。五块锇锭与四块铁锭制造四块耐压壳。暂定完整方块质量4，耐压0.85；半砖质量减半，双半砖恢复完整质量。其他暴露船件仍按各自耐压判定，不形成整舰压力护盾。')
@@ -141,7 +141,7 @@ entry_ids[id(aluminum)] = 0x1000000000060B00
 entry_ids[id(pressure_hull)] = 0x1000000000080900
 chapters[6][2].append(aluminum)
 chapters[8][2].insert(4, pressure_hull)
-drive = ('item', 'starfold:interstellar_drive', 1,
+drive = ('item', 'kolustar:interstellar_drive', 1,
          'Build the interstellar drive', '制作星际引擎',
          'Use mechanical crafting to combine four osmium pressure hull blocks, four elite circuits, a bucket of skimmed deuterium and one Host Ganglion (provisional). Install the drive on the same hull as the thrusters and fuel tank. Leaving the home system requires an interstellar drive and deuterium for thrust; the Host encounter gates drive fabrication. The item detector does not certify installation.',
          '使用机械合成组装四块锇耐压壳、四块精英电路、一桶掠取的氘和一个宿主神经节（暂定）。将引擎与推进器、燃料罐安装在同一船体。离开母恒星系的推进需要星际引擎和氘；宿主遭遇构成引擎制造门槛。物品检测不认证安装。')

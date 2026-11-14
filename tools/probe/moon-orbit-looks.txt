@@ -1,5 +1,5 @@
 # Supplemental orbital looks, not surface or travel acceptance.
-# Requires server JAVA_TOOL_OPTIONS: -Dstarfold.helmProbe=true -Dstarfold.packProbe=true.
+# Requires server JAVA_TOOL_OPTIONS: -Dkolustar.helmProbe=true -Dkolustar.packProbe=true.
 waitworld
 wait 300
 cmd gamemode creative

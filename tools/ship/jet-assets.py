@@ -5,7 +5,7 @@ import struct
 import zlib
 from pathlib import Path
 
-root = Path(__file__).resolve().parents[2] / 'src/main/resources/assets/starfold'
+root = Path(__file__).resolve().parents[2] / 'src/main/resources/assets/kolustar'
 
 def chunk(kind, data):
     return struct.pack('>I', len(data)) + kind + data + struct.pack('>I', zlib.crc32(kind + data))
@@ -44,8 +44,8 @@ def element(start, end, recess=False):
         out['faces']['north']['uv'] = [4,4,12,12]
     return out
 
-model = {'parent':'minecraft:block/block','textures':{'particle':'starfold:block/thruster_side', **{f:'starfold:block/thruster_'+('nozzle' if f=='north' else 'back' if f=='south' else 'side') for f in faces}},
+model = {'parent':'minecraft:block/block','textures':{'particle':'kolustar:block/thruster_side', **{f:'kolustar:block/thruster_'+('nozzle' if f=='north' else 'back' if f=='south' else 'side') for f in faces}},
          'elements':[element([2,2,4],[14,14,14]), element([1,1,0],[15,4,4]), element([1,12,0],[15,15,4]), element([1,4,0],[4,12,4]), element([12,4,0],[15,12,4]), element([4,4,2],[12,12,4],True)]}
 (root/'models/block/thruster.json').write_text(json.dumps(model,separators=(',',':'))+'\n')
-item = {'parent':'starfold:block/thruster','display':{'gui':{'rotation':[25,225,0],'translation':[0,0,0],'scale':[.75,.75,.75]}}}
+item = {'parent':'kolustar:block/thruster','display':{'gui':{'rotation':[25,225,0],'translation':[0,0,0],'scale':[.75,.75,.75]}}}
 (root/'models/item/thruster.json').write_text(json.dumps(item,separators=(',',':'))+'\n')

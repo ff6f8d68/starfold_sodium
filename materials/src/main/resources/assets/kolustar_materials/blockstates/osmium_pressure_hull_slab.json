@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "kolustar_materials:block/osmium_pressure_hull_slab"
+    },
+    "type=top": {
+      "model": "kolustar_materials:block/osmium_pressure_hull_slab_top"
+    },
+    "type=double": {
+      "model": "kolustar_materials:block/osmium_pressure_hull"
+    }
+  }
+}

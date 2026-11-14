@@ -2,12 +2,12 @@
 waitworld
 wait 100
 waitworld
-cmd starfold face 1
+cmd kolustar face 1
 wait 100
 debug
 wait 10
 shot debug-ground
-cmd starfold orbit
+cmd kolustar orbit
 wait 300
 nav orbit
 shot debug-orbit

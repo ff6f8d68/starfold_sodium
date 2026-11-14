@@ -16,9 +16,9 @@ PARTS = {
  'amber':'minecraft:orange_concrete', 'floor':'minecraft:polished_deepslate',
  'deck':'minecraft:smooth_stone', 'light':'minecraft:sea_lantern',
  'lamp':'create:rose_quartz_lamp', 'ring':'create:copper_casing',
- 'thruster':'starfold:thruster', 'gyro':'starfold:gyro',
- 'booster':'starfold:booster', 'helm':'starfold:helm',
- 'scope':'starfold:scope_precise', 'sill':'starfold:airstair',
+ 'thruster':'kolustar:thruster', 'gyro':'kolustar:gyro',
+ 'booster':'kolustar:booster', 'helm':'kolustar:helm',
+ 'scope':'kolustar:scope_precise', 'sill':'kolustar:airstair',
  'door':'minecraft:iron_door', 'bevel':'minecraft:smooth_quartz_slab',
 }
 DIR = {'west':(-1,0,0),'east':(1,0,0),'down':(0,-1,0),'up':(0,1,0),'north':(0,0,-1),'south':(0,0,1)}
@@ -916,7 +916,7 @@ def aircraft_hangar(v):
             v.put(x,7,z,'amber' if abs(z)==2 else 'panel')
     for x in (7,9):
         for z in (-1,1):v.put(x,7,z,'light')
-    v.put(8,7,0,'starfold:aircraft_dock')
+    v.put(8,7,0,'kolustar:aircraft_dock')
     for y in (5,6):
         v.put(9,y,2,state('minecraft:ladder',facing='north',waterlogged=False))
     v.put(9,7,2,state('minecraft:waxed_oxidized_copper_trapdoor',facing='north',half='top',open=False,powered=False,waterlogged=False))
@@ -1172,7 +1172,7 @@ def main():
             if view=='front':fronts.append(im)
         print(key,len(v.b),st['connected_components'],st['bay_clear_27'],st['centre_of_mass'],flush=True)
     if len(fronts)==3:
-        sheet=Image(2100,570);sheet.text(40,24,'STARFOLD / STARTER SHIP COMPETITION',4)
+        sheet=Image(2100,570);sheet.text(40,24,'KOLUSTAR / STARTER SHIP COMPETITION',4)
         for i,im in enumerate(fronts):sheet.paste_scaled(im,i*700,70,700,500)
         sheet.save(folder/'contact.png')
     (folder/'summary.json').write_text(json.dumps(summary,indent=2)+'\n')

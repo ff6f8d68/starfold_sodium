@@ -4,9 +4,9 @@ base='''waitworld
 wait 60
 cmd ride @s dismount
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
-cmd starfold face 0
+cmd kolustar face 0
 wait 100
 cmd tp @s 300 168 2040 90 0
 wait 140

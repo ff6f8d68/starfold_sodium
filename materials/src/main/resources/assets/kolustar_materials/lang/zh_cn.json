@@ -1,0 +1,13 @@
+{
+  "block.kolustar_materials.aluminum_hull_plating": "铝合金外壳板",
+  "block.kolustar_materials.aluminum_hull_plating_slab": "铝合金外壳板半砖",
+  "block.kolustar_materials.osmium_pressure_hull": "锇合金耐压壳",
+  "block.kolustar_materials.osmium_pressure_hull_slab": "锇合金耐压壳半砖",
+  "block.kolustar_materials.bauxite_ore": "铝土矿石",
+  "block.kolustar_materials.deepslate_bauxite_ore": "深层铝土矿石",
+  "block.kolustar_materials.raw_aluminum_block": "粗铝块",
+  "block.kolustar_materials.aluminum_block": "铝块",
+  "item.kolustar_materials.raw_aluminum": "粗铝",
+  "item.kolustar_materials.aluminum_ingot": "铝锭",
+  "item.kolustar_materials.aluminum_nugget": "铝粒"
+}

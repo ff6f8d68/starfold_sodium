@@ -4,7 +4,7 @@ import pathlib
 import struct
 import zlib
 
-OUT = pathlib.Path(__file__).resolve().parents[1] / 'src/main/resources/assets/starfold/textures/block'
+OUT = pathlib.Path(__file__).resolve().parents[1] / 'src/main/resources/assets/kolustar/textures/block'
 
 def pixel(x, y, top):
     c = (39 + (x * 3 + y * 7) % 5, 45 + (x + y) % 5, 54 + (x + y * 3) % 5)

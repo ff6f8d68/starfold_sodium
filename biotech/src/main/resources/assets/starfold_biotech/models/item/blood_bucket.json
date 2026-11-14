@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/generated",
-  "textures": {
-    "layer0": "starfold_biotech:item/blood_bucket"
-  }
-}

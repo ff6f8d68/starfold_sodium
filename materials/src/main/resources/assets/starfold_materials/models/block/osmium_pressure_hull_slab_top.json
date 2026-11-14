@@ -1,8 +1,0 @@
-{
-  "parent": "minecraft:block/slab_top",
-  "textures": {
-    "bottom": "starfold_materials:block/osmium_pressure_hull",
-    "top": "starfold_materials:block/osmium_pressure_hull",
-    "side": "starfold_materials:block/osmium_pressure_hull"
-  }
-}

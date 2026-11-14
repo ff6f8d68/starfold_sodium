@@ -1,0 +1,13 @@
+{
+  "thruster": {
+    "subtitle": "subtitles.kolustar.thruster",
+    "sounds": [
+      { "name": "kolustar:thruster", "attenuation_distance": 64 }
+    ]
+  },
+  "music.space": {
+    "sounds": [
+      { "name": "kolustar:music/the_magnificent_cosmos", "stream": true }
+    ]
+  }
+}

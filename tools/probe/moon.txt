@@ -6,7 +6,7 @@ cmd gamemode creative
 system 0
 boardblock helm
 wait 30
-find starfold:helm
+find kolustar:helm
 wait 6
 usehit helm
 wait 30

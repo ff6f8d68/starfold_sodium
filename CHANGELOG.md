@@ -17,17 +17,17 @@
   and native-chunk coverage as the vanilla core shaders. Iris is supported while no shader pack is enabled;
   an active Iris pack, Embeddium or Canvas still disables planet terrain projection and far views.
 - Add Particle Rain and Weather2 compatibility as optional, mod-gated hooks: Particle Rain precipitation asks
-  each planet's own weather instead of the level rain flag (so airless worlds and space stay dry). The Starfold planet
+  each planet's own weather instead of the level rain flag (so airless worlds and space stay dry). The Kolustar planet
   level is registered in Weather2's weather, cloud, storm and wind dimension lists, so those systems now run on planets
   rather than being confined to the overworld: precipitation, cloud and funnel particles wrap with the planet through
-  Starfold's projected particle rendering, and the rain state Weather2 publishes there drives Particle Rain too. Only
+  Kolustar's projected particle rendering, and the rain state Weather2 publishes there drives Particle Rain too. Only
   Weather2's flat-world fog override stays suppressed inside planet levels, where the planet atmosphere owns fog;
   airless worlds and above-atmosphere regions stay dry and silent. Normal dimensions are untouched.
 - Fix the Veil depth hook targeting two framebuffer wrapper classes that Veil 4.3-4.5 no longer contains, which made
   the whole patch fail to apply; only classes present across those versions are targeted now.
-- Give clearer feedback from `/starfold` and flight commands when a planet is not ready, the player is not on a planet,
+- Give clearer feedback from `/kolustar` and flight commands when a planet is not ready, the player is not on a planet,
   or there is no active flight session, instead of returning no output.
-- Make the default (Normal) world type a Starfold native universe so new worlds spawn players on an earth-like home planet by default.
+- Make the default (Normal) world type a Kolustar native universe so new worlds spawn players on an earth-like home planet by default.
 
 ## 0.3.0-alpha.1 “Starward” — 2026-11-09
 
@@ -46,8 +46,8 @@ This prerelease contains changes since 0.2.0. Single-player remains the validati
 ## 0.2.0 “Moonrise”
 
 **Worlds from 0.1.x cannot be opened with 0.2.0.** Create a new world. An experience-pack or generated-universe
-world from 0.1.x stops with a crash report when it is opened; Starfold does not overwrite its data, but open such
-a world with 0.1.1 only. A plain overworld that merely had Starfold installed still opens, without its old Starfold
+world from 0.1.x stops with a crash report when it is opened; Kolustar does not overwrite its data, but open such
+a world with 0.1.1 only. A plain overworld that merely had Kolustar installed still opens, without its old Kolustar
 dimension entries. Back up before trying.
 
 ### Added

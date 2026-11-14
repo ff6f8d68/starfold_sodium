@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "starfold_worlds:desert_barren",
-    "starfold_worlds:desert_scrub"
+    "kolustar_worlds:desert_barren",
+    "kolustar_worlds:desert_scrub"
   ]
 }

@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab",
+  "textures": {
+    "bottom": "kolustar_materials:block/osmium_pressure_hull",
+    "top": "kolustar_materials:block/osmium_pressure_hull",
+    "side": "kolustar_materials:block/osmium_pressure_hull"
+  }
+}

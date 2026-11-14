@@ -14,7 +14,7 @@ cmd fill 5285 141 855 5300 155 870 minecraft:air
 cmd setblock 5290 141 860 minecraft:iron_block
 cmd setblock 5291 141 860 minecraft:iron_block
 cmd setblock 5290 142 860 create:fluid_tank
-cmd setblock 5291 142 860 starfold:gas_scoop[facing=east]
+cmd setblock 5291 142 860 kolustar:gas_scoop[facing=east]
 wait 20
 check empty-tank if data block 5290 142 860 TankContent
 cmd data get block 5290 142 860

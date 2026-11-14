@@ -172,7 +172,7 @@
           "id": "1000000000040601",
           "type": "item",
           "item": {
-            "id": "starfold:thruster",
+            "id": "kolustar:thruster",
             "count": 1
           },
           "count": 1
@@ -202,7 +202,7 @@
           "id": "1000000000040701",
           "type": "item",
           "item": {
-            "id": "starfold:gyro",
+            "id": "kolustar:gyro",
             "count": 1
           },
           "count": 1
@@ -232,7 +232,7 @@
           "id": "1000000000040801",
           "type": "item",
           "item": {
-            "id": "starfold:helm",
+            "id": "kolustar:helm",
             "count": 1
           },
           "count": 1
@@ -262,7 +262,7 @@
           "id": "1000000000040901",
           "type": "item",
           "item": {
-            "id": "starfold:scope",
+            "id": "kolustar:scope",
             "count": 1
           },
           "count": 1
@@ -292,7 +292,7 @@
           "id": "1000000000050801",
           "type": "item",
           "item": {
-            "id": "starfold:scope_nav",
+            "id": "kolustar:scope_nav",
             "count": 1
           },
           "count": 1
@@ -321,7 +321,7 @@
         {
           "id": "1000000000040A01",
           "type": "advancement",
-          "advancement": "starfold:ship/lift_off"
+          "advancement": "kolustar:ship/lift_off"
         }
       ],
       "rewards": [
@@ -347,7 +347,7 @@
         {
           "id": "1000000000040B01",
           "type": "advancement",
-          "advancement": "starfold:ship/space"
+          "advancement": "kolustar:ship/space"
         }
       ],
       "rewards": [
@@ -374,7 +374,7 @@
           "id": "1000000000040C01",
           "type": "item",
           "item": {
-            "id": "starfold:airstair",
+            "id": "kolustar:airstair",
             "count": 1
           },
           "count": 1

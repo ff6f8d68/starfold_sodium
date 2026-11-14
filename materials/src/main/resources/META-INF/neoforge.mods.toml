@@ -3,13 +3,13 @@ loaderVersion="[4,)"
 license="MIT"
 
 [[mods]]
-modId="starfold_materials"
+modId="kolustar_materials"
 version="${version}"
-displayName="Starfold: Materials"
-description='''Lightweight plating and pressure hull components for Starfold. Balance values are provisional.'''
+displayName="Kolustar: Materials"
+description='''Lightweight plating and pressure hull components for Kolustar. Balance values are provisional.'''
 
-[[dependencies.starfold_materials]]
-modId="starfold"
+[[dependencies.kolustar_materials]]
+modId="kolustar"
 type="required"
 versionRange="[0,)"
 ordering="AFTER"

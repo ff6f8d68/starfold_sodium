@@ -37,7 +37,7 @@ if args.with_jars:
         assert any(m['modId'] == 'geckolib' and m['version'] == '4.8.2' for m in gecko['mods'])
 biotech = tomllib.loads(Path('biotech/src/main/resources/META-INF/neoforge.mods.toml').read_text())
 assert any(d['modId'] == 'geckolib' and d['type'] == 'required' and d['versionRange'] == '[4.8.2]'
-           for d in biotech['dependencies']['starfold_biotech'])
+           for d in biotech['dependencies']['kolustar_biotech'])
 # Resolve real item tags from the pinned archives, without executing their code.
 item_tags = {}
 for meta in pins.values() if args.with_jars else ():
@@ -64,15 +64,15 @@ def members(tag, visiting=frozenset()):
 for tag, expected in {'c:ingots/osmium': 'mekanism:ingot_osmium', 'c:ingots/tin': 'mekanism:ingot_tin',
                       'c:ingots/lead': 'mekanism:ingot_lead', 'c:ingots/uranium': 'mekanism:ingot_uranium',
                       'c:gems/fluorite': 'mekanism:fluorite_gem', 'c:ingots/zinc': 'create:zinc_ingot',
-                      'c:ingots/aluminum': 'starfold_materials:aluminum_ingot',
-                      'c:ores/aluminum': 'starfold_materials:bauxite_ore'}.items():
+                      'c:ingots/aluminum': 'kolustar_materials:aluminum_ingot',
+                      'c:ores/aluminum': 'kolustar_materials:bauxite_ore'}.items():
     variants = members(tag)
-    if args.with_jars or expected.startswith('starfold_materials:'):
+    if args.with_jars or expected.startswith('kolustar_materials:'):
         assert expected in variants, (tag, variants)
 
 for path in data.rglob('*.json'):
     json.loads(path.read_text())
-planet_root = Path('starfold_worlds/starfold/planet_type')
+planet_root = Path('kolustar_worlds/kolustar/planet_type')
 assert len(list((data / planet_root).glob('*.json'))) == 12
 for path in (data / planet_root).glob('*.json'):
     original = json.loads((source / planet_root / path.name).read_text())
@@ -87,9 +87,9 @@ for path in (data / planet_root).glob('*.json'):
         for key in ('block', 'deep'):
             if key in ore and not ore[key].startswith('minecraft:'):
                 assert ore[key] in ids['block'], ore
-    aluminum = [ore for ore in ores if ore['block'].startswith('starfold_materials:')]
-    assert aluminum == ([{'block': 'starfold_materials:bauxite_ore',
-                          'deep': 'starfold_materials:deepslate_bauxite_ore',
+    aluminum = [ore for ore in ores if ore['block'].startswith('kolustar_materials:')]
+    assert aluminum == ([{'block': 'kolustar_materials:bauxite_ore',
+                          'deep': 'kolustar_materials:deepslate_bauxite_ore',
                           'from': 0., 'to': 1., 'rarity': .9}] if path.stem == 'desert' else [])
     if path.stem in ('home', 'lush', 'archipelago', 'mushroom'):
         assert not any('osmium' in str(ore) or 'diamond' in str(ore) for ore in ores)
@@ -105,14 +105,14 @@ assert not list(Path('materials/src/main/resources/data').glob('*/worldgen/**/*.
 assert not list(Path('materials/src/main/resources/data').glob('*/neoforge/biome_modifier/**/*.json'))
 # Ore placement is pointwise terrain now; generation behavior is covered by Gradle tests.
 
-# CDG otherwise accepts only vanilla bedrock; Starfold's natural shell is core_shell.
+# CDG otherwise accepts only vanilla bedrock; Kolustar's natural shell is core_shell.
 oil_tag = json.loads((pack / 'kubejs/data/createdieselgenerators/tags/block/oil_deposit.json').read_text())
-assert oil_tag == {'replace': False, 'values': ['starfold:core_shell']}
-assert 'starfold:core_shell' in ids['block']
+assert oil_tag == {'replace': False, 'values': ['kolustar:core_shell']}
+assert 'kolustar:core_shell' in ids['block']
 
-preset_path = Path('starfold_worlds/worldgen/world_preset/experience.json')
+preset_path = Path('kolustar_worlds/worldgen/world_preset/experience.json')
 original = json.loads((source / preset_path).read_text())
-assert 'starter_ship' not in original['dimensions']['starfold:native_planet']['generator']
+assert 'starter_ship' not in original['dimensions']['kolustar:native_planet']['generator']
 assert original == json.loads((data / preset_path).read_text())
 # Resolve the same resource priority as the pack: KubeJS > Biotech > Worlds.
 def experience_resource(relative):
@@ -121,25 +121,25 @@ def experience_resource(relative):
         if path.exists():
             return json.loads(path.read_text())
     raise AssertionError(relative)
-generator = original['dimensions']['starfold:native_planet']['generator']
-assert 'starfold_worlds:experience' in generator.values(), generator
-system = experience_resource(Path('starfold_worlds/starfold/system/experience.json'))
+generator = original['dimensions']['kolustar:native_planet']['generator']
+assert 'kolustar_worlds:experience' in generator.values(), generator
+system = experience_resource(Path('kolustar_worlds/kolustar/system/experience.json'))
 moons = system['suns'][0]['gas_giants'][0]['moons']
-assert moons[-1]['type'] == 'starfold_biotech:flesh'
-base_system = json.loads((source / 'starfold_worlds/starfold/system/experience.json').read_text())
+assert moons[-1]['type'] == 'kolustar_biotech:flesh'
+base_system = json.loads((source / 'kolustar_worlds/kolustar/system/experience.json').read_text())
 without_flesh = json.loads(json.dumps(system))
 without_flesh['suns'][0]['gas_giants'][0]['moons'].pop()
 assert without_flesh == base_system
-universe = experience_resource(Path('starfold_worlds/starfold/universe/experience.json'))
-assert universe['types'][-1] == {'type': 'starfold_biotech:flesh', 'weight': 1}
-base_universe = json.loads((source / 'starfold_worlds/starfold/universe/experience.json').read_text())
+universe = experience_resource(Path('kolustar_worlds/kolustar/universe/experience.json'))
+assert universe['types'][-1] == {'type': 'kolustar_biotech:flesh', 'weight': 1}
+base_universe = json.loads((source / 'kolustar_worlds/kolustar/universe/experience.json').read_text())
 without_flesh = json.loads(json.dumps(universe))
 without_flesh['types'].pop()
 assert without_flesh == base_universe
-assert (Path('biotech/src/main/resources/data/starfold_biotech/starfold/planet_type/flesh.json')).exists()
+assert (Path('biotech/src/main/resources/data/kolustar_biotech/kolustar/planet_type/flesh.json')).exists()
 normal = json.loads((data / 'minecraft/tags/worldgen/world_preset/normal.json').read_text())
-assert normal == {'replace': True, 'values': ['starfold_worlds:experience']}
-fuels = list((data / 'escape_velocity/starfold/thruster_fuel').glob('*.json'))
+assert normal == {'replace': True, 'values': ['kolustar_worlds:experience']}
+fuels = list((data / 'escape_velocity/kolustar/thruster_fuel').glob('*.json'))
 assert len(fuels) == 4
 for path in fuels:
     fuel = json.loads(path.read_text())
@@ -159,7 +159,7 @@ assert fuel_masses == dict.fromkeys(fuel_values, 47)
 sys.path.insert(0, str(Path('tools/ship/pack').resolve()))
 import shipgen
 structure = shipgen.read_nbt(gzip.decompress(Path(
-    'extras/src/main/resources/data/starfold_extras/structure/starter_ship.nbt').read_bytes()))
+    'extras/src/main/resources/data/kolustar_extras/structure/starter_ship.nbt').read_bytes()))
 palette = structure['palette'][1]
 blocks = Counter(palette[b['state']]['Name'] for b in structure['blocks'][1])
 assert blocks.pop('minecraft:air') == 8969
@@ -193,9 +193,9 @@ assert math.isclose(reserves['mekanismgenerators:deuterium'], 25 * first)
 assert .15 < volume * .047 / dry_mass < .17
 
 # 1-D chart-ascent estimate only; deliberately not a native-physics/game acceptance.
-assert blocks['starfold:thruster'] == 46
+assert blocks['kolustar:thruster'] == 46
 lift_count = sum(1 for b in structure['blocks'][1]
-                 if palette[b['state']]['Name'] == 'starfold:thruster'
+                 if palette[b['state']]['Name'] == 'kolustar:thruster'
                  and palette[b['state']]['Properties']['facing'] == 'down')
 assert lift_count == 10
 for boost in (1, 4):
@@ -216,7 +216,7 @@ for boost in (1, 4):
           f'{volume-fuel:.0f} mB spent, {reserve:.0f} blocks/s remaining delta-v')
 print(f'PASS: provisional fuel tiers 1:2:25, hull mass {hull_mass}, '
       f'added-tank diesel delta-v {first:.2f} blocks/s')
-skims = list(data.glob('*/starfold/gas_skim/*.json'))
+skims = list(data.glob('*/kolustar/gas_skim/*.json'))
 assert len(skims) == 1
 assert json.loads(skims[0].read_text()) == {'fluid': 'mekanismgenerators:deuterium', 'rate': 10}
 
@@ -246,9 +246,9 @@ const made = [], removed = [], removedIds = [];
 global.ServerEvents = { recipes: fn => fn({
   custom: recipe => {
     assert.equal(recipe.type, 'create:mechanical_crafting');
-    assert.deepEqual(recipe.result, {id: 'starfold:interstellar_drive', count: 1});
+    assert.deepEqual(recipe.result, {id: 'kolustar:interstellar_drive', count: 1});
     assert.deepEqual(recipe.pattern, ['HCH', 'CDC', 'HCH', ' G ']);
-    assert.deepEqual(recipe.key, {H: {item: 'starfold_materials:osmium_pressure_hull'}, C: {item: 'mekanism:elite_control_circuit'}, D: {item: 'mekanismgenerators:deuterium_bucket'}, G: {item: 'starfold_biotech:host_ganglion'}});
+    assert.deepEqual(recipe.key, {H: {item: 'kolustar_materials:osmium_pressure_hull'}, C: {item: 'mekanism:elite_control_circuit'}, D: {item: 'mekanismgenerators:deuterium_bucket'}, G: {item: 'kolustar_biotech:host_ganglion'}});
     for (const ingredient of Object.values(recipe.key)) assert(ingredient.item in ids, ingredient);
     assert.equal(recipe.accept_mirrored, false);
     made.push(recipe.result.id);
@@ -270,16 +270,16 @@ global.ServerEvents = { recipes: fn => fn({
       assert.deepEqual(pattern, ['RRR', 'RGR', 'RRR']);
       assert.deepEqual(keys, {R: 'minecraft:redstone', G: 'minecraft:glass'});
     }
-    if (output === 'starfold:scope_nav') {
+    if (output === 'kolustar:scope_nav') {
       assert.deepEqual(pattern, [' M ', 'BSB', ' E ']);
-      assert.deepEqual(keys, {M: 'create:precision_mechanism', B: 'create:brass_sheet', S: 'starfold:scope', E: 'create:electron_tube'});
+      assert.deepEqual(keys, {M: 'create:precision_mechanism', B: 'create:brass_sheet', S: 'kolustar:scope', E: 'create:electron_tube'});
     }
-    if (output === 'starfold:gas_scoop') {
+    if (output === 'kolustar:gas_scoop') {
       assert.deepEqual(pattern, [' P ', 'CTC', ' H ']);
       assert.deepEqual(keys, {P: 'create:precision_mechanism', C: 'mekanism:advanced_control_circuit', T: 'create:fluid_tank', H: 'mekanism:rotary_condensentrator'});
     }
-    if (output === 'starfold:scope_precise') {
-      assert.deepEqual(keys, {F: 'mekanism:fluorite_gem', C: 'mekanism:advanced_control_circuit', S: 'starfold:scope_nav'});
+    if (output === 'kolustar:scope_precise') {
+      assert.deepEqual(keys, {F: 'mekanism:fluorite_gem', C: 'mekanism:advanced_control_circuit', S: 'kolustar:scope_nav'});
     }
     made.push(output);
     return { id: id => assert(id.startsWith('escape_velocity:')) };
@@ -362,11 +362,11 @@ if quest_root.exists():
     final = snbt(quest_files[8])['quests']
     old_final = [q for q in final if q['id'] not in ('1000000000080900', '1000000000080A00')]
     assert [q['id'] for q in old_final] == [f'100000000008{i:02X}00' for i in range(1, 9)]
-    assert final[4]['tasks'][0]['item']['id'] == 'starfold_materials:osmium_pressure_hull'
-    assert final[5]['tasks'][0]['item']['id'] == 'starfold:gas_scoop'
+    assert final[4]['tasks'][0]['item']['id'] == 'kolustar_materials:osmium_pressure_hull'
+    assert final[5]['tasks'][0]['item']['id'] == 'kolustar:gas_scoop'
     assert final[6]['tasks'][0]['item']['id'] == 'mekanismgenerators:deuterium_bucket'
     assert final[8]['id'] == '1000000000080A00'
-    assert final[8]['tasks'][0]['item']['id'] == 'starfold:interstellar_drive'
+    assert final[8]['tasks'][0]['item']['id'] == 'kolustar:interstellar_drive'
     assert final[8]['dependencies'] == [final[7]['id'], '1000000000070A00']
     assert final[9]['dependencies'] == [final[8]['id']]
     assert final[9]['id'] == '1000000000080800'
@@ -376,17 +376,17 @@ if quest_root.exists():
     host = snbt(quest_files[7])['quests']
     assert [q['id'] for q in host] == [f'100000000007{i:02X}00' for i in (1, 2, 3, 4, 8, 9, 10, 11)]
     assert [q['tasks'][0]['type'] for q in host[-4:]] == ['checkmark', 'checkmark', 'kill', 'item']
-    assert host[-2]['tasks'] == [{'id': '1000000000070A01', 'type': 'kill', 'entity': 'starfold_biotech:host', 'value': 1}]
-    assert host[-1]['tasks'][0]['item']['id'] == 'starfold_biotech:host_ganglion'
+    assert host[-2]['tasks'] == [{'id': '1000000000070A01', 'type': 'kill', 'entity': 'kolustar_biotech:host', 'value': 1}]
+    assert host[-1]['tasks'][0]['item']['id'] == 'kolustar_biotech:host_ganglion'
     assert total == 86
     assert quest_ids == {f'{0x1000000000000000 + ci * 0x10000 + i * 0x100:016X}'
                          for ci, count in enumerate([6, 8, 12, 8, 12, 11, 10, 4, 8])
                          for i in range(1, count + 1)} | {'1000000000060B00', '1000000000080900', '1000000000080A00'} | {f'100000000007{i:02X}00' for i in range(8, 12)}
     expansion = snbt(quest_files[6])['quests']
-    assert expansion[-1]['tasks'][0]['item']['id'] == 'starfold_materials:aluminum_hull_plating'
+    assert expansion[-1]['tasks'][0]['item']['id'] == 'kolustar_materials:aluminum_hull_plating'
     orbit = snbt(quest_files[4])['quests']
-    nav_index = next(i for i, q in enumerate(orbit) if q['tasks'][0].get('item', {}).get('id') == 'starfold:scope_nav')
-    lift_index = next(i for i, q in enumerate(orbit) if q['tasks'][0].get('advancement') == 'starfold:ship/lift_off')
+    nav_index = next(i for i, q in enumerate(orbit) if q['tasks'][0].get('item', {}).get('id') == 'kolustar:scope_nav')
+    lift_index = next(i for i, q in enumerate(orbit) if q['tasks'][0].get('advancement') == 'kolustar:ship/lift_off')
     assert nav_index < lift_index
     assert orbit[nav_index]['id'] == '1000000000050800'
     # Exactly two authoritative copies of the provisional name across pack runtime source.

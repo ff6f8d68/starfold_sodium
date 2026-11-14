@@ -1,15 +1,15 @@
 # Flight death cleanup; waitworld automatically requests respawn from DeathScreen.
 waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 cmd difficulty peaceful
 cmd gamemode survival
-cmd item replace entity @s armor.chest with starfold:thruster_pack
+cmd item replace entity @s armor.chest with kolustar:thruster_pack
 wait 60
 abilities before-takeoff
-cmd starfold nav target 0
+cmd kolustar nav target 0
 cmd tp @s 2000 280 1024 0 0
 wait 40
 look 0 0
@@ -28,6 +28,6 @@ waitworld
 wait 100
 nav after-respawn
 abilities after-respawn
-cmd starfold status
+cmd kolustar status
 wait 20
 quit

@@ -2,9 +2,9 @@ waitworld
 look free
 wait 60
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
-cmd starfold face 0
+cmd kolustar face 0
 wait 100
 cmd sable remove @e
 cmd forceload add 0 2000 192 2047

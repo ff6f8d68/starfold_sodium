@@ -1,10 +1,10 @@
 waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 cmd gamerule doDaylightCycle false
-cmd starfold nav target a
+cmd kolustar nav target a
 key jump on
 wait 4
 fly on
@@ -25,11 +25,11 @@ nav a-3300
 shot sea-a3300
 key forward off
 key sprint off
-cmd starfold nav brake on
+cmd kolustar nav brake on
 wait 300
 nav a-held
 shot sea-a-held
-cmd starfold nav target b
+cmd kolustar nav target b
 wait 20
 aim track
 key sprint on
@@ -45,7 +45,7 @@ nav b-3300
 shot sea-b3300
 key forward off
 key sprint off
-cmd starfold nav brake on
+cmd kolustar nav brake on
 wait 300
 nav b-held
 shot sea-b-held

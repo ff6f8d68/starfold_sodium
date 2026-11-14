@@ -33,9 +33,9 @@ class ShipScriptTest(unittest.TestCase):
         for name in ("ship-sleep.txt", "ship-restart-before.txt"):
             with self.subTest(script=name):
                 script = (ROOT / name).read_text()
-                inspect = script.index('cmd starfold shipprobe "0:0" inspect')
-                remove = script.index('cmd starfold shipprobe "0:0" remove world-items')
-                release = script.index('cmd starfold shipprobe "0:0" leases off')
+                inspect = script.index('cmd kolustar shipprobe "0:0" inspect')
+                remove = script.index('cmd kolustar shipprobe "0:0" remove world-items')
+                release = script.index('cmd kolustar shipprobe "0:0" leases off')
                 self.assertLess(inspect, remove)
                 self.assertLess(remove, release)
                 self.assertIn('assert dormant', script)

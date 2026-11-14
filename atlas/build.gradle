@@ -1,11 +1,11 @@
 plugins { id 'net.neoforged.moddev' }
 apply from: rootProject.file('gradle/module-common.gradle')
 apply from: rootProject.file('gradle/module-test.gradle')
-base { archivesName = 'starfold_atlas' }
+base { archivesName = 'kolustar_atlas' }
 repositories { mavenCentral() }
 neoForge {
     version = rootProject.neoForge.version
-    mods { starfold_atlas { sourceSet sourceSets.main } }
+    mods { kolustar_atlas { sourceSet sourceSets.main } }
 }
 dependencies {
     implementation(project(':')) { transitive = false }

@@ -3,16 +3,16 @@ loaderVersion="[4,)"
 license="MIT"
 
 [[mods]]
-modId="starfold_probes"
+modId="kolustar_probes"
 version="${version}"
-displayName="Starfold Probes"
-description='''Development-only probes. Not for distribution with Starfold.'''
+displayName="Kolustar Probes"
+description='''Development-only probes. Not for distribution with Kolustar.'''
 
 [[mixins]]
-config="starfold_probes.mixins.json"
+config="kolustar_probes.mixins.json"
 
-[[dependencies.starfold_probes]]
-modId="starfold"
+[[dependencies.kolustar_probes]]
+modId="kolustar"
 type="required"
 versionRange="[0,)"
 ordering="AFTER"

@@ -26,7 +26,7 @@ Scripted game checks live under `tools/probe`; see its README for the Linux laun
 
 Existing game verification has covered return flight, landing, map selection after restart, re-entry into the original ship and persistence of cargo, including recovery of saved dependency groups. Those checks used creative flight; they do not certify survival oxygen/equipment/fuel progression, arbitrary inverted boarding, natural ship unloading or multiplayer. Native ship restoration does not yet provide complete transaction rollback after a partial failure.
 
-Full survival progression and balance remain unaccepted. The source under `modpack/` still requires locally built Starfold jars and is not a complete exported installation. Planet planning with structures has exceeded its five-second performance target in recorded measurements; use the evaluation tools and a fresh game run for current measurements rather than treating old timing reports as a guarantee.
+Full survival progression and balance remain unaccepted. The source under `modpack/` still requires locally built Kolustar jars and is not a complete exported installation. Planet planning with structures has exceeded its five-second performance target in recorded measurements; use the evaluation tools and a fresh game run for current measurements rather than treating old timing reports as a guarantee.
 
 ## Assets
 

@@ -1,4 +1,4 @@
-# Starfold: The World
+# Kolustar: The World
 
 [中文](LORE_zh-CN.md)
 

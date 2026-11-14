@@ -75,7 +75,7 @@ for meta in sorted((ROOT / 'mods').glob('*.pw.toml')):
     records.append(dict(name=d['name'], project=cf['project-id'], file=file_id, jar=jar.name,
                         side=d['side'], url=url, hash_format=d['download']['hash-format'], hash=d['download']['hash']))
 
-# Unpublished Starfold resources, including Materials aluminum, are sourced locally;
+# Unpublished Kolustar resources, including Materials aluminum, are sourced locally;
 # they have no external packwiz pin and must not depend on a cached provider jar.
 for resource_root in map(Path, ('src/main/resources', 'worlds/src/main/resources', 'materials/src/main/resources', 'biotech/src/main/resources')):
     buffer = io.BytesIO()

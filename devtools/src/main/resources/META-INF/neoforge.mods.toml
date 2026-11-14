@@ -2,26 +2,26 @@ modLoader="javafml"
 loaderVersion="[4,)"
 license="MIT"
 [[mods]]
-modId="starfold_devtools"
+modId="kolustar_devtools"
 version="${version}"
-displayName="Starfold: Devtools"
+displayName="Kolustar: Devtools"
 displayTest="IGNORE_ALL_VERSION"
 description='''Opt-in client CPU/GPU render section profiler.'''
 [[mixins]]
-config="starfold_devtools.mixins.json"
-[[dependencies.starfold_devtools]]
-modId="starfold"
+config="kolustar_devtools.mixins.json"
+[[dependencies.kolustar_devtools]]
+modId="kolustar"
 type="required"
 versionRange="[${version}]"
 ordering="AFTER"
 side="CLIENT"
-[[dependencies.starfold_devtools]]
+[[dependencies.kolustar_devtools]]
 modId="neoforge"
 type="required"
 versionRange="[21.1.247,)"
 ordering="NONE"
 side="CLIENT"
-[[dependencies.starfold_devtools]]
+[[dependencies.kolustar_devtools]]
 modId="minecraft"
 type="required"
 versionRange="[1.21.1]"

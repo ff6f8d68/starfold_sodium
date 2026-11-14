@@ -2,7 +2,7 @@
 
 [简体中文](DATAPACKS_zh-CN.md)
 
-A datapack can give Starfold new kinds of planet, change how the universe beyond the home system is laid out, and
+A datapack can give Kolustar new kinds of planet, change how the universe beyond the home system is laid out, and
 write a whole star system by hand: where each sun stands, which planets circle it, how large they are and how they
 turn. This page is the reference for those files, for Minecraft 1.21.1 on NeoForge.
 
@@ -31,14 +31,14 @@ Use disposable world/ship copies for this unfinished feature; this paragraph is 
 
 | Content | Path in the pack | Referred to as |
 |---|---|---|
-| Planet type | `data/<namespace>/starfold/planet_type/<name>.json` | `demo:ash` |
-| Universe layout | `data/<namespace>/starfold/universe/<name>.json` | `demo:ash_universe` |
-| Star system | `data/<namespace>/starfold/system/<name>.json` | `handwritten:twin_lanterns` |
+| Planet type | `data/<namespace>/kolustar/planet_type/<name>.json` | `demo:ash` |
+| Universe layout | `data/<namespace>/kolustar/universe/<name>.json` | `demo:ash_universe` |
+| Star system | `data/<namespace>/kolustar/system/<name>.json` | `handwritten:twin_lanterns` |
 | World preset | `data/<namespace>/worldgen/world_preset/<name>.json` | `demo:my_world` |
 | World types listed on the creation screen | `data/minecraft/tags/worldgen/world_preset/normal.json` | `{"replace": false, "values": ["demo:my_world"]}` |
-| Structure sets allowed on planets | `data/starfold/tags/worldgen/structure_set/planets.json` | add your structure set ids with `"replace": false` |
+| Structure sets allowed on planets | `data/kolustar/tags/worldgen/structure_set/planets.json` | add your structure set ids with `"replace": false` |
 
-The folder after your namespace is always **`starfold`** for types, layouts and systems; only the part right after
+The folder after your namespace is always **`kolustar`** for types, layouts and systems; only the part right after
 `data/` is your own namespace.
 
 Defining a type does not put it in any world. Something has to name it: a layout's `types`, a star system's
@@ -59,10 +59,10 @@ All fields below are required. Unknown fields, unregistered types, out-of-range 
 
 | Field | Meaning and range |
 |---|---|
-| `planner.stages` | Ordered registered stage IDs; built-ins are starfold:plates, landforms, erosion, climate, biomes, volumes |
+| `planner.stages` | Ordered registered stage IDs; built-ins are kolustar:plates, landforms, erosion, climate, biomes, volumes |
 | `land_fraction` | 0–1 continental share |
 | `relief` | mountains 0–175, hills 0–64, roughness 0–8; home starts at 160/24/1 |
-| `landforms[]` | type + parameters, at most 64 groups; crater, volcano, canyon, glacial_rift, hive, dunes, plateau in the starfold namespace |
+| `landforms[]` | type + parameters, at most 64 groups; crater, volcano, canyon, glacial_rift, hive, dunes, plateau in the kolustar namespace |
 | `volumes[]` | At most 64 groups of registered overhang, arch, undercut, cave_mouth, sinkhole, floating_rock types and parameters |
 | `erosion` | rivers boolean, strength 0–2, river_threshold 2–4096 contributing nodes |
 | `climate` | temperature -200–200, latitude_gradient 0–100, humidity -1–1, lapse_rate 0–.1 |
@@ -73,13 +73,13 @@ All fields below are required. Unknown fields, unregistered types, out-of-range 
 | `water` | block is fluid-bearing or air, sea_level -1024–300, freeze boolean |
 | `preferences` | desolation, damage, burial, overlap, road_continuity, density: 0–1; candidate probability, fixed effects, arrangements, road decisions and landform/volume density |
 
-Hive also declares spacing (32–256) and wall_slope (.1–4); geometric neighbours are saved in the plan. Custom biome rules declare their output ID through `BiomeRule.biome(parameters)` without adopting built-in parameter names. Landform parameters: density 0–8, radius_min/max 16–256, amplitude 0–128, operation raise/lower. `starfold:climate` biome rule parameters: biome, temperature_min/max, humidity_min/max, height_min/max, river, coast. `starfold:terrain` biome rule parameters: biome, height_min/max (-1024–320), slope_min/max (0–200, rise per physical block), landform_min/max (-2048–2048, signed height contribution of all landforms), and optional region_min/max (0–1). Region is the global rank of a 192-block low-frequency spherical noise field combined with elevation, slope and landform relief; thresholds therefore control area and keep broad contiguous patches. For example, desert scrub uses region_min=0, region_max=.35, with an unrestricted barren final rule. Shipped regional types use 25–35% secondary regions. Biome elevation uses the generated surface ceiling of 318; slope and landform relief retain the planning geometry. Dry types can select crater floors, rims, rifts and volcanic slopes without relying on humidity. Tables require an explicit unrestricted final rule when earlier rules do not cover the entire surface; uncovered nodes fail planning. `starfold:surface` material parameters: block, depth_min/max, temperature_min/max, slope_min, shore, biome (empty string matches all).
+Hive also declares spacing (32–256) and wall_slope (.1–4); geometric neighbours are saved in the plan. Custom biome rules declare their output ID through `BiomeRule.biome(parameters)` without adopting built-in parameter names. Landform parameters: density 0–8, radius_min/max 16–256, amplitude 0–128, operation raise/lower. `kolustar:climate` biome rule parameters: biome, temperature_min/max, humidity_min/max, height_min/max, river, coast. `kolustar:terrain` biome rule parameters: biome, height_min/max (-1024–320), slope_min/max (0–200, rise per physical block), landform_min/max (-2048–2048, signed height contribution of all landforms), and optional region_min/max (0–1). Region is the global rank of a 192-block low-frequency spherical noise field combined with elevation, slope and landform relief; thresholds therefore control area and keep broad contiguous patches. For example, desert scrub uses region_min=0, region_max=.35, with an unrestricted barren final rule. Shipped regional types use 25–35% secondary regions. Biome elevation uses the generated surface ceiling of 318; slope and landform relief retain the planning geometry. Dry types can select crater floors, rims, rifts and volcanic slopes without relying on humidity. Tables require an explicit unrestricted final rule when earlier rules do not cover the entire surface; uncovered nodes fail planning. `kolustar:surface` material parameters: block, depth_min/max, temperature_min/max, slope_min, shore, biome (empty string matches all).
 
 Volume parameters: density (0–8, multiplied by preferences.density), radius/height (2–64), offset (-64–96), operation (fill/carve), slope_min/max (0–200), cave_connection. Overhang and undercut placement requires an uphill anchor inside the shape and exposed lower ground outward; saved wall_x/wall_z are a unit direction in the spherical tangent frame. Their placement callback derives this direction; floating rock is a separate type used only by recipes that declare it. Cave mouths and sinkholes search the actual underground double-noise caves before saving a connecting shape. Volumes apply in saved fill/carve order inside their bounds, then existing local water_level refills final air gaps while preserving filled solids. This is a column water-level rule without global connectivity simulation. Ice and snow follow the final exposed top before roads and structures override it. Chunks, surface queries and LOD read the same final columns and preserve air gaps.
 
 The plan preserves structure composition order and permits overlap; later sites overwrite earlier sites. Bury moves the structure down and backfills underground template AIR with terrain material, replacing earlier site blocks at those positions. Damage saves a deterministic removal amount; cut saves explicit typed references. Each site's cut constrains its own adaptation before later sites run. Original templates and recipes remain intact; replay uses final columns and final ownership before restoring blocks and block entities. Relations refer to kind plus list index, or stable site.id for structures; each road has a connects relation to each endpoint settlement.
 
-Roads use eight-neighbour minimum-cost shared-grid routes with physical slope cost and save control nodes, heights and GROUND/BRIDGE/CUT decisions. A shared spherical cubic gives continuous tangents through turns; planning crossings, actual road blocks and evaluation overlays use that curve. Crossing checks sample at no more than one physical block or half the narrowest river width, inspecting rivers, lakes/oceans, canyon profiles and carved volumes. Bridges use wooden decks; cut segments do not lay road material. Road continuity is a planning decision. Placement reads final surfaces including volumes and biome eligibility; the `starfold:river_settlements` structure tag prefers flat riversides, `starfold:highland_ruins` prefers high ground, and detached floating caps incur a support penalty. Desolation, burial, damage, overlap and density control candidate probability, burial probability/depth, removal amount, candidate spacing and landform/volume density.
+Roads use eight-neighbour minimum-cost shared-grid routes with physical slope cost and save control nodes, heights and GROUND/BRIDGE/CUT decisions. A shared spherical cubic gives continuous tangents through turns; planning crossings, actual road blocks and evaluation overlays use that curve. Crossing checks sample at no more than one physical block or half the narrowest river width, inspecting rivers, lakes/oceans, canyon profiles and carved volumes. Bridges use wooden decks; cut segments do not lay road material. Road continuity is a planning decision. Placement reads final surfaces including volumes and biome eligibility; the `kolustar:river_settlements` structure tag prefers flat riversides, `kolustar:highland_ruins` prefers high ground, and detached floating caps incur a support penalty. Desolation, burial, damage, overlap and density control candidate probability, burial probability/depth, removal amount, candidate spacing and landform/volume density.
 
 Extension API: `TerrainRegistries.LANDFORMS/VOLUMES/MATERIALS/BIOMES.register(id, codec, implementation)` and `registerStage(id, stage)`. Built-ins use the same APIs. Shapes supply profile and placement; rules supply evaluation and planning callbacks. Evaluation composes fixed operations. Volume types provide a shape inside the normalized box [-1,1], a parameter Codec and placement callback. Evaluation uses a deterministic spherical tangent basis and the entire box bound, including noncircular shapes at seams.
 
@@ -92,12 +92,12 @@ Nodes are 16 blocks apart and share geometric edge/corner identities. Height com
   "version": 2,
   "planner": {
     "stages": [
-      "starfold:plates",
-      "starfold:landforms",
-      "starfold:erosion",
-      "starfold:climate",
-      "starfold:biomes",
-      "starfold:volumes"
+      "kolustar:plates",
+      "kolustar:landforms",
+      "kolustar:erosion",
+      "kolustar:climate",
+      "kolustar:biomes",
+      "kolustar:volumes"
     ]
   },
   "land_fraction": 0.4,
@@ -120,7 +120,7 @@ Nodes are 16 blocks apart and share geometric edge/corner identities. Height com
   },
   "biomes": [
     {
-      "type": "starfold:climate",
+      "type": "kolustar:climate",
       "parameters": {
         "biome": "minecraft:ocean",
         "temperature_min": -300,
@@ -134,7 +134,7 @@ Nodes are 16 blocks apart and share geometric edge/corner identities. Height com
       }
     },
     {
-      "type": "starfold:climate",
+      "type": "kolustar:climate",
       "parameters": {
         "biome": "minecraft:desert",
         "temperature_min": 20,
@@ -148,7 +148,7 @@ Nodes are 16 blocks apart and share geometric edge/corner identities. Height com
       }
     },
     {
-      "type": "starfold:climate",
+      "type": "kolustar:climate",
       "parameters": {
         "biome": "minecraft:forest",
         "temperature_min": -15,
@@ -162,7 +162,7 @@ Nodes are 16 blocks apart and share geometric edge/corner identities. Height com
       }
     },
     {
-      "type": "starfold:climate",
+      "type": "kolustar:climate",
       "parameters": {
         "biome": "minecraft:plains",
         "temperature_min": -300,
@@ -178,7 +178,7 @@ Nodes are 16 blocks apart and share geometric edge/corner identities. Height com
   ],
   "materials": [
     {
-      "type": "starfold:surface",
+      "type": "kolustar:surface",
       "parameters": {
         "block": "minecraft:gravel",
         "depth_min": 0,
@@ -191,7 +191,7 @@ Nodes are 16 blocks apart and share geometric edge/corner identities. Height com
       }
     },
     {
-      "type": "starfold:surface",
+      "type": "kolustar:surface",
       "parameters": {
         "block": "minecraft:stone",
         "depth_min": 0,
@@ -204,7 +204,7 @@ Nodes are 16 blocks apart and share geometric edge/corner identities. Height com
       }
     },
     {
-      "type": "starfold:surface",
+      "type": "kolustar:surface",
       "parameters": {
         "block": "minecraft:sand",
         "depth_min": 0,
@@ -217,7 +217,7 @@ Nodes are 16 blocks apart and share geometric edge/corner identities. Height com
       }
     },
     {
-      "type": "starfold:surface",
+      "type": "kolustar:surface",
       "parameters": {
         "block": "minecraft:grass_block",
         "depth_min": 0,
@@ -230,7 +230,7 @@ Nodes are 16 blocks apart and share geometric edge/corner identities. Height com
       }
     },
     {
-      "type": "starfold:surface",
+      "type": "kolustar:surface",
       "parameters": {
         "block": "minecraft:dirt",
         "depth_min": 1,
@@ -332,7 +332,7 @@ seed gives the same universe either way.
 ## World presets
 
 A world preset is vanilla's: a `dimensions` object in which each dimension has a `type` and a `generator`. The
-planets live in the dimension `starfold:native_planet`, whose generator has the type `starfold:native_system`:
+planets live in the dimension `kolustar:native_planet`, whose generator has the type `kolustar:native_system`:
 
 | Field | Type and range | Default | Meaning |
 |---|---|---|---|
@@ -357,11 +357,11 @@ planets a sun can hold. To place suns and orbits yourself, write a star system i
 | `terrain_seed` | 64-bit integer | required | The planet's own seed; it is not taken from the world seed |
 | `size` | integer in the type's range, a multiple of 16 | picked from the seed | Width of a face of this planet |
 
-Full generators use `planet_format: 3`, `terrain_version: 14`. `planet_generation` requires type, surface_version=10, recipe (the complete terrain object above), size, depth, shell, creatures, features, structures and environment. `planet_biomes` contains terrain_seed and palette (the recipe biome IDs). Older formats are rejected. Network protocol is 18 and Profile is `starfold:native_planet_v17_profile`. PlanetPlan FORMAT=4 includes terrain and structures and reuses bounded transfers and digest caching. Terrain plans are persisted and synchronized even with structures disabled. TerrainPlan FORMAT=3 stores fixed-point fields: height, temperature, water level and strata shift at 1/8 units, roughness at 1/1024, humidity at 1/16384. The same quantization is applied in memory so save/reload preserves evaluation. Old formats are rejected; create a new world.
+Full generators use `planet_format: 3`, `terrain_version: 14`. `planet_generation` requires type, surface_version=10, recipe (the complete terrain object above), size, depth, shell, creatures, features, structures and environment. `planet_biomes` contains terrain_seed and palette (the recipe biome IDs). Older formats are rejected. Network protocol is 18 and Profile is `kolustar:native_planet_v17_profile`. PlanetPlan FORMAT=4 includes terrain and structures and reuses bounded transfers and digest caching. Terrain plans are persisted and synchronized even with structures disabled. TerrainPlan FORMAT=3 stores fixed-point fields: height, temperature, water level and strata shift at 1/8 units, roughness at 1/1024, humidity at 1/16384. The same quantization is applied in memory so save/reload preserves evaluation. Old formats are rejected; create a new world.
 
 ## Built-in types and presets
 
-All ids begin with `starfold:`.
+All ids begin with `kolustar:`.
 
 | Type | Face width | Land share | Mountains/hills | Landforms | Liquid |
 |---|---:|---:|---:|---|---|
@@ -374,19 +374,19 @@ All ids begin with `starfold:`.
 | `archipelago` | 1024–2048 | 0.12 | 24/12 | volcano | water |
 | `steppe` | 1024–2048 | 0.4 | 24/12 | — | water |
 
-The worlds pack supplies home, archipelago, lush, desert, ice, rocky, asteroid, basalt, crystal, end, mushroom and warden; biotech adds the thirteenth type, `starfold_biotech:flesh`, with blood and spherical Voronoi hive walls. Types declare their atmospheres explicitly. Recipes and resolved templates are fixed with the planet.
+The worlds pack supplies home, archipelago, lush, desert, ice, rocky, asteroid, basalt, crystal, end, mushroom and warden; biotech adds the thirteenth type, `kolustar_biotech:flesh`, with blood and spherical Voronoi hive walls. Types declare their atmospheres explicitly. Recipes and resolved templates are fixed with the planet.
 
-The layout `starfold:default` draws those types in that order with the weights 3, 2, 2, 2, 1, 1, 1, 1, with
-`density` 1, `star_gap` 137900, `ring` 12288 and one or two planets to a sun. `starfold:small` uses the same types
+The layout `kolustar:default` draws those types in that order with the weights 3, 2, 2, 2, 1, 1, 1, 1, with
+`density` 1, `star_gap` 137900, `ring` 12288 and one or two planets to a sun. `kolustar:small` uses the same types
 and weights in a finite universe of two to four further suns (its explicit gap remains 98304).
 
 ### Experience-pack flight scale
 
-Both experience presets now select the existing authored-system format `starfold_worlds:experience`; no codec
+Both experience presets now select the existing authored-system format `kolustar_worlds:experience`; no codec
 extension is needed. Four suns form a roughly 137900-block tetrahedron, each with three planets on a 17800-block
 ring, equal 24000-tick periods and 120° spacing. Storage order, types, sizes and terrain seeds are retained:
 Hearth/Viridia/Hush; Anvil/Rime/Saffron; Pelagia/Haven/Fleck; Cinder/Prism/Ivory. The production preset still
-starts with the starter ship. Hearth now names the `starfold_worlds:home` type rather than an anonymous full generator.
+starts with the starter ship. Hearth now names the `kolustar_worlds:home` type rather than an anonymous full generator.
 At epoch zero (and every subsequent phase), no same-system planet chord intersects its sun.
 
 For the unarmed Hauler, the P1 acceleration-plus-cruise estimate is about 60.1 seconds within a system and
@@ -398,17 +398,17 @@ The nearest 24 suns remain selected; the region sky far plane is 1000000 blocks,
 Existing non-authored saves that rebuild paths, and future generated cells, change layout: start a new world for
 this scale. Authored saved celestial records retain their written geometry.
 
-The world preset `starfold:native_universe` ("Starfold: Generated Universe") writes its two home planets out in full: A is a
+The world preset `kolustar:native_universe` ("Kolustar: Generated Universe") writes its two home planets out in full: A is a
 living planet of size 2048 and depth 652, B a rocky one of size 1024 and depth 326. Beyond them it uses
-`starfold:default`.
+`kolustar:default`.
 
 ## Example 1: a new planet type in the generated universe
 
 These four files are the whole pack. It adds the type `demo:ash` and the layout `demo:ash_universe`, and **replaces**
-the preset `starfold:native_universe`: planet A stays as it was, B becomes an ash planet, and every further sun has
+the preset `kolustar:native_universe`: planet A stays as it was, B becomes an ash planet, and every further sun has
 one ash planet. A preset cannot be added to; the file stands in for the mod's.
 
-Turn the pack on in the datapack screen while **creating a new world**, and pick the world type "Starfold:
+Turn the pack on in the datapack screen while **creating a new world**, and pick the world type "Kolustar:
 Generated Universe". The replaced preset is already listed on that screen, so the pack needs no tag. The pack's root holds
 `pack.mcmeta` and `data`; in a zip, do not wrap them in another folder.
 
@@ -418,12 +418,12 @@ Generated Universe". The replaced preset is already listed on that screen, so th
 {
   "pack": {
     "pack_format": 48,
-    "description": "Starfold: an ash planet type (Minecraft 1.21.1)"
+    "description": "Kolustar: an ash planet type (Minecraft 1.21.1)"
   }
 }
 ```
 
-### `data/demo/starfold/planet_type/ash.json`
+### `data/demo/kolustar/planet_type/ash.json`
 
 ```json
 {
@@ -437,12 +437,12 @@ Generated Universe". The replaced preset is already listed on that screen, so th
     "version": 2,
     "planner": {
       "stages": [
-        "starfold:plates",
-        "starfold:landforms",
-        "starfold:erosion",
-        "starfold:climate",
-        "starfold:biomes",
-        "starfold:volumes"
+        "kolustar:plates",
+        "kolustar:landforms",
+        "kolustar:erosion",
+        "kolustar:climate",
+        "kolustar:biomes",
+        "kolustar:volumes"
       ]
     },
     "land_fraction": 1,
@@ -453,7 +453,7 @@ Generated Universe". The replaced preset is already listed on that screen, so th
     },
     "landforms": [
       {
-        "type": "starfold:crater",
+        "type": "kolustar:crater",
         "parameters": {
           "density": 0.25,
           "radius_min": 24,
@@ -476,7 +476,7 @@ Generated Universe". The replaced preset is already listed on that screen, so th
     },
     "biomes": [
       {
-        "type": "starfold:climate",
+        "type": "kolustar:climate",
         "parameters": {
           "biome": "minecraft:stony_peaks",
           "temperature_min": -300,
@@ -492,7 +492,7 @@ Generated Universe". The replaced preset is already listed on that screen, so th
     ],
     "materials": [
       {
-        "type": "starfold:surface",
+        "type": "kolustar:surface",
         "parameters": {
           "block": "minecraft:tuff",
           "depth_min": 0,
@@ -537,7 +537,7 @@ Generated Universe". The replaced preset is already listed on that screen, so th
 }
 ```
 
-### `data/demo/starfold/universe/ash_universe.json`
+### `data/demo/kolustar/universe/ash_universe.json`
 
 ```json
 {
@@ -557,9 +557,9 @@ Generated Universe". The replaced preset is already listed on that screen, so th
 }
 ```
 
-### `data/starfold/worldgen/world_preset/native_universe.json`
+### `data/kolustar/worldgen/world_preset/native_universe.json`
 
-[Complete current-format preset](../src/main/resources/data/starfold/worldgen/world_preset/native_universe.json)
+[Complete current-format preset](../src/main/resources/data/kolustar/worldgen/world_preset/native_universe.json)
 
 ## Star systems
 
@@ -657,7 +657,7 @@ no existing planet's seed. Moons are saved and generated like any other surface.
       "radius": 512,
       "planets": [
         {
-          "type": "starfold:temperate",
+          "type": "kolustar:temperate",
           "size": 1024,
           "reach": 512,
           "orbit": {
@@ -665,7 +665,7 @@ no existing planet's seed. Moons are saved and generated like any other surface.
           },
           "moons": [
             {
-              "type": "starfold:rocky",
+              "type": "kolustar:rocky",
               "size": 512,
               "reach": 512,
               "name": "Moon",
@@ -696,12 +696,12 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
 {
   "pack": {
     "pack_format": 48,
-    "description": "Starfold: two hand-written suns and five planets"
+    "description": "Kolustar: two hand-written suns and five planets"
   }
 }
 ```
 
-#### `data/handwritten/starfold/planet_type/ash.json`
+#### `data/handwritten/kolustar/planet_type/ash.json`
 
 ```json
 {
@@ -715,12 +715,12 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
     "version": 2,
     "planner": {
       "stages": [
-        "starfold:plates",
-        "starfold:landforms",
-        "starfold:erosion",
-        "starfold:climate",
-        "starfold:biomes",
-        "starfold:volumes"
+        "kolustar:plates",
+        "kolustar:landforms",
+        "kolustar:erosion",
+        "kolustar:climate",
+        "kolustar:biomes",
+        "kolustar:volumes"
       ]
     },
     "land_fraction": 1,
@@ -731,7 +731,7 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
     },
     "landforms": [
       {
-        "type": "starfold:crater",
+        "type": "kolustar:crater",
         "parameters": {
           "density": 0.25,
           "radius_min": 24,
@@ -754,7 +754,7 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
     },
     "biomes": [
       {
-        "type": "starfold:climate",
+        "type": "kolustar:climate",
         "parameters": {
           "biome": "minecraft:stony_peaks",
           "temperature_min": -300,
@@ -770,7 +770,7 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
     ],
     "materials": [
       {
-        "type": "starfold:surface",
+        "type": "kolustar:surface",
         "parameters": {
           "block": "minecraft:tuff",
           "depth_min": 0,
@@ -819,7 +819,7 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
 }
 ```
 
-#### `data/handwritten/starfold/system/twin_lanterns.json`
+#### `data/handwritten/kolustar/system/twin_lanterns.json`
 
 ```json
 {
@@ -833,7 +833,7 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
       "radius": 512,
       "planets": [
         {
-          "type": "starfold:temperate",
+          "type": "kolustar:temperate",
           "size": 2048,
           "seed": 20261001,
           "name": "Aster",
@@ -856,7 +856,7 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
           }
         },
         {
-          "type": "starfold:ice",
+          "type": "kolustar:ice",
           "name": "Rime",
           "orbit": {
             "radius": 17000,
@@ -886,7 +886,7 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
           }
         },
         {
-          "type": "starfold:desert",
+          "type": "kolustar:desert",
           "size": 1024,
           "name": "Dune",
           "orbit": {
@@ -941,10 +941,10 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
         }
       }
     },
-    "starfold:native_planet": {
-      "type": "starfold:native_deep",
+    "kolustar:native_planet": {
+      "type": "kolustar:native_deep",
       "generator": {
-        "type": "starfold:native_system",
+        "type": "kolustar:native_system",
         "storage_layout": "six_face_square_v2",
         "system": "handwritten:twin_lanterns"
       }
@@ -973,7 +973,7 @@ namespace, replaces nothing of the mod's, and lists its world type on the creati
   that **has no `level.dat` yet**, and set `level-type=handwritten:twin_lanterns` and a `level-seed` in
   `server.properties`. The pack is turned on by itself. Do not change the `level-type` of an existing world to
   move it over.
-- **A universe beyond.** Add `"beyond": "starfold:default"` at the top of the system file. The example leaves it
+- **A universe beyond.** Add `"beyond": "kolustar:default"` at the top of the system file. The example leaves it
   out so that exactly two suns and five planets exist.
 
 ## What a saved world keeps
@@ -998,7 +998,7 @@ A world saves the planets it was created with. It does not save the whole pack.
 
 - **Terrain.** The noise, caves and ecology are code; trees follow supported biome templates, and a type supplies a fixed terrain recipe and its
   parameters. All 13 types share the evaluator; sea level and fluid (water, lava, blood or air) come from the recipe.
-- **Structures use fixed plans.** `life.structures`, the `starfold:planets` structure-set tag and each
+- **Structures use fixed plans.** `life.structures`, the `kolustar:planets` structure-set tag and each
   structure's biomes select candidates. All 11 shipped sets participate: villages/outposts, procedural temples
   and huts, complete igloos/ocean ruins, portals (including underground variants), shipwrecks, buried treasure
   and mineshafts. Vanilla jigsaw assembly reads the final terrain surface including volumes. Every piece and its NBT recipe is retained; piece

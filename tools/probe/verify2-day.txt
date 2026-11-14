@@ -3,14 +3,14 @@ strict
 wait 80
 cmd tick rate 20
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 80
 cmd clear @s
 cmd effect clear @s
 look free
 cmd tp @s 1024 200 1024 0 0
 wait 120
-cmd starfold face 0
+cmd kolustar face 0
 wait 80
 cmd tp @s 166.5 175 2040.5 90 -12
 wait 3
@@ -19,12 +19,12 @@ wait 100
 cmd tp @s 166.5 175 2040.5 90 -12
 wait 3
 fly on
-cmd starfold spin on
+cmd kolustar spin on
 wait 60
 cmd tick rate 200
 solarplan day
 cmd tick rate 20
-cmd starfold spin off
+cmd kolustar spin off
 wait 60
 press 290 1
 press 290 0
@@ -59,7 +59,7 @@ shot verify2-7-day-10
 press 290 1
 press 290 0
 cmd tick rate 20
-cmd starfold spin on
+cmd kolustar spin on
 cmd save-all flush
 wait 60
 shot verify2-7-end

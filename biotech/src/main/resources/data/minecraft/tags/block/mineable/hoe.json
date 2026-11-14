@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "starfold_biotech:hive_flesh",
-    "starfold_biotech:pulse_sac"
+    "kolustar_biotech:hive_flesh",
+    "kolustar_biotech:pulse_sac"
   ]
 }

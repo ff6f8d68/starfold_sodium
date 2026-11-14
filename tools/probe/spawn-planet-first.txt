@@ -3,7 +3,7 @@ createworld
 wait 100
 createworld go
 waitworld
-cmd starfold status
+cmd kolustar status
 nav first
 wait 200
 nav later

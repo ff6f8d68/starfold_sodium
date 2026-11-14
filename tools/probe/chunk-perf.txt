@@ -45,7 +45,7 @@ log PERF planet-flush
 cmd save-all flush
 wait 600
 log PERF vanilla-enter
-cmd starfold leave
+cmd kolustar leave
 wait 1200
 shot perf-vanilla-spawn
 log PERF vanilla-walk

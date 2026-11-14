@@ -3,9 +3,9 @@ out=Path('tools/probe')
 prefix='''waitworld
 wait 60
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
-cmd starfold face 0
+cmd kolustar face 0
 wait 100
 cmd effect clear @s
 cmd gamerule doWeatherCycle false

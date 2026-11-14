@@ -2,9 +2,9 @@ waitworld
 strict
 wait 40
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 100
-cmd starfold face 0
+cmd kolustar face 0
 wait 80
 cmd tp @s 33280 200 512
 wait 200

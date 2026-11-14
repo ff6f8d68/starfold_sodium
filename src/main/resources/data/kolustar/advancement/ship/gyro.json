@@ -1,0 +1,56 @@
+{
+  "display": {
+    "icon": {
+      "id": "kolustar:gyro"
+    },
+    "title": {
+      "translate": "advancement.kolustar.ship.gyro.title"
+    },
+    "description": {
+      "translate": "advancement.kolustar.ship.gyro.description"
+    },
+    "frame": "task",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": {
+    "item0": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": "kolustar:gyro"
+          }
+        ]
+      }
+    }
+  },
+  "requirements": [
+    [
+      "item0"
+    ]
+  ],
+  "parent": "kolustar:ship/thruster",
+  "rewards": {
+    "recipes": [
+      "kolustar:gyro",
+      "kolustar:helm"
+    ]
+  },
+  "neoforge:conditions": [
+    {
+      "type": "neoforge:and",
+      "values": [
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "create"
+        },
+        {
+          "type": "neoforge:mod_loaded",
+          "modid": "simulated"
+        }
+      ]
+    }
+  ]
+}

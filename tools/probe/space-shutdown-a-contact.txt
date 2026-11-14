@@ -1,5 +1,5 @@
 waitworld
-cmd starfold terrain
+cmd kolustar terrain
 wait 100
 cmd gamemode creative
 fly on

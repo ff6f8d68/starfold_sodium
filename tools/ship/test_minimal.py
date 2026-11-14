@@ -12,7 +12,7 @@ class MinimalHullTest(unittest.TestCase):
         self.assertEqual(sum(count.values()), 185)
         self.assertEqual(count['minecraft:cobblestone'], 142)
         self.assertEqual(count['minecraft:oak_planks'], 19)
-        self.assertEqual(count['starfold:thruster'], 12)
+        self.assertEqual(count['kolustar:thruster'], 12)
         self.assertEqual(count['minecraft:oak_door'], 4)
         mass = {'minecraft:cobblestone': 2, 'minecraft:oak_planks': .5,
                 'minecraft:oak_door': .25, 'minecraft:lever': 0}
@@ -24,7 +24,7 @@ class MinimalHullTest(unittest.TestCase):
     def test_direction_pairs(self):
         for direction in ('north', 'south', 'west', 'east', 'up', 'down'):
             positions = [p for p, s in blocks().items()
-                         if s == f'starfold:thruster[facing={direction}]']
+                         if s == f'kolustar:thruster[facing={direction}]']
             self.assertEqual(len(positions), 2)
             if direction in ('north', 'south', 'up', 'down'):
                 self.assertEqual(sum(p[0] for p in positions), 0)

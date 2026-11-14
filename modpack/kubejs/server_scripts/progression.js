@@ -13,32 +13,32 @@ ServerEvents.recipes(event => {
     R: 'minecraft:redstone', G: 'minecraft:glass'
   })
 
-  replace('starfold:thruster', [' B ', 'PMP', ' I '], {
+  replace('kolustar:thruster', [' B ', 'PMP', ' I '], {
     B: 'create:blaze_burner', P: 'create:brass_sheet',
     M: 'create:precision_mechanism', I: 'create:iron_sheet'
   })
-  replace('starfold:helm', [' E ', 'PMP', ' C '], {
+  replace('kolustar:helm', [' E ', 'PMP', ' C '], {
     E: 'create:electron_tube', P: 'create:brass_sheet',
     M: 'create:precision_mechanism', C: 'create:brass_casing'
   })
-  replace('starfold:gyro', [' P ', 'EME', ' P '], {
+  replace('kolustar:gyro', [' P ', 'EME', ' P '], {
     P: 'create:iron_sheet', E: 'create:electron_tube', M: 'create:precision_mechanism'
   })
   // The upstream spyglass ingredient needs amethyst, reserved for crystal planets here.
-  replace('starfold:scope', [' G ', 'ICI', ' I '], {
+  replace('kolustar:scope', [' G ', 'ICI', ' I '], {
     G: 'minecraft:glass', I: 'create:iron_sheet', C: 'minecraft:copper_ingot'
   })
   // First-trip target locking must be available before off-world osmium.
-  replace('starfold:scope_nav', [' M ', 'BSB', ' E '], {
+  replace('kolustar:scope_nav', [' M ', 'BSB', ' E '], {
     M: 'create:precision_mechanism', B: 'create:brass_sheet',
-    S: 'starfold:scope', E: 'create:electron_tube'
+    S: 'kolustar:scope', E: 'create:electron_tube'
   })
-  replace('starfold:scope_precise', [' F ', 'CSC', ' F '], {
-    F: 'mekanism:fluorite_gem', C: 'mekanism:advanced_control_circuit', S: 'starfold:scope_nav'
+  replace('kolustar:scope_precise', [' F ', 'CSC', ' F '], {
+    F: 'mekanism:fluorite_gem', C: 'mekanism:advanced_control_circuit', S: 'kolustar:scope_nav'
   })
 
   // Mid-game intake follows the hydrogen machinery; quantities are first guesses.
-  replace('starfold:gas_scoop', [' P ', 'CTC', ' H '], {
+  replace('kolustar:gas_scoop', [' P ', 'CTC', ' H '], {
     P: 'create:precision_mechanism', C: 'mekanism:advanced_control_circuit',
     T: 'create:fluid_tank', H: 'mekanism:rotary_condensentrator'
   })
@@ -47,17 +47,17 @@ ServerEvents.recipes(event => {
   event.remove({ id: 'mekanismgenerators:separator/heavy_water' })
 
   // Ten ingredients retain the original material counts and require mechanical crafting.
-  event.remove({ output: 'starfold:interstellar_drive' })
+  event.remove({ output: 'kolustar:interstellar_drive' })
   event.custom({
     type: 'create:mechanical_crafting',
     pattern: ['HCH', 'CDC', 'HCH', ' G '],
     key: {
-      H: { item: 'starfold_materials:osmium_pressure_hull' },
+      H: { item: 'kolustar_materials:osmium_pressure_hull' },
       C: { item: 'mekanism:elite_control_circuit' },
       D: { item: 'mekanismgenerators:deuterium_bucket' },
-      G: { item: 'starfold_biotech:host_ganglion' }
+      G: { item: 'kolustar_biotech:host_ganglion' }
     },
-    result: { id: 'starfold:interstellar_drive', count: 1 },
+    result: { id: 'kolustar:interstellar_drive', count: 1 },
     accept_mirrored: false
   }).id('escape_velocity:interstellar_drive')
 })

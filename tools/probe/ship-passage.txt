@@ -6,12 +6,12 @@ waitworld
 wait 100
 waitworld
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 100
 fly off
 cmd tp @s 5264.5 131 864.5 180 20
 wait 200
-cmd starfold nav target b
+cmd kolustar nav target b
 wait 60
 nav home
 cmd effect give @s minecraft:night_vision infinite 0 true

@@ -24,12 +24,12 @@
         "biome_source": {"type": "minecraft:the_end"}
       }
     },
-    "starfold:native_planet": {
-      "type": "starfold:native_deep",
+    "kolustar:native_planet": {
+      "type": "kolustar:native_deep",
       "generator": {
-        "type": "starfold:native_system",
+        "type": "kolustar:native_system",
         "storage_layout": "six_face_square_v2",
-        "starter_ship": {"structure": "starfold:starter_ship"},
+        "starter_ship": {"structure": "kolustar:starter_ship"},
         "system": "moon_probe:moon"
       }
     }

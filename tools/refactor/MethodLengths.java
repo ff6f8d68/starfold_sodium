@@ -9,7 +9,7 @@ import javax.tools.*;
 /** Parses Java declarations (including multiline signatures), without resolving dependencies. */
 public class MethodLengths {
     public static void main(String[] args) throws Exception {
-        var root = Path.of("src/main/java/dev/starfold");
+        var root = Path.of("src/main/java/dev/kolustar");
         var exceptions =
                 Map.of(
                         "ship/Airstair.java#tickServerStair",

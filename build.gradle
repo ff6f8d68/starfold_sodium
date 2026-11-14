@@ -1,14 +1,14 @@
 plugins { id 'net.neoforged.moddev' version '2.0.148'; id 'java-test-fixtures' }
 version = providers.gradleProperty('candidateVersion').getOrElse('0.3.1')
-group = 'dev.starfold'
-base { archivesName = 'starfold' }
+group = 'dev.kolustar'
+base { archivesName = 'kolustar' }
 repositories {
     mavenCentral()
     maven { url = 'https://api.modrinth.com/maven' }
 }
 neoForge {
     version = '21.1.247' // Already cached; Minecraft 1.21.1.
-    mods { starfold { sourceSet sourceSets.main } }
+    mods { kolustar { sourceSet sourceSets.main } }
     runs {
         client { client(); gameDirectory = file('run')
             if (providers.gradleProperty('devProbeSave').isPresent()) programArguments.addAll('--username', 'Dev', '--quickPlaySingleplayer', providers.gradleProperty('devProbeSave').get(), '--width', '1280', '--height', '720')
@@ -16,9 +16,9 @@ neoForge {
         }
         server { server(); gameDirectory = file('run'); programArgument '--nogui' }
     }
-    unitTest { enable(); testedMod = mods.starfold }
+    unitTest { enable(); testedMod = mods.kolustar }
 }
-// JAVA_TOOL_OPTIONS is inherited by JavaExec, including -Dstarfold.probe=... .
+// JAVA_TOOL_OPTIONS is inherited by JavaExec, including -Dkolustar.probe=... .
 // Do not replace it with a parsed/filtered set of Gradle JVM system properties.
 configurations { sableBundle }
 // javac cannot see classes in nested jars. Flatten only the compile classpath:
@@ -72,7 +72,7 @@ test {
 tasks.withType(Test).configureEach {
     doFirst {
         workingDir = project.projectDir
-        systemProperty 'starfold.testArchives', (sourceSets.main.runtimeClasspath.files + sableEmbeddedJars()).findAll { it.isFile() && it.name.endsWith('.jar') }.join(File.pathSeparator)
+        systemProperty 'kolustar.testArchives', (sourceSets.main.runtimeClasspath.files + sableEmbeddedJars()).findAll { it.isFile() && it.name.endsWith('.jar') }.join(File.pathSeparator)
     }
 }
 // Keep FML's unit-test game/config directory in build while source audits run at the checkout.
@@ -125,10 +125,10 @@ tasks.register('packagedContractTest', Test) {
     testClassesDirs = sourceSets.test.output.classesDirs
     useJUnitPlatform()
     filter {
-        includeTestsMatching 'dev.starfold.MixinContractTest.everySelectedInjectionSelectsRealMethodsAndEveryInvokeMatchesExactly'
-        includeTestsMatching 'dev.starfold.MixinContractTest.shadowFieldsAndPacketAccessorsMatchUpstreamDescriptors'
-        includeTestsMatching 'dev.starfold.SablePersistenceContractTest.*'
-        includeTestsMatching 'dev.starfold.SableMassContractTest.*'
+        includeTestsMatching 'dev.kolustar.MixinContractTest.everySelectedInjectionSelectsRealMethodsAndEveryInvokeMatchesExactly'
+        includeTestsMatching 'dev.kolustar.MixinContractTest.shadowFieldsAndPacketAccessorsMatchUpstreamDescriptors'
+        includeTestsMatching 'dev.kolustar.SablePersistenceContractTest.*'
+        includeTestsMatching 'dev.kolustar.SableMassContractTest.*'
     }
     def modJar = tasks.named('jar', Jar).flatMap { it.archiveFile }
     def upstream = tasks.named('createMinecraftArtifacts').flatMap { it.gameJarArtifact }
@@ -143,12 +143,12 @@ tasks.register('packagedContractTest', Test) {
         workingDir = fullTest.workingDir
         def veil = sableEmbeddedJars().findAll { it.name.startsWith('veil-neoforge-') }
         if (veil.size() != 1) throw new GradleException('Expected one bundled NeoForge Veil artifact')
-        systemProperty 'starfold.auditJar', modJar.get().asFile.absolutePath
-        systemProperty 'starfold.auditProbes', project(':probes').tasks.named('jar', Jar).get().archiveFile.get().asFile.absolutePath
-        systemProperty 'starfold.auditPack', project(':worlds').tasks.named('jar', Jar).get().archiveFile.get().asFile.absolutePath
-        systemProperty 'starfold.auditUpstream', upstream.get().asFile.absolutePath
-        systemProperty 'starfold.auditVeil', veil.first().absolutePath
-        systemProperty 'starfold.auditSable', configurations.sableBundle.singleFile.absolutePath
+        systemProperty 'kolustar.auditJar', modJar.get().asFile.absolutePath
+        systemProperty 'kolustar.auditProbes', project(':probes').tasks.named('jar', Jar).get().archiveFile.get().asFile.absolutePath
+        systemProperty 'kolustar.auditPack', project(':worlds').tasks.named('jar', Jar).get().archiveFile.get().asFile.absolutePath
+        systemProperty 'kolustar.auditUpstream', upstream.get().asFile.absolutePath
+        systemProperty 'kolustar.auditVeil', veil.first().absolutePath
+        systemProperty 'kolustar.auditSable', configurations.sableBundle.singleFile.absolutePath
     }
     doLast {
         def archive = modJar.get().asFile
@@ -168,46 +168,46 @@ tasks.register('splitPackagingContract') {
             zip.entries().toList().findAll { !it.directory }.each { entry ->
                 auditCoreEntry(entry.name, zip.getInputStream(entry).withCloseable { it.readAllBytes() })
             }
-            def universe = zip.getEntry('data/starfold/starfold/universe/default.json')
+            def universe = zip.getEntry('data/kolustar/kolustar/universe/default.json')
             if (universe == null) throw new GradleException('Core default universe is missing')
             def definition = zip.getInputStream(universe).withCloseable { new groovy.json.JsonSlurper().parse(it) }
             definition.types.each { type ->
                 def id = type.type.split(':')
-                if (zip.getEntry("data/${id[0]}/starfold/planet_type/${id[1]}.json") == null)
+                if (zip.getEntry("data/${id[0]}/kolustar/planet_type/${id[1]}.json") == null)
                     throw new GradleException("Unresolved core default type: ${type.type}")
             }
             for (String name : ['system', 'trio', 'stars', 'exploration'])
-                if (zip.getEntry("data/starfold/worldgen/world_preset/native_${name}.json") != null)
+                if (zip.getEntry("data/kolustar/worldgen/world_preset/native_${name}.json") != null)
                     throw new GradleException("Development preset leaked into core: ${name}")
         }
         new java.util.zip.ZipFile(project(':worlds').tasks.named('jar', Jar).get().archiveFile.get().asFile).withCloseable { zip ->
-            for (String entry : ['dev/starfold/worlds/StarfoldWorlds.class', 'starfold_worlds.mixins.json', 'data/starfold_worlds/worldgen/world_preset/experience.json', 'assets/starfold_worlds/lang/en_us.json', 'assets/starfold_worlds/lang/zh_cn.json'])
+            for (String entry : ['dev/kolustar/worlds/KolustarWorlds.class', 'kolustar_worlds.mixins.json', 'data/kolustar_worlds/worldgen/world_preset/experience.json', 'assets/kolustar_worlds/lang/en_us.json', 'assets/kolustar_worlds/lang/zh_cn.json'])
                 if (zip.getEntry(entry) == null) throw new GradleException("Missing pack artifact: ${entry}")
-            if (zip.entries().toList().count { it.name.startsWith('data/starfold_worlds/starfold/planet_type/') && it.name.endsWith('.json') } != 12)
+            if (zip.entries().toList().count { it.name.startsWith('data/kolustar_worlds/kolustar/planet_type/') && it.name.endsWith('.json') } != 12)
                 throw new GradleException('Worlds must contain its twelve planet types')
             zip.entries().toList().findAll { !it.directory }.each { entry ->
                 def text = new String(zip.getInputStream(entry).withCloseable { it.readAllBytes() }, java.nio.charset.StandardCharsets.ISO_8859_1)
-                if (entry.name.contains('Starter') || entry.name.startsWith('data/starfold_extras/') || text.contains('dev/starfold/extras/') || text.contains('starfold_extras:') || text.contains('starter_ship'))
+                if (entry.name.contains('Starter') || entry.name.startsWith('data/kolustar_extras/') || text.contains('dev/kolustar/extras/') || text.contains('kolustar_extras:') || text.contains('starter_ship'))
                     throw new GradleException("Extras content leaked into Worlds: ${entry.name}")
             }
         }
         new java.util.zip.ZipFile(project(':extras').tasks.named('jar', Jar).get().archiveFile.get().asFile).withCloseable { zip ->
-            for (String entry : ['dev/starfold/extras/StarterShip.class', 'data/starfold_extras/structure/starter_ship.nbt', 'data/starfold_extras/structure/starter_ship_weapon.nbt', 'assets/starfold_extras/lang/en_us.json', 'assets/starfold_extras/lang/zh_cn.json'])
+            for (String entry : ['dev/kolustar/extras/StarterShip.class', 'data/kolustar_extras/structure/starter_ship.nbt', 'data/kolustar_extras/structure/starter_ship_weapon.nbt', 'assets/kolustar_extras/lang/en_us.json', 'assets/kolustar_extras/lang/zh_cn.json'])
                 if (zip.getEntry(entry) == null) throw new GradleException("Missing Extras artifact: ${entry}")
-            if (zip.entries().toList().any { it.name.startsWith('dev/starfold/worlds/') || it.name.contains('/planet_type/') || it.name.contains('/biome/') || it.name.contains('/starfold/system/') })
+            if (zip.entries().toList().any { it.name.startsWith('dev/kolustar/worlds/') || it.name.contains('/planet_type/') || it.name.contains('/biome/') || it.name.contains('/kolustar/system/') })
                 throw new GradleException('Worlds content leaked into Extras')
-            def entry = zip.getEntry('data/starfold_worlds/worldgen/world_preset/experience.json')
+            def entry = zip.getEntry('data/kolustar_worlds/worldgen/world_preset/experience.json')
             def json = zip.getInputStream(entry).withCloseable { new groovy.json.JsonSlurper().parse(it) }
-            if (json.dimensions['starfold:native_planet'].generator.remove('starter_ship') != [structure: 'starfold_extras:starter_ship'])
+            if (json.dimensions['kolustar:native_planet'].generator.remove('starter_ship') != [structure: 'kolustar_extras:starter_ship'])
                 throw new GradleException('Missing Extras starter opt-in')
-            def worldsPreset = new groovy.json.JsonSlurper().parse(file('worlds/src/main/resources/data/starfold_worlds/worldgen/world_preset/experience.json'))
+            def worldsPreset = new groovy.json.JsonSlurper().parse(file('worlds/src/main/resources/data/kolustar_worlds/worldgen/world_preset/experience.json'))
             if (json != worldsPreset) throw new GradleException('Extras must only add the starter ship to the Worlds preset')
         }
         new java.util.zip.ZipFile(project(':probes').tasks.named('jar', Jar).get().archiveFile.get().asFile).withCloseable { zip ->
             for (String name : ['system', 'trio', 'stars', 'exploration'])
-                if (zip.getEntry("data/starfold/worldgen/world_preset/native_${name}.json") == null)
+                if (zip.getEntry("data/kolustar/worldgen/world_preset/native_${name}.json") == null)
                     throw new GradleException("Missing development preset: ${name}")
-            for (String entry : ['dev/starfold/dev/DevProbe.class', 'dev/starfold/probe/ArrivalProbe.class', 'starfold_probes.mixins.json'])
+            for (String entry : ['dev/kolustar/dev/DevProbe.class', 'dev/kolustar/probe/ArrivalProbe.class', 'kolustar_probes.mixins.json'])
                 if (zip.getEntry(entry) == null) throw new GradleException("Missing probe artifact: ${entry}")
         }
     }
@@ -222,8 +222,8 @@ gradle.projectsEvaluated {
         jvmArgumentProviders.add({
             launcherArgs.collectMany { it.asArguments() as List }.collect { arg ->
                 arg.startsWith('-Dfml.modFolders=')
-                        ? (arg + sourceSets.testFixtures.output.files.collect { ':starfold%%' + it.absolutePath }.join('')
-                            + project(':worlds').sourceSets.testFixtures.output.files.collect { ':starfold_worlds%%' + it.absolutePath }.join(''))
+                        ? (arg + sourceSets.testFixtures.output.files.collect { ':kolustar%%' + it.absolutePath }.join('')
+                            + project(':worlds').sourceSets.testFixtures.output.files.collect { ':kolustar_worlds%%' + it.absolutePath }.join(''))
                         : arg
             }
         } as CommandLineArgumentProvider)
@@ -240,7 +240,7 @@ gradle.projectsEvaluated {
     }
     neoForge.runs.named('client') { loadedMods = neoForge.mods.toList() }
     neoForge.runs.named('server') {
-        loadedMods = ['starfold', 'starfold_probes', 'starfold_worlds', 'starfold_extras', 'starfold_materials', 'starfold_biotech'].collect { neoForge.mods.getByName(it) }
+        loadedMods = ['kolustar', 'kolustar_probes', 'kolustar_worlds', 'kolustar_extras', 'kolustar_materials', 'kolustar_biotech'].collect { neoForge.mods.getByName(it) }
     }
 }
 
@@ -249,7 +249,7 @@ tasks.register('surfaceCacheEval', JavaExec) {
     group = 'verification'
     description = 'Measure offline whole-planet surface caches, estimates and simulated edits.'
     dependsOn tasks.named('testClasses'), tasks.named('prepareNeoForgeTestFiles')
-    mainClass = 'dev.starfold.worldgen.surface.SurfaceCacheEval'
+    mainClass = 'dev.kolustar.worldgen.surface.SurfaceCacheEval'
     maxHeapSize = '2G'
     workingDir = project.projectDir
     doFirst {
@@ -268,7 +268,7 @@ tasks.register('surfaceEval', JavaExec) {
     group = 'verification'
     description = 'Write offline pointwise surface images, consistency checks and timings.'
     dependsOn tasks.named('testClasses'), tasks.named('prepareNeoForgeTestFiles')
-    mainClass = 'dev.starfold.worldgen.surface.SurfaceEval'
+    mainClass = 'dev.kolustar.worldgen.surface.SurfaceEval'
     maxHeapSize = '2G'
     workingDir = project.projectDir
     doFirst {
@@ -286,7 +286,7 @@ tasks.register('planetPlanEval', JavaExec) {
     group = 'verification'
     description = 'Measure deterministic structure plans at every legal planet size.'
     dependsOn tasks.named('testClasses'), tasks.named('prepareNeoForgeTestFiles')
-    mainClass = 'dev.starfold.worldgen.plan.PlanetPlanEval'
+    mainClass = 'dev.kolustar.worldgen.plan.PlanetPlanEval'
     maxHeapSize = '1G'
     workingDir = project.projectDir
     doFirst {
@@ -303,7 +303,7 @@ tasks.register('terrainPlanEval', JavaExec) {
     group = 'verification'
     description = 'Measure all 103 terrain sizes and render all 13 type atlases offline.'
     dependsOn tasks.named('testClasses'), tasks.named('prepareNeoForgeTestFiles')
-    mainClass = 'dev.starfold.worldgen.plan.TerrainPlanEval'
+    mainClass = 'dev.kolustar.worldgen.plan.TerrainPlanEval'
     maxHeapSize = '1G'
     workingDir = project.projectDir
     doFirst {

@@ -62,7 +62,7 @@ grep -q "Done (" build/dev-server.log || { echo "server failed"; tail -20 build/
 # Create's Registrate now and then loses a race while the client loads its mods ("Found unused register callbacks");
 # the client then sits in a broken state until the timeout. Seen about one start in eight: start it once more.
 for attempt in 1 2; do
-    JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }-Dstarfold.probe=$PWD/$1" timeout ${2:-300} "${DESKTOP[@]}" steam-run ./gradlew runClient --no-daemon -PdevProbe -PdevProbePort="$PORT" > build/dev-client.log 2>&1 < /dev/null & client=$!
+    JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }-Dkolustar.probe=$PWD/$1" timeout ${2:-300} "${DESKTOP[@]}" steam-run ./gradlew runClient --no-daemon -PdevProbe -PdevProbePort="$PORT" > build/dev-client.log 2>&1 < /dev/null & client=$!
     while kill -0 $client 2>/dev/null; do grep -q "Found unused register callbacks" build/dev-client.log && { pkill -TERM -f "$(echo "$PATTERN" | sed 's/(client|server)/client/')"; break; }; sleep 2; done
     wait $client; client_exit=$?
     grep -q "Found unused register callbacks" build/dev-client.log || break

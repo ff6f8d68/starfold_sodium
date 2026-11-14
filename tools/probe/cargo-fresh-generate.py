@@ -10,7 +10,7 @@ cmd kill @e[tag=cargo]
 wait 60
 cmd sable info @e
 fly off
-cmd execute in starfold:native_planet run tp @s -16384 8192 -16384
+cmd execute in kolustar:native_planet run tp @s -16384 8192 -16384
 wait 160
 cmd sable info @e
 cmd sable remove @e
@@ -18,7 +18,7 @@ cmd kill @e[tag=cargo]
 wait 60
 cmd sable info @e
 cmd tp @s 5120.5 140 1024.5
-cmd starfold face 1
+cmd kolustar face 1
 wait 80
 fly on
 cmd tp @s SITE
@@ -29,7 +29,7 @@ cmd kill @e[tag=cargo]
 wait 80
 cmd sable info @e
 cmd effect give @s minecraft:night_vision infinite 0 true
-check native if dimension starfold:native_planet
+check native if dimension kolustar:native_planet
 cmd tp @s SITE
 '''
 build=old[old.index('cmd fill ~'):old.index('cmd summon minecraft:cow')]

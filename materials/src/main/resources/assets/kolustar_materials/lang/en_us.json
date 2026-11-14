@@ -1,0 +1,13 @@
+{
+  "block.kolustar_materials.aluminum_hull_plating": "Aluminum Alloy Hull Plating",
+  "block.kolustar_materials.aluminum_hull_plating_slab": "Aluminum Alloy Hull Plating Slab",
+  "block.kolustar_materials.osmium_pressure_hull": "Osmium Alloy Pressure Hull",
+  "block.kolustar_materials.osmium_pressure_hull_slab": "Osmium Alloy Pressure Hull Slab",
+  "block.kolustar_materials.bauxite_ore": "Bauxite Ore",
+  "block.kolustar_materials.deepslate_bauxite_ore": "Deepslate Bauxite Ore",
+  "block.kolustar_materials.raw_aluminum_block": "Block of Raw Aluminum",
+  "block.kolustar_materials.aluminum_block": "Block of Aluminum",
+  "item.kolustar_materials.raw_aluminum": "Raw Aluminum",
+  "item.kolustar_materials.aluminum_ingot": "Aluminum Ingot",
+  "item.kolustar_materials.aluminum_nugget": "Aluminum Nugget"
+}

@@ -1,0 +1,30 @@
+{
+  "required": true,
+  "plugin": "dev.kolustar.probes.ProbeMixinPlugin",
+  "package": "dev.kolustar.probes.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "ChunkPerfSaveMixin",
+    "ArrivalBlockTickMixin",
+    "ArrivalUnloadMixin",
+    "ArrivalPhysicsMixin",
+    "ArrivalTickMixin",
+    "ArrivalChunkMixin",
+    "PilotPoseProbeMixin",
+    "GroundPositionDiagnosticsMixin",
+    "GroundPositionDiagnosticsNetworkMixin",
+    "GroundPositionDiagnosticAccess"
+  ],
+  "client": [
+    "MeshSectionProbeMixin",
+    "MeshTaskProbeMixin",
+    "MeshDispatcherProbeMixin",
+    "MeshLevelProbeMixin",
+    "DevPortCameraMixin",
+    "DevPortClockMixin",
+    "ArrivalFrameMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

@@ -1,6 +1,0 @@
-{
-  "parent": "starfold:block/scope",
-  "textures": {
-    "lens": "starfold:block/thruster_nozzle"
-  }
-}

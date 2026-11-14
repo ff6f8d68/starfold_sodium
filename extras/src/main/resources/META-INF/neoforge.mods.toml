@@ -3,20 +3,20 @@ loaderVersion="[4,)"
 license="MIT"
 
 [[mods]]
-modId="starfold_extras"
+modId="kolustar_extras"
 version="${version}"
-displayName="Starfold: Extras"
-description='''Optional starter ship, landing pad and ship guide for Starfold: Worlds.'''
+displayName="Kolustar: Extras"
+description='''Optional starter ship, landing pad and ship guide for Kolustar: Worlds.'''
 
-[[dependencies.starfold_extras]]
-modId="starfold"
+[[dependencies.kolustar_extras]]
+modId="kolustar"
 type="required"
 versionRange="[0,)"
 ordering="AFTER"
 side="BOTH"
 
-[[dependencies.starfold_extras]]
-modId="starfold_worlds"
+[[dependencies.kolustar_extras]]
+modId="kolustar_worlds"
 type="required"
 versionRange="[0,)"
 ordering="AFTER"

@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "kolustar:block/scope"
+    },
+    "facing=south": {
+      "model": "kolustar:block/scope",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "kolustar:block/scope",
+      "y": 270
+    },
+    "facing=east": {
+      "model": "kolustar:block/scope",
+      "y": 90
+    },
+    "facing=up": {
+      "model": "kolustar:block/scope",
+      "x": 270
+    },
+    "facing=down": {
+      "model": "kolustar:block/scope",
+      "x": 90
+    }
+  }
+}

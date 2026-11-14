@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "kolustar_biotech:block/pulse_sac"
+      },
+      {
+        "model": "kolustar_biotech:block/pulse_sac",
+        "y": 90
+      },
+      {
+        "model": "kolustar_biotech:block/pulse_sac",
+        "y": 180
+      },
+      {
+        "model": "kolustar_biotech:block/pulse_sac",
+        "y": 270
+      }
+    ]
+  }
+}

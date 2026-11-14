@@ -3,11 +3,11 @@
 import json
 from pathlib import Path
 root = Path(__file__).resolve().parents[2]
-preset = json.loads((root / 'worlds/src/main/resources/data/starfold_worlds/worldgen/world_preset/experience.json').read_text())
+preset = json.loads((root / 'worlds/src/main/resources/data/kolustar_worlds/worldgen/world_preset/experience.json').read_text())
 out = root / 'probes/build/seasons-world'
 files = {
-    'data/starfold_monsoon_probe/worldgen/world_preset/hearth.json': preset,
-    'data/minecraft/tags/worldgen/world_preset/normal.json': {'values': ['starfold_monsoon_probe:hearth']},
+    'data/kolustar_monsoon_probe/worldgen/world_preset/hearth.json': preset,
+    'data/minecraft/tags/worldgen/world_preset/normal.json': {'values': ['kolustar_monsoon_probe:hearth']},
 }
 for name, value in files.items():
     path = out / name

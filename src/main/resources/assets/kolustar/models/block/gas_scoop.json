@@ -1,0 +1,6 @@
+{
+  "parent": "kolustar:block/scope",
+  "textures": {
+    "lens": "kolustar:block/thruster_nozzle"
+  }
+}

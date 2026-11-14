@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "kolustar_materials:block/aluminum_hull_plating_slab"
+    },
+    "type=top": {
+      "model": "kolustar_materials:block/aluminum_hull_plating_slab_top"
+    },
+    "type=double": {
+      "model": "kolustar_materials:block/aluminum_hull_plating"
+    }
+  }
+}

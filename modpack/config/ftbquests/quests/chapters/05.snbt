@@ -12,7 +12,7 @@
         {
           "id": "1000000000050101",
           "type": "advancement",
-          "advancement": "starfold:ship/other_planet"
+          "advancement": "kolustar:ship/other_planet"
         }
       ],
       "rewards": [
@@ -98,7 +98,7 @@
         {
           "id": "1000000000050401",
           "type": "advancement",
-          "advancement": "starfold:ship/home"
+          "advancement": "kolustar:ship/home"
         }
       ],
       "rewards": [

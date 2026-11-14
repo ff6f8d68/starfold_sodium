@@ -1,5 +1,5 @@
 # Surface sky evidence only. Admin visits and sky skips do not count as travel.
-# Requires server JAVA_TOOL_OPTIONS: -Dstarfold.helmProbe=true -Dstarfold.packProbe=true.
+# Requires server JAVA_TOOL_OPTIONS: -Dkolustar.helmProbe=true -Dkolustar.packProbe=true.
 waitworld
 wait 300
 cmd gamemode creative

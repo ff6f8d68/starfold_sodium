@@ -1,11 +1,11 @@
 plugins { id 'net.neoforged.moddev'; id 'java-test-fixtures' }
 apply from: rootProject.file('gradle/module-common.gradle')
 apply from: rootProject.file('gradle/module-test.gradle')
-base { archivesName = 'starfold_worlds' }
+base { archivesName = 'kolustar_worlds' }
 repositories { mavenCentral() }
 neoForge {
     version = rootProject.neoForge.version
-    mods { starfold_worlds { sourceSet sourceSets.main } }
+    mods { kolustar_worlds { sourceSet sourceSets.main } }
 }
 sourceSets.testFixtures.compileClasspath += sourceSets.main.compileClasspath
 dependencies {

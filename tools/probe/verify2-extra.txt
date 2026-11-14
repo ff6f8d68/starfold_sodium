@@ -2,13 +2,13 @@ waitworld
 strict
 wait 60
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 100
 cmd effect give @s minecraft:night_vision infinite 0 true
 cmd tp @s 1003.5 -523 1000.5 90 25
 wait 200
 log A-restart
-check A-restart-all9 if block 999 -525 999 starfold:core_shell if block 999 -525 1000 starfold:core_shell if block 999 -525 1001 starfold:core_shell if block 1000 -525 999 starfold:core_shell if block 1000 -525 1000 starfold:core_shell if block 1000 -525 1001 starfold:core_shell if block 1001 -525 999 starfold:core_shell if block 1001 -525 1000 starfold:core_shell if block 1001 -525 1001 starfold:core_shell
+check A-restart-all9 if block 999 -525 999 kolustar:core_shell if block 999 -525 1000 kolustar:core_shell if block 999 -525 1001 kolustar:core_shell if block 1000 -525 999 kolustar:core_shell if block 1000 -525 1000 kolustar:core_shell if block 1000 -525 1001 kolustar:core_shell if block 1001 -525 999 kolustar:core_shell if block 1001 -525 1000 kolustar:core_shell if block 1001 -525 1001 kolustar:core_shell
 blockat 999 -525 999
 blockat 999 -525 1000
 blockat 999 -525 1001
@@ -29,7 +29,7 @@ cmd execute as @e[type=create:controlled_contraption,distance=..20] run data get
 entities
 shot verify2-3-A-moving-drill-positive
 log A-moving-drill-positive
-check A-moving-drill-positive-all9 if block 999 -525 999 starfold:core_shell if block 999 -525 1000 starfold:core_shell if block 999 -525 1001 starfold:core_shell if block 1000 -525 999 starfold:core_shell if block 1000 -525 1000 starfold:core_shell if block 1000 -525 1001 starfold:core_shell if block 1001 -525 999 starfold:core_shell if block 1001 -525 1000 starfold:core_shell if block 1001 -525 1001 starfold:core_shell
+check A-moving-drill-positive-all9 if block 999 -525 999 kolustar:core_shell if block 999 -525 1000 kolustar:core_shell if block 999 -525 1001 kolustar:core_shell if block 1000 -525 999 kolustar:core_shell if block 1000 -525 1000 kolustar:core_shell if block 1000 -525 1001 kolustar:core_shell if block 1001 -525 999 kolustar:core_shell if block 1001 -525 1000 kolustar:core_shell if block 1001 -525 1001 kolustar:core_shell
 blockat 999 -525 999
 blockat 999 -525 1000
 blockat 999 -525 1001
@@ -46,7 +46,7 @@ cmd execute as @e[type=create:controlled_contraption,distance=..20] run data get
 entities
 shot verify2-3-A-moving-drill-negative
 log A-moving-drill-negative
-check A-moving-drill-negative-all9 if block 999 -525 999 starfold:core_shell if block 999 -525 1000 starfold:core_shell if block 999 -525 1001 starfold:core_shell if block 1000 -525 999 starfold:core_shell if block 1000 -525 1000 starfold:core_shell if block 1000 -525 1001 starfold:core_shell if block 1001 -525 999 starfold:core_shell if block 1001 -525 1000 starfold:core_shell if block 1001 -525 1001 starfold:core_shell
+check A-moving-drill-negative-all9 if block 999 -525 999 kolustar:core_shell if block 999 -525 1000 kolustar:core_shell if block 999 -525 1001 kolustar:core_shell if block 1000 -525 999 kolustar:core_shell if block 1000 -525 1000 kolustar:core_shell if block 1000 -525 1001 kolustar:core_shell if block 1001 -525 999 kolustar:core_shell if block 1001 -525 1000 kolustar:core_shell if block 1001 -525 1001 kolustar:core_shell
 blockat 999 -525 999
 blockat 999 -525 1000
 blockat 999 -525 1001
@@ -64,7 +64,7 @@ cmd setblock 999 -524 1000 create:creative_motor[facing=east]{ScrollValue:32}
 wait 100
 cmd data get block 1000 -524 1000
 log A-create-push-positive
-check A-create-push-positive-all9 if block 999 -525 999 starfold:core_shell if block 999 -525 1000 starfold:core_shell if block 999 -525 1001 starfold:core_shell if block 1000 -525 999 starfold:core_shell if block 1000 -525 1000 starfold:core_shell if block 1000 -525 1001 starfold:core_shell if block 1001 -525 999 starfold:core_shell if block 1001 -525 1000 starfold:core_shell if block 1001 -525 1001 starfold:core_shell
+check A-create-push-positive-all9 if block 999 -525 999 kolustar:core_shell if block 999 -525 1000 kolustar:core_shell if block 999 -525 1001 kolustar:core_shell if block 1000 -525 999 kolustar:core_shell if block 1000 -525 1000 kolustar:core_shell if block 1000 -525 1001 kolustar:core_shell if block 1001 -525 999 kolustar:core_shell if block 1001 -525 1000 kolustar:core_shell if block 1001 -525 1001 kolustar:core_shell
 blockat 999 -525 999
 blockat 999 -525 1000
 blockat 999 -525 1001
@@ -78,7 +78,7 @@ cmd data merge block 999 -524 1000 {ScrollValue:-32}
 wait 100
 cmd data get block 1000 -524 1000
 log A-create-push-negative
-check A-create-push-negative-all9 if block 999 -525 999 starfold:core_shell if block 999 -525 1000 starfold:core_shell if block 999 -525 1001 starfold:core_shell if block 1000 -525 999 starfold:core_shell if block 1000 -525 1000 starfold:core_shell if block 1000 -525 1001 starfold:core_shell if block 1001 -525 999 starfold:core_shell if block 1001 -525 1000 starfold:core_shell if block 1001 -525 1001 starfold:core_shell
+check A-create-push-negative-all9 if block 999 -525 999 kolustar:core_shell if block 999 -525 1000 kolustar:core_shell if block 999 -525 1001 kolustar:core_shell if block 1000 -525 999 kolustar:core_shell if block 1000 -525 1000 kolustar:core_shell if block 1000 -525 1001 kolustar:core_shell if block 1001 -525 999 kolustar:core_shell if block 1001 -525 1000 kolustar:core_shell if block 1001 -525 1001 kolustar:core_shell
 blockat 999 -525 999
 blockat 999 -525 1000
 blockat 999 -525 1001
@@ -93,7 +93,7 @@ cmd fill 999 -524 1000 1000 -516 1000 air
 cmd tp @s 33283.5 -197 512.5 90 25
 wait 200
 log B-restart
-check B-restart-all9 if block 33279 -199 511 starfold:core_shell if block 33279 -199 512 starfold:core_shell if block 33279 -199 513 starfold:core_shell if block 33280 -199 511 starfold:core_shell if block 33280 -199 512 starfold:core_shell if block 33280 -199 513 starfold:core_shell if block 33281 -199 511 starfold:core_shell if block 33281 -199 512 starfold:core_shell if block 33281 -199 513 starfold:core_shell
+check B-restart-all9 if block 33279 -199 511 kolustar:core_shell if block 33279 -199 512 kolustar:core_shell if block 33279 -199 513 kolustar:core_shell if block 33280 -199 511 kolustar:core_shell if block 33280 -199 512 kolustar:core_shell if block 33280 -199 513 kolustar:core_shell if block 33281 -199 511 kolustar:core_shell if block 33281 -199 512 kolustar:core_shell if block 33281 -199 513 kolustar:core_shell
 blockat 33279 -199 511
 blockat 33279 -199 512
 blockat 33279 -199 513
@@ -114,7 +114,7 @@ cmd execute as @e[type=create:controlled_contraption,distance=..20] run data get
 entities
 shot verify2-3-B-moving-drill-positive
 log B-moving-drill-positive
-check B-moving-drill-positive-all9 if block 33279 -199 511 starfold:core_shell if block 33279 -199 512 starfold:core_shell if block 33279 -199 513 starfold:core_shell if block 33280 -199 511 starfold:core_shell if block 33280 -199 512 starfold:core_shell if block 33280 -199 513 starfold:core_shell if block 33281 -199 511 starfold:core_shell if block 33281 -199 512 starfold:core_shell if block 33281 -199 513 starfold:core_shell
+check B-moving-drill-positive-all9 if block 33279 -199 511 kolustar:core_shell if block 33279 -199 512 kolustar:core_shell if block 33279 -199 513 kolustar:core_shell if block 33280 -199 511 kolustar:core_shell if block 33280 -199 512 kolustar:core_shell if block 33280 -199 513 kolustar:core_shell if block 33281 -199 511 kolustar:core_shell if block 33281 -199 512 kolustar:core_shell if block 33281 -199 513 kolustar:core_shell
 blockat 33279 -199 511
 blockat 33279 -199 512
 blockat 33279 -199 513
@@ -131,7 +131,7 @@ cmd execute as @e[type=create:controlled_contraption,distance=..20] run data get
 entities
 shot verify2-3-B-moving-drill-negative
 log B-moving-drill-negative
-check B-moving-drill-negative-all9 if block 33279 -199 511 starfold:core_shell if block 33279 -199 512 starfold:core_shell if block 33279 -199 513 starfold:core_shell if block 33280 -199 511 starfold:core_shell if block 33280 -199 512 starfold:core_shell if block 33280 -199 513 starfold:core_shell if block 33281 -199 511 starfold:core_shell if block 33281 -199 512 starfold:core_shell if block 33281 -199 513 starfold:core_shell
+check B-moving-drill-negative-all9 if block 33279 -199 511 kolustar:core_shell if block 33279 -199 512 kolustar:core_shell if block 33279 -199 513 kolustar:core_shell if block 33280 -199 511 kolustar:core_shell if block 33280 -199 512 kolustar:core_shell if block 33280 -199 513 kolustar:core_shell if block 33281 -199 511 kolustar:core_shell if block 33281 -199 512 kolustar:core_shell if block 33281 -199 513 kolustar:core_shell
 blockat 33279 -199 511
 blockat 33279 -199 512
 blockat 33279 -199 513
@@ -149,7 +149,7 @@ cmd setblock 33279 -198 512 create:creative_motor[facing=east]{ScrollValue:32}
 wait 100
 cmd data get block 33280 -198 512
 log B-create-push-positive
-check B-create-push-positive-all9 if block 33279 -199 511 starfold:core_shell if block 33279 -199 512 starfold:core_shell if block 33279 -199 513 starfold:core_shell if block 33280 -199 511 starfold:core_shell if block 33280 -199 512 starfold:core_shell if block 33280 -199 513 starfold:core_shell if block 33281 -199 511 starfold:core_shell if block 33281 -199 512 starfold:core_shell if block 33281 -199 513 starfold:core_shell
+check B-create-push-positive-all9 if block 33279 -199 511 kolustar:core_shell if block 33279 -199 512 kolustar:core_shell if block 33279 -199 513 kolustar:core_shell if block 33280 -199 511 kolustar:core_shell if block 33280 -199 512 kolustar:core_shell if block 33280 -199 513 kolustar:core_shell if block 33281 -199 511 kolustar:core_shell if block 33281 -199 512 kolustar:core_shell if block 33281 -199 513 kolustar:core_shell
 blockat 33279 -199 511
 blockat 33279 -199 512
 blockat 33279 -199 513
@@ -163,7 +163,7 @@ cmd data merge block 33279 -198 512 {ScrollValue:-32}
 wait 100
 cmd data get block 33280 -198 512
 log B-create-push-negative
-check B-create-push-negative-all9 if block 33279 -199 511 starfold:core_shell if block 33279 -199 512 starfold:core_shell if block 33279 -199 513 starfold:core_shell if block 33280 -199 511 starfold:core_shell if block 33280 -199 512 starfold:core_shell if block 33280 -199 513 starfold:core_shell if block 33281 -199 511 starfold:core_shell if block 33281 -199 512 starfold:core_shell if block 33281 -199 513 starfold:core_shell
+check B-create-push-negative-all9 if block 33279 -199 511 kolustar:core_shell if block 33279 -199 512 kolustar:core_shell if block 33279 -199 513 kolustar:core_shell if block 33280 -199 511 kolustar:core_shell if block 33280 -199 512 kolustar:core_shell if block 33280 -199 513 kolustar:core_shell if block 33281 -199 511 kolustar:core_shell if block 33281 -199 512 kolustar:core_shell if block 33281 -199 513 kolustar:core_shell
 blockat 33279 -199 511
 blockat 33279 -199 512
 blockat 33279 -199 513
@@ -175,7 +175,7 @@ blockat 33281 -199 512
 blockat 33281 -199 513
 cmd kill @e[type=create:controlled_contraption,distance=..20]
 cmd fill 33279 -198 512 33280 -190 512 air
-cmd starfold face 0
+cmd kolustar face 0
 wait 80
 cmd tp @s 26.5 0 2040.5 90 0
 wait 200
@@ -183,18 +183,18 @@ cmd fill 16 0 2038 30 5 2042 air
 cmd tp @s 20.5 0 2040.5 90 0
 wait 40
 scandown 15 2040 5 -2
-check anomaly-source-before if block 15 0 2040 starfold:anomaly_core
+check anomaly-source-before if block 15 0 2040 kolustar:anomaly_core
 cmd sable assemble area 15 0 2040 15 0 2040
 wait 100
 cmd sable info @e
 hullblocks anomaly
-check anomaly-source-after if block 15 0 2040 starfold:anomaly_core
+check anomaly-source-after if block 15 0 2040 kolustar:anomaly_core
 blockat 15 0 2040
 cmd sable remove @e
 wait 40
 cmd effect clear @s
 look free
-cmd starfold face 0
+cmd kolustar face 0
 wait 100
 cmd forceload add 0 2000 192 2047
 wait 300
@@ -205,11 +205,11 @@ wait 80
 cmd tp @s 166 175 2040.5 90 -12
 wait 3
 fly on
-cmd starfold spin on
+cmd kolustar spin on
 cmd tick rate 200
 solarplan day
 cmd tick rate 20
-cmd starfold spin off
+cmd kolustar spin off
 wait 60
 cmd tp @s 166 175 2040.5 90 -12
 wait 3
@@ -239,11 +239,11 @@ wait 100
 solar day-10
 corner day-10
 shot verify2-3-day-10
-cmd starfold spin on
+cmd kolustar spin on
 cmd tick rate 200
 solarplan night
 cmd tick rate 20
-cmd starfold spin off
+cmd kolustar spin off
 wait 60
 cmd tp @s 166 175 2040.5 90 -12
 wait 3
@@ -274,7 +274,7 @@ solar night-10
 corner night-10
 shot verify2-3-night-10
 cmd tick rate 20
-cmd starfold spin on
+cmd kolustar spin on
 cmd save-all flush
 wait 60
 shot verify2-3-end

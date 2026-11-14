@@ -1,0 +1,21 @@
+{
+  "variants": {
+    "": [
+      {
+        "model": "kolustar_biotech:block/hive_flesh"
+      },
+      {
+        "model": "kolustar_biotech:block/hive_flesh",
+        "y": 90
+      },
+      {
+        "model": "kolustar_biotech:block/hive_flesh",
+        "y": 180
+      },
+      {
+        "model": "kolustar_biotech:block/hive_flesh",
+        "y": 270
+      }
+    ]
+  }
+}

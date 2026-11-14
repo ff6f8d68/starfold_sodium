@@ -15,7 +15,7 @@ stop() {
 }
 cleanup() { local result=$?; trap - EXIT; stop || result=1; exit "$result"; }
 trap cleanup EXIT
-JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }-Dstarfold.probe=$PWD/$1" timeout "${3:-2400}" steam-run ./gradlew runClient --no-daemon "-PdevProbeSave=$2" > build/space/sp-client.log 2>&1 < /dev/null
+JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }-Dkolustar.probe=$PWD/$1" timeout "${3:-2400}" steam-run ./gradlew runClient --no-daemon "-PdevProbeSave=$2" > build/space/sp-client.log 2>&1 < /dev/null
 # A graceful integrated-server exit must save all dimensions as well as acknowledge the script.
 timeout 60 python3 tools/probe/verify.py build/space/sp-client.log
 timeout 60 grep 'All dimensions are saved' build/space/sp-client.log

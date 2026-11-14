@@ -2,11 +2,11 @@ waitworld
 strict
 wait 100
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 120
 cmd gamerule doMobSpawning false
 cmd weather clear
-cmd starfold spin off
+cmd kolustar spin off
 cmd tp @s 1024.5 174 1016.5 0 25
 fly on
 wait 600

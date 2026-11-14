@@ -14,7 +14,7 @@ wait 40
 waitworld
 wait 100
 nav reborn
-cmd starfold status
+cmd kolustar status
 wait 100
 nav later
 shot spawn-planet-death

@@ -4,7 +4,7 @@ from pathlib import Path
 import struct
 import zlib
 
-root = Path(__file__).resolve().parents[2] / 'src/main/resources/assets/starfold/textures/block'
+root = Path(__file__).resolve().parents[2] / 'src/main/resources/assets/kolustar/textures/block'
 
 def chunk(kind, data):
     return struct.pack('>I', len(data)) + kind + data + struct.pack('>I', zlib.crc32(kind + data))

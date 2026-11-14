@@ -3,16 +3,16 @@ loaderVersion="[4,)"
 license="MIT"
 
 [[mods]]
-modId="starfold_worlds"
+modId="kolustar_worlds"
 version="${version}"
-displayName="Starfold: Worlds"
-description='''Planets, biomes and experience worlds for Starfold.'''
+displayName="Kolustar: Worlds"
+description='''Planets, biomes and experience worlds for Kolustar.'''
 
 [[mixins]]
-config="starfold_worlds.mixins.json"
+config="kolustar_worlds.mixins.json"
 
-[[dependencies.starfold_worlds]]
-modId="starfold"
+[[dependencies.kolustar_worlds]]
+modId="kolustar"
 type="required"
 versionRange="[0,)"
 ordering="AFTER"

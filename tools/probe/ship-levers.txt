@@ -3,7 +3,7 @@ waitworld
 wait 100
 waitworld
 cmd gamemode creative
-cmd starfold face 1
+cmd kolustar face 1
 wait 100
 until free 200
 cmd effect give @s minecraft:night_vision infinite 0 true

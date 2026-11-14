@@ -21,22 +21,22 @@ JEI 19.70.0.460 declares MC `[1.21,1.21.1)`. This is accepted by the bundled FML
 patch third-party jars or mistake that range alone for an incompatibility.
 MezzConfig is JEI's CurseForge dependency (also embedded at an older version).
 
-## Local Starfold jars — required before testing
+## Local Kolustar jars — required before testing
 
 None has a CurseForge project/file entry yet. The lead supplies the merged builds:
 
-- `starfold-<version>.jar` (core)
-- `starfold_worlds-<version>.jar` (experience planets and presets; the pack's
-  `starfold_worlds` data overrides need it)
-- `starfold_atlas-<version>.jar` (planet, system and interstellar maps, ship tracking)
-- `starfold_materials-<version>.jar` (aluminum stock, lightweight panels and osmium pressure hulls)
-- `starfold_biotech-<version>.jar` (Flesh and the Host encounter; requires exactly GeckoLib 4.8.2)
+- `kolustar-<version>.jar` (core)
+- `kolustar_worlds-<version>.jar` (experience planets and presets; the pack's
+  `kolustar_worlds` data overrides need it)
+- `kolustar_atlas-<version>.jar` (planet, system and interstellar maps, ship tracking)
+- `kolustar_materials-<version>.jar` (aluminum stock, lightweight panels and osmium pressure hulls)
+- `kolustar_biotech-<version>.jar` (Flesh and the Host encounter; requires exactly GeckoLib 4.8.2)
 
 GeckoLib is pinned to CurseForge file **7023453**, `geckolib-neoforge-1.21.1-4.8.2.jar`.
 Biotech appends Flesh to the experience system and universe; KubeJS does not override these definitions.
 
-`starfold_extras` is not needed: this pack starts from scratch, without a supplied ship or landing pad.
-`starfold_probes` is development-only and never goes into the pack. Drop all five into **the test instance's `mods/` directory** alongside the resolved CurseForge
+`kolustar_extras` is not needed: this pack starts from scratch, without a supplied ship or landing pad.
+`kolustar_probes` is development-only and never goes into the pack. Drop all five into **the test instance's `mods/` directory** alongside the resolved CurseForge
 mods, then copy `kubejs/` and `config/` into the instance root. For a packwiz local test,
 `modpack/mods/` can hold these jars temporarily; both Git and packwiz ignore them, so
 export will **not** contain them. Never upload a development zip as a complete pack.
@@ -107,7 +107,7 @@ home and the other habitable classes still have no diamond ore.
 
 ## Hull materials and aluminum
 
-`starfold_materials` supplies bauxite ore and its deepslate variant, raw aluminum,
+`kolustar_materials` supplies bauxite ore and its deepslate variant, raw aluminum,
 ingots, nuggets and storage blocks. Only the desert planet ore table places bauxite;
 the module adds no world generation. Smelting or blasting ore/raw aluminum yields
 ingots. Hull recipes use common `c:` ingot tags, not provider IDs; osmium remains
@@ -117,7 +117,7 @@ Chapter 6 adds aluminum plating; all old quest/task/reward identifiers are prese
 
 ## Tier 3: atmospheric deuterium
 
-After hydrogen machinery, build `starfold:gas_scoop` with a precision mechanism,
+After hydrogen machinery, build `kolustar:gas_scoop` with a precision mechanism,
 two advanced circuits, a Create fluid tank and a rotary condensentrator. On one
 Sable hull, put the intake in Amber's pressure field with an empty compatible tank.
 The global skim fluid is `mekanismgenerators:deuterium`; first-guess rate is 10 mB/tick

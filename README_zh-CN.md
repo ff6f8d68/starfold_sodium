@@ -31,22 +31,22 @@ Minecraft 1.21.1 NeoForge 模组：星球是由真实原版区块构成的封闭
 | 机械动力（Create）、机械动力：航空学（Create Aeronautics） | 造船和使用 Extras 需要 |
 | Immersive Aircraft | 可选；给起始飞船加一架飞行器 |
 
-安装 `starfold_worlds` 获得体验星球和预设；可选安装 `starfold_extras` 获得初始飞船、停机坪和指南书（需要 Worlds、Create 和 Create Aeronautics）。
-`starfold_materials` 提供轻质铝合金外壳板与重型锇合金耐压壳（完整方块、半砖）；金属原料由其他模组通过通用标签提供。数值见[暂定材料平衡](materials/BALANCE.md)。
+安装 `kolustar_worlds` 获得体验星球和预设；可选安装 `kolustar_extras` 获得初始飞船、停机坪和指南书（需要 Worlds、Create 和 Create Aeronautics）。
+`kolustar_materials` 提供轻质铝合金外壳板与重型锇合金耐压壳（完整方块、半砖）；金属原料由其他模组通过通用标签提供。数值见[暂定材料平衡](materials/BALANCE.md)。
 
-`starfold_atlas` 提供地图和飞船追踪。`starfold_biotech` 需要 Worlds 和固定版本 GeckoLib 4.8.2，其平衡数值仍为暂定。`modpack/` 是生存整合包配置源码，尚未完成完整生存流程验收。
+`kolustar_atlas` 提供地图和飞船追踪。`kolustar_biotech` 需要 Worlds 和固定版本 GeckoLib 4.8.2，其平衡数值仍为暂定。`modpack/` 是生存整合包配置源码，尚未完成完整生存流程验收。
 
-星球渲染支持原版渲染器和 Sodium 0.8。Iris 在未启用光影包时可用；启用 Iris 光影包，或使用 Embeddium、Canvas 时，本版本会停用星球地形投影和远景。Particle Rain 的降水改为读取各星球自身的天气，而不是原版区块天气标记，因此在无大气星球和太空中不再降雨。Starfold 会把星球维度本身加入 Weather2 的天气、云、风暴与风系统维度列表，这些系统因此真正在星球上运行，而不只局限于主世界；其降水、云与漏斗粒子会随星球一起经过 Starfold 的投影粒子渲染而弯曲，其在星球上发布的降雨状态也会驱动 Particle Rain。星球维度内只停用 Weather2 的平面世界雾覆盖（雾由星球大气负责），无天气的星球环境中其天气音效仍会静音。Veil 的深度与着色器钩子在 Veil 4.3～4.5 之间采用容错方式应用，版本差异只会让 Veil 保持未打补丁状态，而不会导致 mixin 失败。模组声明与 `gravity_changer` 不兼容。
+星球渲染支持原版渲染器和 Sodium 0.8。Iris 在未启用光影包时可用；启用 Iris 光影包，或使用 Embeddium、Canvas 时，本版本会停用星球地形投影和远景。Particle Rain 的降水改为读取各星球自身的天气，而不是原版区块天气标记，因此在无大气星球和太空中不再降雨。星海折越 会把星球维度本身加入 Weather2 的天气、云、风暴与风系统维度列表，这些系统因此真正在星球上运行，而不只局限于主世界；其降水、云与漏斗粒子会随星球一起经过 星海折越 的投影粒子渲染而弯曲，其在星球上发布的降雨状态也会驱动 Particle Rain。星球维度内只停用 Weather2 的平面世界雾覆盖（雾由星球大气负责），无天气的星球环境中其天气音效仍会静音。Veil 的深度与着色器钩子在 Veil 4.3～4.5 之间采用容错方式应用，版本差异只会让 Veil 保持未打补丁状态，而不会导致 mixin 失败。模组声明与 `gravity_changer` 不兼容。
 
 ## 游玩
 
 新建世界。默认世界类型现在会将你生成在星海折越宇宙中一颗类地的母星上（原版“普通”预设已被覆盖为星海折越的随机宇宙，因此星球系统与自动抵达可直接使用）。其他世界类型仍可选择：
 
-- `starfold_worlds:experience`：体验世界；安装 `starfold_extras` 后附带起始飞船。
-- `starfold:native_universe`（“星海折越：随机宇宙”）：不含体验包的随机宇宙。
+- `kolustar_worlds:experience`：体验世界；安装 `kolustar_extras` 后附带起始飞船。
+- `kolustar:native_universe`（“星海折越：随机宇宙”）：不含体验包的随机宇宙。
 - 其余 `native_*` 预设是开发时使用的小型场景，不出现在创建世界界面里；服务器可以用 `level-type` 按 id 选用。
 
-星球相关命令在 `/starfold` 下。
+星球相关命令在 `/kolustar` 下。
 
 ## 构建
 
@@ -65,7 +65,7 @@ Java 源码用 google-java-format 1.28.0 的 AOSP 风格格式化
 
 ## 仓库结构
 
-- `src/main`、`src/test`：核心 `starfold` 模组及其测试。代码位于 `dev.starfold`，每个子系统一个包（测试与被测代码同包）：
+- `src/main`、`src/test`：核心 `kolustar` 模组及其测试。代码位于 `dev.kolustar`，每个子系统一个包（测试与被测代码同包）：
   - `geometry`：立方体表面、各面与接缝的纯数学，不含 Minecraft 类型。
   - `network`：共享的数据包注册与按运行端分离的接收器。
   - `chart`：星球形状、天体轨道与太阳的计算，以及观察者从地面到轨道看到的星球投影。
@@ -86,13 +86,13 @@ Java 源码用 google-java-format 1.28.0 的 AOSP 风格格式化
 
   | 模块 | 职责与源码路径 |
   |---|---|
-  | `atlas` | 星球测绘及星图、星系图、地面地图：`atlas/src/main/java/dev/starfold/atlas` |
-  | `devtools` | 按需启用的客户端 CPU/GPU 性能分析：`devtools/src/main/java/dev/starfold/devtools` |
-  | `probes` | 开发探针、被动测量及探针 mixin：`probes/src/main/java/dev/starfold/{dev,probe,probes}`；仅供开发 |
-  | `worlds` | 体验星球、群系与世界预设：`worlds/src/main/java/dev/starfold/worlds` 及 `worlds/src/main/resources` |
-  | `extras` | 可选起始飞船、停机坪与指南书：`extras/src/main/java/dev/starfold/extras`；飞船结构位于 `extras/src/main/resources/data/starfold_extras/structure` |
-  | `materials` | 铝原料、外壳板与耐压壳组件：`materials/src/main/java/dev/starfold/materials` 及 `materials/src/main/resources` |
-  | `biotech` | 血肉虫巢地形、有机材料与宿主遭遇：`biotech/src/main/java/dev/starfold/biotech` 及 `biotech/src/main/resources` |
+  | `atlas` | 星球测绘及星图、星系图、地面地图：`atlas/src/main/java/dev/kolustar/atlas` |
+  | `devtools` | 按需启用的客户端 CPU/GPU 性能分析：`devtools/src/main/java/dev/kolustar/devtools` |
+  | `probes` | 开发探针、被动测量及探针 mixin：`probes/src/main/java/dev/kolustar/{dev,probe,probes}`；仅供开发 |
+  | `worlds` | 体验星球、群系与世界预设：`worlds/src/main/java/dev/kolustar/worlds` 及 `worlds/src/main/resources` |
+  | `extras` | 可选起始飞船、停机坪与指南书：`extras/src/main/java/dev/kolustar/extras`；飞船结构位于 `extras/src/main/resources/data/kolustar_extras/structure` |
+  | `materials` | 铝原料、外壳板与耐压壳组件：`materials/src/main/java/dev/kolustar/materials` 及 `materials/src/main/resources` |
+  | `biotech` | 血肉虫巢地形、有机材料与宿主遭遇：`biotech/src/main/java/dev/kolustar/biotech` 及 `biotech/src/main/resources` |
 
 - `docs/DATAPACKS_zh-CN.md`：给数据包作者的参考，另有英文版 `docs/DATAPACKS.md`；测试会读取其中的示例。
 - `docs/DEVELOPMENT.md`：架构、验证命令与当前验收边界。

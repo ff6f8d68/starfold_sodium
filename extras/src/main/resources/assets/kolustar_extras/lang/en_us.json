@@ -1,0 +1,4 @@
+{
+  "screen.kolustar.experience_unavailable": "Experience preset unavailable",
+  "screen.kolustar.experience_dependencies": "This preset needs Create and Simulated (Create Aeronautics). Install both, or go back and choose \"Kolustar: Generated Universe\". No world has been created."
+}

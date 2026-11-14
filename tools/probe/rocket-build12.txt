@@ -4,7 +4,7 @@ waitworld
 wait 200
 waitworld
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 cmd tp @s 4148.5 140 1020.5 180 20
 wait 20
@@ -43,24 +43,24 @@ cmd setblock 4148 132 1013 minecraft:iron_block
 cmd setblock 4148 132 1015 minecraft:iron_block
 cmd setblock 4150 132 1013 minecraft:iron_block
 cmd setblock 4150 132 1015 minecraft:iron_block
-cmd setblock 4148 132 1014 starfold:thruster[facing=down]
-cmd setblock 4149 133 1013 starfold:thruster[facing=up]
-cmd setblock 4149 133 1015 starfold:thruster[facing=up]
-cmd setblock 4152 133 1014 starfold:thruster[facing=east]
-cmd setblock 4150 133 1013 starfold:booster
-cmd setblock 4150 133 1015 starfold:booster
-cmd setblock 4144 132 1014 starfold:thruster[facing=west]
-cmd setblock 4144 132 1012 starfold:thruster[facing=north]
-cmd setblock 4152 133 1016 starfold:thruster[facing=south]
-cmd setblock 4144 132 1016 starfold:thruster[facing=south]
-cmd setblock 4152 133 1012 starfold:thruster[facing=north]
-cmd setblock 4147 133 1016 starfold:gyro
+cmd setblock 4148 132 1014 kolustar:thruster[facing=down]
+cmd setblock 4149 133 1013 kolustar:thruster[facing=up]
+cmd setblock 4149 133 1015 kolustar:thruster[facing=up]
+cmd setblock 4152 133 1014 kolustar:thruster[facing=east]
+cmd setblock 4150 133 1013 kolustar:booster
+cmd setblock 4150 133 1015 kolustar:booster
+cmd setblock 4144 132 1014 kolustar:thruster[facing=west]
+cmd setblock 4144 132 1012 kolustar:thruster[facing=north]
+cmd setblock 4152 133 1016 kolustar:thruster[facing=south]
+cmd setblock 4144 132 1016 kolustar:thruster[facing=south]
+cmd setblock 4152 133 1012 kolustar:thruster[facing=north]
+cmd setblock 4147 133 1016 kolustar:gyro
 cmd setblock 4147 134 1016 minecraft:lever[face=floor,facing=north,powered=true]
-cmd setblock 4147 133 1012 starfold:gyro
+cmd setblock 4147 133 1012 kolustar:gyro
 cmd setblock 4147 134 1012 minecraft:lever[face=floor,facing=north,powered=true]
-cmd setblock 4146 133 1014 starfold:helm[facing=west]
-cmd setblock 4143 134 1014 starfold:scope[facing=west]
-cmd setblock 4145 132 1014 starfold:scope[facing=down]
+cmd setblock 4146 133 1014 kolustar:helm[facing=west]
+cmd setblock 4143 134 1014 kolustar:scope[facing=west]
+cmd setblock 4145 132 1014 kolustar:scope[facing=down]
 cmd setblock 4148 133 1015 minecraft:oak_sign[rotation=12]{front_text:{messages:['{"text":"右键控制器"}','{"text":"W前 S后"}','{"text":"空格升 Shift降"}','{"text":"Ctrl各方向加速"}']}}
 cmd setblock 4148 133 1013 minecraft:oak_sign[rotation=12]{front_text:{messages:['{"text":"R或右键退出"}','{"text":"A左 D右"}','{"text":"星球转向"}','{"text":"太空滚转"}']}}
 wait 60

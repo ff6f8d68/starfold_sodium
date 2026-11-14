@@ -5,7 +5,7 @@ waitworld
 wait 100
 waitworld
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 60
 fly off
 cmd tp @s 5283.5 140 853.5 -45 0
@@ -22,17 +22,17 @@ cmd setblock 5292 141 861 minecraft:iron_block
 cmd setblock 5292 141 863 minecraft:iron_block
 cmd setblock 5294 141 861 minecraft:iron_block
 cmd setblock 5294 141 863 minecraft:iron_block
-cmd setblock 5292 141 862 starfold:thruster[facing=down]
+cmd setblock 5292 141 862 kolustar:thruster[facing=down]
 cmd setblock 5292 142 862 create:analog_lever[face=floor,facing=north]{State:9}
-cmd setblock 5294 142 862 starfold:gyro
+cmd setblock 5294 142 862 kolustar:gyro
 cmd setblock 5294 142 863 minecraft:lever[face=floor,facing=north,powered=true]
-cmd setblock 5296 142 862 starfold:thruster[facing=east]
+cmd setblock 5296 142 862 kolustar:thruster[facing=east]
 cmd setblock 5295 142 862 minecraft:lever[face=floor,facing=north,powered=false]
-cmd setblock 5288 142 862 starfold:thruster[facing=west]
+cmd setblock 5288 142 862 kolustar:thruster[facing=west]
 cmd setblock 5289 142 862 minecraft:lever[face=floor,facing=north,powered=false]
-cmd setblock 5288 142 864 starfold:thruster[facing=south]
+cmd setblock 5288 142 864 kolustar:thruster[facing=south]
 cmd setblock 5289 142 864 minecraft:lever[face=floor,facing=north,powered=false]
-cmd setblock 5288 142 860 starfold:thruster[facing=north]
+cmd setblock 5288 142 860 kolustar:thruster[facing=north]
 cmd setblock 5289 142 860 minecraft:lever[face=floor,facing=north,powered=false]
 cmd tp @s 5291.5 142.2 862.5 90 20
 wait 20

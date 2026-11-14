@@ -2,17 +2,17 @@
 strict
 waitworld
 wait 100
-cmd starfold shipprobe "0:0" inspect
-cmd execute store result score @s s5_ok run starfold shipprobe "0:0" assert dormant
+cmd kolustar shipprobe "0:0" inspect
+cmd execute store result score @s s5_ok run kolustar shipprobe "0:0" assert dormant
 check space-after-not-eager if score @s s5_ok matches 1
-cmd execute store result score @s s5_ok run starfold shipprobe "0:0" assert checkpoint
+cmd execute store result score @s s5_ok run kolustar shipprobe "0:0" assert checkpoint
 check space-after-checkpoint if score @s s5_ok matches 1
-cmd starfold shipprobe "0:0" near current
+cmd kolustar shipprobe "0:0" near current
 wait 40
-cmd starfold shipprobe "0:0" inspect
-cmd execute store result score @s s5_ok run starfold shipprobe "0:0" assert live
+cmd kolustar shipprobe "0:0" inspect
+cmd execute store result score @s s5_ok run kolustar shipprobe "0:0" assert live
 check space-after-live if score @s s5_ok matches 1
-cmd execute store result score @s s5_ok run starfold shipprobe "0:0" assert space-place
+cmd execute store result score @s s5_ok run kolustar shipprobe "0:0" assert space-place
 check space-after-place if score @s s5_ok matches 1
 shot ship-space-restart-after
 quit

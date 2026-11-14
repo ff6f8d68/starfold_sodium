@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "kolustar_materials:block/aluminum_block"
+    }
+  }
+}

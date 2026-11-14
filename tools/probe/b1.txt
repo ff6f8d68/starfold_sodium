@@ -1,6 +1,6 @@
 waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 cmd effect give @s minecraft:night_vision infinite 0 true

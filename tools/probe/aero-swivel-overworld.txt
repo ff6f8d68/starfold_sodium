@@ -2,7 +2,7 @@ waitworld
 wait 100
 waitworld
 cmd gamemode creative
-cmd starfold leave
+cmd kolustar leave
 wait 200
 waitworld
 cmd effect give @s minecraft:night_vision infinite 0 true
@@ -25,7 +25,7 @@ cmd data get block ~3 200 ~4
 shot aero-o1
 wait 100
 shot aero-o2
-cmd starfold terrain
+cmd kolustar terrain
 wait 200
 waitworld
 quit

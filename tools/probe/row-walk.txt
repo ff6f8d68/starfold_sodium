@@ -19,7 +19,7 @@ wait 160
 key forward off
 wait 20
 log c-after-seam
-cmd starfold status
+cmd kolustar status
 cmd setblock ~ ~ ~2 minecraft:gold_block
 wait 20
 shot row-walk-after

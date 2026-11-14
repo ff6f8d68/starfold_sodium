@@ -1,5 +1,5 @@
 # Supervisor-only visual check of Host textures. Fresh experience world with Biotech; Flesh slot 12 SOUTH.
-# Requires server JAVA_TOOL_OPTIONS: -Dstarfold.helmProbe=true -Dstarfold.packProbe=true.
+# Requires server JAVA_TOOL_OPTIONS: -Dkolustar.helmProbe=true -Dkolustar.packProbe=true.
 waitworld
 wait 300
 cmd gamemode creative
@@ -10,9 +10,9 @@ cmd tp @s 16939.5 139 24975.5 90 25
 wait 800
 look 90 25
 shot host-crater
-cmd summon starfold_biotech:host 16835.5 82 24990.5 {NoAI:1b,HostPhase:0,Rotation:[-90f,0f]}
-cmd summon starfold_biotech:host_sac 16850.5 82 24968.5 {NoAI:1b}
-cmd summon starfold_biotech:host_drone 16852.5 88 24975.5 {NoAI:1b}
+cmd summon kolustar_biotech:host 16835.5 82 24990.5 {NoAI:1b,HostPhase:0,Rotation:[-90f,0f]}
+cmd summon kolustar_biotech:host_sac 16850.5 82 24968.5 {NoAI:1b}
+cmd summon kolustar_biotech:host_drone 16852.5 88 24975.5 {NoAI:1b}
 cmd tp @s 16862.5 84 24990.5 90 18
 wait 300
 look 90 18

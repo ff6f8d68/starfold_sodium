@@ -4,7 +4,7 @@ wait 100
 waitworld
 strict
 cmd gamemode creative
-cmd starfold leave
+cmd kolustar leave
 wait 100
 waitworld
 check overworld in minecraft:overworld
@@ -16,11 +16,11 @@ key forward on
 wait 40
 key forward off
 log sodium1-overworld-walk
-cmd starfold enter
+cmd kolustar enter
 wait 160
 waitworld
-check planet in starfold:native_ground
-cmd starfold face 0
+check planet in kolustar:native_ground
+cmd kolustar face 0
 wait 100
 cmd tp @s 1024.5 132 1024.5
 wait 80
@@ -44,6 +44,6 @@ key forward off
 wait 40
 log sodium1-seam-after
 shot sodium1-seam
-cmd starfold status
+cmd kolustar status
 wait 20
 quit

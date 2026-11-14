@@ -11,9 +11,9 @@ shot port1-crystal-ground-live
 look free
 cmd packprobe orbit 9
 wait 300
-cmd starfold nav target 9
-cmd starfold nav brake on
-cmd starfold nav land on
+cmd kolustar nav target 9
+cmd kolustar nav brake on
+cmd kolustar nav land on
 wait 40
 nav crystal2-start
 aim track

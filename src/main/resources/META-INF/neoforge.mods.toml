@@ -3,38 +3,38 @@ loaderVersion="[4,)"
 license="MIT"
 
 [[mods]]
-modId="starfold"
+modId="kolustar"
 version="${version}"
-displayName="Starfold"
-logoFile="starfold_icon.png"
+displayName="Kolustar"
+logoFile="kolustar_icon.png"
 logoBlur=false
 description='''Planets you can walk all the way around, built from real Minecraft chunks, and a sea of stars to cross between them. Build a ship with Sable, leave the ground and fly to another planet. Suns, planets and planet types can be defined in datapacks. Planets need the vanilla renderer: shader packs are not supported.'''
 
 [[mixins]]
-config="starfold.mixins.json"
+config="kolustar.mixins.json"
 
-[[dependencies.starfold]]
+[[dependencies.kolustar]]
 modId="neoforge"
 type="required"
 versionRange="[21.1.247,)"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.starfold]]
+[[dependencies.kolustar]]
 modId="minecraft"
 type="required"
 versionRange="[1.21.1]"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.starfold]]
+[[dependencies.kolustar]]
 modId="sable"
 type="required"
 versionRange="[2.0.5,2.0.6]"
 ordering="NONE"
 side="BOTH"
 
-[[dependencies.starfold]]
+[[dependencies.kolustar]]
 modId="gravity_changer"
 type="incompatible"
 versionRange="[0,)"

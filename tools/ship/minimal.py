@@ -32,7 +32,7 @@ def blocks(candidate='B', layers=6):
                     if abs(x) == half or abs(z) == 2 or y == 3:
                         put(x, y, z, 'minecraft:cobblestone')
     def thr(x, y, z, direction):
-        put(x, y, z, f'starfold:thruster[facing={direction}]')
+        put(x, y, z, f'kolustar:thruster[facing={direction}]')
     # Ballast moves the mass centre: move horizontal engines to its nearest layer.
     # Exact centre and residual tilt must still be checked in the live Sable body.
     engine_y = -(layers // 2) if candidate == 'B' else (1 if candidate == 'C' else 0)
@@ -45,12 +45,12 @@ def blocks(candidate='B', layers=6):
         thr(x, engine_y, 2, 'south')
         thr(x, 0, 0, 'up')
     for x in (-half, half):
-        put(x, 1, 0, 'starfold:gyro')
+        put(x, 1, 0, 'kolustar:gyro')
         put(x, 2, 0, 'minecraft:lever[face=floor,facing=north,powered=true]')
-    put(0, 1, 0, 'starfold:helm[facing=west]')
-    put(0, 2, 0, 'starfold:scope_nav[facing=west]')
+    put(0, 1, 0, 'kolustar:helm[facing=west]')
+    put(0, 2, 0, 'kolustar:scope_nav[facing=west]')
     for z, facing in ((-2, 'north'), (2, 'south')):
-        put(0, 0, z, f'starfold:airstair[facing={facing}]')
+        put(0, 0, z, f'kolustar:airstair[facing={facing}]')
         for y, part in ((1, 'lower'), (2, 'upper')):
             put(0, y, z, f'minecraft:oak_door[facing={facing},half={part},open=true]')
     return hull

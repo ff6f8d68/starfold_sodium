@@ -1,4 +1,4 @@
-# Starfold
+# Kolustar
 
 [中文说明](README_zh-CN.md)
 
@@ -16,7 +16,7 @@ yet. Current prerelease: **0.3.1 — Starward**. **Saves from 0.2.0 are not supp
 - Planets of different sizes, with depth scaled to size, caves, ores, biomes and structures.
 - Star systems with suns, orbits, spin and day and night, defined in datapacks: see
   [docs/DATAPACKS.md](docs/DATAPACKS.md).
-- Space flight for ships built with Create and Create Aeronautics: Starfold adds the ship controller, thrusters,
+- Space flight for ships built with Create and Create Aeronautics: Kolustar adds the ship controller, thrusters,
   booster, gyro, navigation scopes, airstair and aircraft dock. Without those mods, the thruster pack still takes
   you to space on your own.
 - Leaving the ground is up to you: build a ship, or craft a thruster pack. Installing Worlds and Extras also provides
@@ -38,17 +38,17 @@ yet. Current prerelease: **0.3.1 — Starward**. **Saves from 0.2.0 are not supp
 | Create, Create Aeronautics | needed to build ships and use Extras |
 | Immersive Aircraft | optional; adds an aircraft to the starter ship |
 
-Install `starfold_worlds` for experience planets and presets; optionally add `starfold_extras` for the starter ship, landing pad and guide (requires Worlds, Create and Create Aeronautics).
-`starfold_materials` adds lightweight aluminum hull plating and heavy osmium pressure hulls (full blocks and slabs); metal ingredients come from other mods via common tags. See [provisional material values](materials/BALANCE.md).
+Install `kolustar_worlds` for experience planets and presets; optionally add `kolustar_extras` for the starter ship, landing pad and guide (requires Worlds, Create and Create Aeronautics).
+`kolustar_materials` adds lightweight aluminum hull plating and heavy osmium pressure hulls (full blocks and slabs); metal ingredients come from other mods via common tags. See [provisional material values](materials/BALANCE.md).
 
-`starfold_atlas` supplies maps and ship tracking. `starfold_biotech` requires Worlds and exactly GeckoLib 4.8.2; its balance values are provisional. The survival pack under `modpack/` is source configuration, not an accepted complete survival release.
+`kolustar_atlas` supplies maps and ship tracking. `kolustar_biotech` requires Worlds and exactly GeckoLib 4.8.2; its balance values are provisional. The survival pack under `modpack/` is source configuration, not an accepted complete survival release.
 
 Planet rendering supports the vanilla renderer and Sodium 0.8. Iris is supported while no shader pack is
 enabled; an active Iris shader pack, Embeddium or Canvas disables planet terrain projection and far views in
 this build. Particle Rain precipitation asks each planet's own weather instead of the level rain flag, so it
-stops on airless worlds and in space. The Starfold planet level is registered in Weather2's weather, cloud,
+stops on airless worlds and in space. The Kolustar planet level is registered in Weather2's weather, cloud,
 storm and wind dimension lists, so those systems actually run on planets instead of being confined to the
-overworld; its precipitation, cloud and funnel particles wrap with the planet through Starfold's projected
+overworld; its precipitation, cloud and funnel particles wrap with the planet through Kolustar's projected
 particle rendering, and the rain state it publishes there drives Particle Rain as well. Only Weather2's
 flat-world fog override is dropped inside planet levels, where the planet atmosphere owns fog, and its
 weather sounds are muted where a planet has no weather. Veil's depth and shader hooks are applied tolerantly across Veil 4.3-4.5, so a Veil
@@ -57,14 +57,14 @@ version drift leaves Veil unpatched instead of failing the mixin. The mod declar
 
 ## Playing
 
-Create a new world. The default world type now spawns you on an earth-like home planet in a Starfold universe (the vanilla Normal preset is overridden with Starfold's native universe, so the planet system and auto-arrival work out of the box). Other world types remain available:
+Create a new world. The default world type now spawns you on an earth-like home planet in a Kolustar universe (the vanilla Normal preset is overridden with Kolustar's native universe, so the planet system and auto-arrival work out of the box). Other world types remain available:
 
-- `starfold_worlds:experience`: the experience worlds; installing `starfold_extras` adds the starter ship.
-- `starfold:native_universe` ("Starfold: Generated Universe"): a generated universe without the pack.
+- `kolustar_worlds:experience`: the experience worlds; installing `kolustar_extras` adds the starter ship.
+- `kolustar:native_universe` ("Kolustar: Generated Universe"): a generated universe without the pack.
 - The remaining `native_*` presets are small setups used in development. They are not listed in the world
   creation screen; a server can select one by id with `level-type`.
 
-`/starfold` holds the planet commands.
+`/kolustar` holds the planet commands.
 
 ## Building
 
@@ -84,7 +84,7 @@ those mods skip that check when the directory is absent.
 
 ## Repository layout
 
-- `src/main`, `src/test`: the core `starfold` mod and its tests. The code is in `dev.starfold`, one package per subsystem
+- `src/main`, `src/test`: the core `kolustar` mod and its tests. The code is in `dev.kolustar`, one package per subsystem
   (a test sits in the package of what it tests):
   - `geometry`: the cube surface, its faces and seams, as plain maths with no Minecraft types.
   - `network`: shared payload registration and dist-safe receivers.
@@ -108,13 +108,13 @@ those mods skip that check when the directory is absent.
 
   | Module | Responsibility and source path |
   |---|---|
-  | `atlas` | Planet surveys and galaxy/system/ground maps: `atlas/src/main/java/dev/starfold/atlas` |
-  | `devtools` | Opt-in client CPU/GPU profiling: `devtools/src/main/java/dev/starfold/devtools` |
-  | `probes` | Development probes, passive measurements and probe mixins: `probes/src/main/java/dev/starfold/{dev,probe,probes}`; development only |
-  | `worlds` | Experience planets, biomes and world presets: `worlds/src/main/java/dev/starfold/worlds` and `worlds/src/main/resources` |
-  | `extras` | Optional starter ship, landing pad and guide: `extras/src/main/java/dev/starfold/extras`; ship structures in `extras/src/main/resources/data/starfold_extras/structure` |
-  | `materials` | Aluminum stock, hull plating and pressure hull components: `materials/src/main/java/dev/starfold/materials` and `materials/src/main/resources` |
-  | `biotech` | Flesh hive terrain, organic materials and the Host encounter: `biotech/src/main/java/dev/starfold/biotech` and `biotech/src/main/resources` |
+  | `atlas` | Planet surveys and galaxy/system/ground maps: `atlas/src/main/java/dev/kolustar/atlas` |
+  | `devtools` | Opt-in client CPU/GPU profiling: `devtools/src/main/java/dev/kolustar/devtools` |
+  | `probes` | Development probes, passive measurements and probe mixins: `probes/src/main/java/dev/kolustar/{dev,probe,probes}`; development only |
+  | `worlds` | Experience planets, biomes and world presets: `worlds/src/main/java/dev/kolustar/worlds` and `worlds/src/main/resources` |
+  | `extras` | Optional starter ship, landing pad and guide: `extras/src/main/java/dev/kolustar/extras`; ship structures in `extras/src/main/resources/data/kolustar_extras/structure` |
+  | `materials` | Aluminum stock, hull plating and pressure hull components: `materials/src/main/java/dev/kolustar/materials` and `materials/src/main/resources` |
+  | `biotech` | Flesh hive terrain, organic materials and the Host encounter: `biotech/src/main/java/dev/kolustar/biotech` and `biotech/src/main/resources` |
 
 - `docs/DATAPACKS.md`: the reference for datapack authors, also in Chinese; tests read its examples.
 - `docs/DEVELOPMENT.md`: architecture, verification commands and current validation limits.

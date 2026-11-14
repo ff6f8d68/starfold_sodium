@@ -1,11 +1,11 @@
 waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 cmd gamemode survival
 wait 60
-cmd starfold status
+cmd kolustar status
 abilities nopack
 nav nopack
 fly on
@@ -20,7 +20,7 @@ wait 100
 abilities tower
 nav tower
 shot surv-tower
-cmd item replace entity @s armor.chest with starfold:thruster_pack
+cmd item replace entity @s armor.chest with kolustar:thruster_pack
 wait 20
 abilities pack
 look 0 0
@@ -42,7 +42,7 @@ key jump on
 wait 80
 key jump off
 nav nopack-air-2
-cmd item replace entity @s armor.chest with starfold:thruster_pack
+cmd item replace entity @s armor.chest with kolustar:thruster_pack
 wait 20
 abilities pack-again
 key forward on
@@ -56,7 +56,7 @@ wait 20
 abilities landed
 nav landed
 shot surv-landed
-cmd recipe give @s starfold:thruster_pack
+cmd recipe give @s kolustar:thruster_pack
 cmd save-all flush
 wait 60
 quit

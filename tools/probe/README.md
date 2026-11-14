@@ -1,6 +1,6 @@
 # Dev probe scripts
 
-Scripted in-game checks for the development client (`-Dstarfold.probe=<script>`, see `DevProbe`).
+Scripted in-game checks for the development client (`-Dkolustar.probe=<script>`, see `DevProbe`).
 Working copies live in `build/probe/` (ignored); these are the versioned originals.
 
 - `dev.sh <script> [timeout]` restarts the dev server, runs one scripted client session, dumps `jstack` of anything still running, then stops the server.
@@ -9,7 +9,7 @@ Working copies live in `build/probe/` (ignored); these are the versioned origina
 
 ## Flight performance
 
-`flight-perf.txt` uses a dedicated-server **fresh** `starfold:native_universe` world,
+`flight-perf.txt` uses a dedicated-server **fresh** `kolustar:native_universe` world,
 seed `20261009`, creative mode, and an offline `Dev` test account with OP permission
 (the ordinary probe completion ACK uses `/say`). Do not reuse a save between samples.
 For this worktree use port `25575`; copy only `server.properties` and `options.txt`
@@ -26,7 +26,7 @@ handoffs remain enabled, so a high-altitude leg can curve in storage coordinates
 
 ```sh
 export JAVA_HOME=/path/to/jdk-21
-# Set fresh level-name, level-seed=20261009, level-type=starfold\:native_universe,
+# Set fresh level-name, level-seed=20261009, level-type=kolustar\:native_universe,
 # gamemode=creative, server-port=25575 in this checkout's run/server.properties.
 bash tools/probe/dev.sh tools/probe/flight-perf.txt 360
 ```
@@ -47,7 +47,7 @@ change GC counts and tails even with identical routes.
 
 The canonical script is `tools/probe/trip.txt` (not an ignored working copy): **Hearth (slot 0)
 → Fleck (slot 8)**, its nearest landable moon in the single-star experience layout. Use
-`level-type=starfold_worlds\:experience`, `level-seed=20261009`, and a **new** level name for each
+`level-type=kolustar_worlds\:experience`, `level-seed=20261009`, and a **new** level name for each
 run. Run through the AI desktop (`ai-desktop-run` must be on `PATH`). Example:
 
 ```sh
@@ -108,7 +108,7 @@ root `check` includes it. These tests use temporary fixtures and mock processes;
 ## Unpiloted space hold
 
 `ship-hold.txt` and `ship-space-sleep.txt` require the experience preset, a fresh world per run,
-seed `20261009`, and server JVM flag `-Dstarfold.shipProbe=true`. The first releases and retakes
+seed `20261009`, and server JVM flag `-Dkolustar.shipProbe=true`. The first releases and retakes
 the real helm; the second sleeps the hull, advances a quarter home day, and wakes it again.
 `SHIP_HOLD_WINDOW` reads the recorded-place error at **100, 400 and 1200 server ticks** from
 its first post-tick observation, not from client wait duration. `assert hold-window` requires
@@ -179,7 +179,7 @@ acceptance**. `moon-orbit-looks.txt` takes supplemental pictures at altitude 165
 surface. Both require the following environment for their `dev.sh` run:
 
 ```sh
-export JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }-Dstarfold.helmProbe=true -Dstarfold.packProbe=true"
+export JAVA_TOOL_OPTIONS="${JAVA_TOOL_OPTIONS:+$JAVA_TOOL_OPTIONS }-Dkolustar.helmProbe=true -Dkolustar.packProbe=true"
 ```
 
 Allow remote meshes to build before shooting. Near-ground `SpaceView.chartFar` currently clips

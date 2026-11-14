@@ -4,7 +4,7 @@ waitworld
 wait 100
 waitworld
 cmd gamemode creative
-cmd starfold face 1
+cmd kolustar face 1
 wait 100
 until free 200
 cmd tp @s 5283.5 140 853.5 -45 0

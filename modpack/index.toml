@@ -61,23 +61,23 @@ file = "kubejs/data/createdieselgenerators/tags/block/oil_deposit.json"
 hash = "8c335de3c458de0859f80aea80593ac3f79f42f79c555efcc0b4e25f4a1274e6"
 
 [[files]]
-file = "kubejs/data/escape_velocity/starfold/gas_skim/deuterium.json"
+file = "kubejs/data/escape_velocity/kolustar/gas_skim/deuterium.json"
 hash = "d522b99da15465888c2fdb0752551d464f246077c7aa164d87b6a0643405b0c1"
 
 [[files]]
-file = "kubejs/data/escape_velocity/starfold/thruster_fuel/deuterium.json"
+file = "kubejs/data/escape_velocity/kolustar/thruster_fuel/deuterium.json"
 hash = "03f1d1d8b82d7b72dd425c2fda1f00dd92412724cde202c54e5a66465ba89993"
 
 [[files]]
-file = "kubejs/data/escape_velocity/starfold/thruster_fuel/diesel.json"
+file = "kubejs/data/escape_velocity/kolustar/thruster_fuel/diesel.json"
 hash = "a65a0bb4a1af6631a5fc0e82fcfbd247309a18a3c01fb00dcfa395d6a3935a99"
 
 [[files]]
-file = "kubejs/data/escape_velocity/starfold/thruster_fuel/gasoline.json"
+file = "kubejs/data/escape_velocity/kolustar/thruster_fuel/gasoline.json"
 hash = "6ce2203f3f7f3410c9bde03b16d50ae4b6af1ce1170147a1bb85127a6a9918d3"
 
 [[files]]
-file = "kubejs/data/escape_velocity/starfold/thruster_fuel/hydrogen.json"
+file = "kubejs/data/escape_velocity/kolustar/thruster_fuel/hydrogen.json"
 hash = "c8dc21a2271dccea04a62562be4015eff2fb91635912f54c491ad73080e9cb9b"
 
 [[files]]
@@ -85,55 +85,55 @@ file = "kubejs/data/minecraft/tags/worldgen/world_preset/normal.json"
 hash = "07e3404ef903c3a14c58ebeb7a39f96e8cfc3a8937b6a613f14caac9f862baec"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/archipelago.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/archipelago.json"
 hash = "4e824fc1f41adf1daa1c67ebeaf296e19470f7bf9071c95d17cba45cf39a28a4"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/asteroid.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/asteroid.json"
 hash = "10053d189e1e112c2b8c4a57ed06fd55783d86a61e59ca9cd4b393a11993458e"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/basalt.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/basalt.json"
 hash = "817d7a1e833c8b4889bb88717e9cb0937ccc64c1985bbf561fb0d7b3d4c45fb6"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/crystal.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/crystal.json"
 hash = "ca38c79e2e0c3222fdb6fe034ca6aa3d14ae1a3fbc5c5d55e90f4321be5d813d"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/desert.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/desert.json"
 hash = "c3ba01d98a723cf80993ca5fc23ad1fa8c2c4ea506ff88c54b9011edb2f16a3d"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/end.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/end.json"
 hash = "4587767eb790c96a967658d1178b6af9218e91c2376b1cbb27e9a0e5c1932bd3"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/home.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/home.json"
 hash = "a90ca46e36596baa5a7241d22b17137ec5c621503a1e4fb10b547588a70858ad"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/ice.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/ice.json"
 hash = "528c6bfdc31dda7a4d41acf89243cf706e76dc7732020b0218868745fdb0d87c"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/lush.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/lush.json"
 hash = "39404c11e6c897d0ebacf16b516c3a4ab53ebb082a69ed15313f95b6fe2ebfb2"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/mushroom.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/mushroom.json"
 hash = "5eeee547a0b641d21d691e2c4fda40fe2e65b1c4a6480deea91cd6fde9ec4556"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/rocky.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/rocky.json"
 hash = "3e2a5e50ff1a0e202c832a6586c558e0ae68c8aa31a24ab9ca90196eb7784b64"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/starfold/planet_type/warden.json"
+file = "kubejs/data/kolustar_worlds/kolustar/planet_type/warden.json"
 hash = "1d4dbdf6ef6db6ec3b2cdd8ca1319ec79c59e85e9b2fbe590ba66b130b21a286"
 
 [[files]]
-file = "kubejs/data/starfold_worlds/worldgen/world_preset/experience.json"
+file = "kubejs/data/kolustar_worlds/worldgen/world_preset/experience.json"
 hash = "ba34e8231f7e38feaeb6b388467f8c52b0ba63c2e21c552da88a9d9a268daf69"
 
 [[files]]

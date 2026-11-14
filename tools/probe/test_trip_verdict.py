@@ -52,10 +52,10 @@ class VerdictTests(unittest.TestCase):
 
     def test_canonical_route_targets_the_experience_home_moon(self):
         root = Path(__file__).resolve().parents[2]
-        system = json.loads((root / "worlds/src/main/resources/data/starfold_worlds/starfold/system/experience.json").read_text())
+        system = json.loads((root / "worlds/src/main/resources/data/kolustar_worlds/kolustar/system/experience.json").read_text())
         sun = system["suns"][system["home"]["sun"]]
         home = sun["planets"][system["home"]["planet"]]
-        self.assertEqual(home["moons"][0]["name"], "planet.starfold_worlds.fleck")
+        self.assertEqual(home["moons"][0]["name"], "planet.kolustar_worlds.fleck")
         # Surface moons are appended after the authored planets (home is reordered to slot 0).
         self.assertEqual(len(sun["planets"]), 8)
         script = (root / "tools/probe/trip.txt").read_text()

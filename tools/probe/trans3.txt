@@ -1,15 +1,15 @@
 waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 cmd gamerule doDaylightCycle false
 cmd time set noon
-cmd starfold nav target a
+cmd kolustar nav target a
 wait 20
 nav start
-cmd starfold nav brake off
-cmd starfold nav land on
+cmd kolustar nav brake off
+cmd kolustar nav land on
 wait 20
 aim track
 key sprint on

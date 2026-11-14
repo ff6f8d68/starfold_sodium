@@ -1,4 +1,4 @@
-# Requires -Dstarfold.entityProbe=true on server and client.
+# Requires -Dkolustar.entityProbe=true on server and client.
 # Same two forced pens for every state; normal AI, invulnerable persistent cows.
 waitworld
 wait 300

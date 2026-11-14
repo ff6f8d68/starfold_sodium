@@ -1,0 +1,172 @@
+package dev.kolustar.space;
+
+import dev.kolustar.chart.GroundEphemeris;
+import dev.kolustar.chart.GroundOrbit;
+import dev.kolustar.chart.GroundSolar;
+import dev.kolustar.chart.PlanetShape;
+import dev.kolustar.geometry.BentStripGeometry.Point;
+import dev.kolustar.sky.GroundDaylight;
+import dev.kolustar.sky.Space;
+
+import org.joml.Matrix4f;
+
+import java.util.*;
+
+/** Pure passive-observer maths. No chart, home radius, orbit offset or camera ownership. */
+public final class SpaceView {
+    /** Far-plane distance shared by celestial positioning and the far-body impostor mapping. */
+    public static final float FAR = 1_000_000;
+    private static final double FAR_TRANSITION = FAR / 4.0;
+
+    /** Orbital chart observers see the same distant celestial bodies as passive region observers. */
+    public static float chartFar(double altitude, int view) {
+        return altitude > GroundOrbit.START ? FAR : view + 64f;
+    }
+
+    /** The sky pass draws nothing nearer than its 128-block dome, so its depth range starts here. */
+    public static final float SKY_NEAR = 64;
+
+    /** Keep the camera's field of view and offsets; only sky depth uses the celestial far plane.
+     * The terrain matrix may carry view bobbing (P * B); its depth row is rebuilt from the w row
+     * (-B's third row), otherwise bobbing tilts far depth past the far plane and bodies blink. */
+    public static Matrix4f skyProjection(Matrix4f terrain) {
+        if (dev.kolustar.render.ReversedDepth.ACTIVE) return terrain;
+        float a = -terrain.m22() / terrain.m23(), b = terrain.m32() + a * terrain.m33();
+        float near = Math.max(b / (a - 1), SKY_NEAR);
+        float sa = -(FAR + near) / (FAR - near), sb = -2 * FAR * near / (FAR - near);
+        return new Matrix4f(terrain)
+                .m02(-sa * terrain.m03())
+                .m12(-sa * terrain.m13())
+                .m22(-sa * terrain.m23())
+                .m32(-sa * terrain.m33() + sb);
+    }
+
+    /** The star fade washes out bodies too, but leaves twenty percent of their lit colour at noon. */
+    public static double bodyFade(double elevation, double space) {
+        return .2 + .8 * GroundSolar.stars(elevation, space);
+    }
+
+    public record Placement(Point center, Point u, Point up, Point v) {}
+
+    /** Subtract universe positions in doubles before rotating or uploading any float. */
+    public static Point relative(Space.Frame frame, Point eye, Point point) {
+        return frame.levelVector(point.sub(eye));
+    }
+
+    /** Rows of R*Q, for the exterior shader's dot-product basis. */
+    public static Placement place(Space.Frame frame, Point eye, GroundEphemeris.Frame target) {
+        return new Placement(
+                relative(frame, eye, target.center()),
+                target.inverseVector(frame.universeVector(new Point(1, 0, 0))),
+                target.inverseVector(frame.universeVector(new Point(0, 1, 0))),
+                target.inverseVector(frame.universeVector(new Point(0, 0, 1))));
+    }
+
+    /** Lowest id wins ties; a one-planet universe still returns its planet. */
+    public static List<Integer> nearest(
+            GroundEphemeris.Model model, Point eye, double tick, int limit) {
+        var ids = new ArrayList<Integer>();
+        var distance = new double[model.count()];
+        for (int id = 0; id < model.count(); id++) {
+            ids.add(id);
+            distance[id] = model.at(id, tick).center().sub(eye).length();
+        }
+        ids.sort(Comparator.comparingDouble(id -> distance[id]));
+        return List.copyOf(ids.subList(0, Math.min(Math.max(0, limit), ids.size())));
+    }
+
+    /** Draw distance that preserves apparent angular size while asymptotically staying in the depth range. */
+    public static double renderDistance(double distance) {
+        return distance <= FAR_TRANSITION
+                ? distance
+                : 2 * FAR_TRANSITION - FAR_TRANSITION * FAR_TRANSITION / distance;
+    }
+
+    public static double renderScale(double distance) {
+        return distance == 0 ? 1 : renderDistance(distance) / distance;
+    }
+
+    public static boolean visible(double distance, double radius) {
+        return Double.isFinite(distance)
+                && Double.isFinite(radius)
+                && distance >= 0
+                && radius >= 0;
+    }
+
+    /** The nearest eight physical occluders, independent of whether their meshes have finished building. */
+    public static double sunlight(GroundEphemeris.Model model, Point eye, double tick) {
+        var sun = model.star(eye).position();
+        double light = 1;
+        for (int id : nearest(model, eye, tick, 8))
+            light =
+                    Math.min(
+                            light,
+                            GroundDaylight.sunlight(
+                                    eye,
+                                    model.at(id, tick).center(),
+                                    sun,
+                                    PlanetShape.of(id).radius()));
+        return Math.min(light, dev.kolustar.chart.GasOcclusion.sunlight(model, eye, tick));
+    }
+
+    /** One-tick blend for continuous frame changes; carries and guard shifts install discrete labels. */
+    static final class Frames {
+        private Space.Frame previous, current;
+        private long epoch;
+        private double currentTick;
+
+        void install(
+                SpacePackets.Frame packet,
+                Point eye,
+                double clientTick,
+                GroundEphemeris.Model model,
+                double tick) {
+            var next = packet.frame();
+            if (current != null && current.equals(next) && epoch == packet.tick()) return;
+            boolean blend =
+                    current != null
+                            && next != null
+                            && model != null
+                            && current.planet() < model.count()
+                            && next.planet() < model.count()
+                            && current.universe(eye, model, tick)
+                                            .sub(next.universe(eye, model, tick))
+                                            .length()
+                                    < Space.ANCHOR_REACH;
+            previous = blend ? sample(eye, clientTick, model, tick) : next;
+            currentTick = clientTick;
+            current = next;
+            epoch = packet.tick();
+        }
+
+        Space.Frame current() {
+            return current;
+        }
+
+        Space.Frame sample(Point eye, double clientTick, GroundEphemeris.Model model, double tick) {
+            return current == null
+                    ? null
+                    : previous == null
+                                    || previous == current
+                                    || model == null
+                                    || previous.planet() >= model.count()
+                                    || current.planet() >= model.count()
+                            ? current
+                            : Space.Frame.interpolate(
+                                    previous,
+                                    current,
+                                    eye,
+                                    Math.max(0, clientTick - currentTick),
+                                    model,
+                                    tick);
+        }
+
+        void clear() {
+            previous = current = null;
+            epoch = 0;
+            currentTick = 0;
+        }
+    }
+
+    private SpaceView() {}
+}

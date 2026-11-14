@@ -2,7 +2,7 @@
 """Writes the 16x16 textures of the anomaly blocks, the core shell and the thruster pack. Standard library only; rerun after changing the look."""
 import struct, zlib, pathlib
 
-OUT = pathlib.Path(__file__).resolve().parent.parent / 'src/main/resources/assets/starfold/textures/block'
+OUT = pathlib.Path(__file__).resolve().parent.parent / 'src/main/resources/assets/kolustar/textures/block'
 
 def noise(x, y, salt):
     n = (x * 374761393 + y * 668265263 + salt * 2147483647) & 0xffffffff

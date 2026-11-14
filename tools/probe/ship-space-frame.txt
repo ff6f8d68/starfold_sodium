@@ -8,7 +8,7 @@ cmd gamemode creative
 cmd scoreboard objectives add s5_ok dummy
 boardblock helm
 wait 30
-find starfold:helm
+find kolustar:helm
 wait 6
 usehit helm
 wait 30
@@ -24,33 +24,33 @@ wait 20
 requirenohelm
 wait 2400
 cmd save-all flush
-cmd starfold shipprobe "0:0" remove world-items
-cmd starfold shipprobe "0:0" old columns on
+cmd kolustar shipprobe "0:0" remove world-items
+cmd kolustar shipprobe "0:0" old columns on
 wait 40
-cmd starfold shipprobe "0:0" away
+cmd kolustar shipprobe "0:0" away
 wait 40
-cmd starfold shipprobe "0:0" sleep
+cmd kolustar shipprobe "0:0" sleep
 wait 600
 cmd save-all flush
-cmd execute store result score @s s5_ok run starfold shipprobe "0:0" assert dormant
+cmd execute store result score @s s5_ok run kolustar shipprobe "0:0" assert dormant
 check frame-dormant if score @s s5_ok matches 1
-cmd execute store result score @s s5_ok run starfold shipprobe "0:0" assert checkpoint
+cmd execute store result score @s s5_ok run kolustar shipprobe "0:0" assert checkpoint
 check frame-checkpoint if score @s s5_ok matches 1
-cmd starfold shipprobe "0:0" clock quarter
-cmd starfold shipprobe "0:0" frame changed
-cmd starfold shipprobe "0:0" old
+cmd kolustar shipprobe "0:0" clock quarter
+cmd kolustar shipprobe "0:0" frame changed
+cmd kolustar shipprobe "0:0" old
 wait 200
-cmd execute store result score @s s5_ok run starfold shipprobe "0:0" assert old-ticking
+cmd execute store result score @s s5_ok run kolustar shipprobe "0:0" assert old-ticking
 check stale-columns-ticking if score @s s5_ok matches 1
-cmd execute store result score @s s5_ok run starfold shipprobe "0:0" assert dormant
+cmd execute store result score @s s5_ok run kolustar shipprobe "0:0" assert dormant
 check stale-columns-no-reload if score @s s5_ok matches 1
-cmd starfold shipprobe "0:0" near current
+cmd kolustar shipprobe "0:0" near current
 wait 40
-cmd starfold shipprobe "0:0" inspect
-cmd execute store result score @s s5_ok run starfold shipprobe "0:0" assert live
+cmd kolustar shipprobe "0:0" inspect
+cmd execute store result score @s s5_ok run kolustar shipprobe "0:0" assert live
 check frame-live if score @s s5_ok matches 1
-cmd execute store result score @s s5_ok run starfold shipprobe "0:0" assert space-place
+cmd execute store result score @s s5_ok run kolustar shipprobe "0:0" assert space-place
 check frame-place if score @s s5_ok matches 1
-cmd starfold shipprobe "0:0" old columns off
+cmd kolustar shipprobe "0:0" old columns off
 shot ship-space-frame
 quit

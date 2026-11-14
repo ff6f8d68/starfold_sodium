@@ -6,7 +6,7 @@ import math
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1] / 'src/main/resources'
-NS = 'starfold_biotech'
+NS = 'kolustar_biotech'
 ASSETS = f'assets/{NS}'
 OUTPUTS = {}
 UV = {}

@@ -14,9 +14,9 @@ from PIL import Image
 
 BIOTECH = Path(__file__).resolve().parent.parent
 SOURCE = BIOTECH / 'art/source'
-MOD = BIOTECH / 'src/main/resources/assets/starfold_biotech/textures/block'
-HD = BIOTECH / 'hd-pack/assets/starfold_biotech/textures/block'
-ENTITY = 'assets/starfold_biotech/textures/entity'
+MOD = BIOTECH / 'src/main/resources/assets/kolustar_biotech/textures/block'
+HD = BIOTECH / 'hd-pack/assets/kolustar_biotech/textures/block'
+ENTITY = 'assets/kolustar_biotech/textures/entity'
 FRAMES = 8
 SAC_FRAMES = 12
 
@@ -174,7 +174,7 @@ for tile, root in ((32, BIOTECH / 'src/main/resources'), (128, BIOTECH / 'hd-pac
 
 for item in ('chitin_plate', 'resin_lump', 'host_ganglion', 'blood_bucket'):
     for size, root in ((16, BIOTECH / 'src/main/resources'), (64, BIOTECH / 'hd-pack')):
-        folder = root / 'assets/starfold_biotech/textures/item'
+        folder = root / 'assets/kolustar_biotech/textures/item'
         folder.mkdir(parents=True, exist_ok=True)
         Image.fromarray(icon(SOURCE / f'icon-{item}.png', size).astype('uint8')).save(folder / f'{item}.png', optimize=True)
 
@@ -191,5 +191,5 @@ for name, low, high, frames, frametime, step in (('blood_still', 16, 128, 16, 6,
              folder / f'{name}.png', frametime)
 
 (BIOTECH / 'hd-pack/pack.mcmeta').write_text(json.dumps(
-    {'pack': {'pack_format': 34, 'description': 'Starfold: Biotech high-resolution organic textures'}}, indent=2) + '\n')
+    {'pack': {'pack_format': 34, 'description': 'Kolustar: Biotech high-resolution organic textures'}}, indent=2) + '\n')
 print('wrote', ', '.join([*BLOCKS, *LAYOUT, 'item icons']))

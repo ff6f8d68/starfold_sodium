@@ -1,10 +1,10 @@
 waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 cmd effect clear @s
-cmd starfold nav target b
+cmd kolustar nav target b
 wait 20
 key jump on
 wait 4
@@ -20,14 +20,14 @@ key forward on
 until planet!= 0 8000
 nav at-b
 wait 100
-cmd starfold nav target a
+cmd kolustar nav target a
 wait 20
 until planet!= 1 8000
 nav back-a-t0
 shot ua-t0
 key forward off
 key sprint off
-cmd starfold nav brake on
+cmd kolustar nav brake on
 wait 40
 nav back-a-t40
 log back-a-t40

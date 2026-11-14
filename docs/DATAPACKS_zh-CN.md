@@ -25,14 +25,14 @@
 
 | 内容 | 包内路径 | 引用写法 |
 |---|---|---|
-| 星球类型 | `data/<命名空间>/starfold/planet_type/<名称>.json` | `demo:ash` |
-| 宇宙布局 | `data/<命名空间>/starfold/universe/<名称>.json` | `demo:ash_universe` |
-| 恒星系 | `data/<命名空间>/starfold/system/<名称>.json` | `handwritten:twin_lanterns` |
+| 星球类型 | `data/<命名空间>/kolustar/planet_type/<名称>.json` | `demo:ash` |
+| 宇宙布局 | `data/<命名空间>/kolustar/universe/<名称>.json` | `demo:ash_universe` |
+| 恒星系 | `data/<命名空间>/kolustar/system/<名称>.json` | `handwritten:twin_lanterns` |
 | 世界预设 | `data/<命名空间>/worldgen/world_preset/<名称>.json` | `demo:my_world` |
 | 创建界面列出的世界类型 | `data/minecraft/tags/worldgen/world_preset/normal.json` | `{"replace": false, "values": ["demo:my_world"]}` |
-| 星球上允许的结构集 | `data/starfold/tags/worldgen/structure_set/planets.json` | 用 `"replace": false` 加入自己的结构集 ID |
+| 星球上允许的结构集 | `data/kolustar/tags/worldgen/structure_set/planets.json` | 用 `"replace": false` 加入自己的结构集 ID |
 
-类型、布局和恒星系的路径里，命名空间后面那一段固定是 **`starfold`**；只有紧跟 `data/` 的那一段是你自己的命名空间。
+类型、布局和恒星系的路径里，命名空间后面那一段固定是 **`kolustar`**；只有紧跟 `data/` 的那一段是你自己的命名空间。
 
 定义了类型，并不会让它出现在任何世界里。必须有地方引用它：布局的 `types`、恒星系的 `suns[].planets[].type`，或世界
 预设里的星球条目。同样，新布局也只有被预设或恒星系引用时才会用到。
@@ -51,7 +51,7 @@
 
 | 字段 | 含义与范围 |
 |---|---|
-| `planner.stages` | 顺序执行的已注册步骤 ID；内置 plates、landforms、erosion、climate、biomes、volumes，命名空间均为 starfold |
+| `planner.stages` | 顺序执行的已注册步骤 ID；内置 plates、landforms、erosion、climate、biomes、volumes，命名空间均为 kolustar |
 | `land_fraction` | 0–1，大尺度大陆比例 |
 | `relief` | mountains 0–175、hills 0–64、roughness 0–8；母星初稿 160/24/1 |
 | `landforms[]` | type + parameters，最多 64 组；内置 crater、volcano、canyon、glacial_rift、hive、dunes、plateau |
@@ -65,13 +65,13 @@
 | `water` | block 为液体方块或 air、sea_level -1024–300、freeze 布尔 |
 | `preferences` | desolation、damage、burial、overlap、road_continuity、density，均0–1；候选概率、固定效果、空间安排、道路决策和地貌/体积密度 |
 
-hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保存在规划内。群系扩展实现通过 `BiomeRule.biome(parameters)` 声明输出ID，无须使用内置参数名。地貌参数为 density（0–8）、radius_min/max（16–256）、amplitude（0–128）与 operation（raise/lower）。群系规则 `starfold:climate` 参数：biome、temperature_min/max、humidity_min/max、height_min/max、river、coast。群系规则 `starfold:terrain` 参数：biome、height_min/max（-1024–320）、slope_min/max（0–200，每物理格的高度变化）、landform_min/max（-2048–2048，全部地貌的有符号高度贡献），以及可选 region_min/max（0–1）。region 是192格低频球面噪声结合海拔、坡度、地貌贡献后的全球排名；阈值直接控制成片区域的面积。例如沙漠 scrub 使用0–.35，最后一条 barren 不限制。已发布区域配方的次要分区取25–35%。群系海拔使用实际可生成表面上限318；坡度和地貌贡献保留原规划几何。干类型可直接按坑底、坑缘、裂谷和火山坡分区，无需依赖湿度。前面的规则未覆盖所有表面时，需显式写入无限制的末条规则；没有规则匹配会令规划失败。材质规则 `starfold:surface` 参数：block、depth_min/max、temperature_min/max、slope_min、shore、biome（空字符串匹配全部）。
+hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保存在规划内。群系扩展实现通过 `BiomeRule.biome(parameters)` 声明输出ID，无须使用内置参数名。地貌参数为 density（0–8）、radius_min/max（16–256）、amplitude（0–128）与 operation（raise/lower）。群系规则 `kolustar:climate` 参数：biome、temperature_min/max、humidity_min/max、height_min/max、river、coast。群系规则 `kolustar:terrain` 参数：biome、height_min/max（-1024–320）、slope_min/max（0–200，每物理格的高度变化）、landform_min/max（-2048–2048，全部地貌的有符号高度贡献），以及可选 region_min/max（0–1）。region 是192格低频球面噪声结合海拔、坡度、地貌贡献后的全球排名；阈值直接控制成片区域的面积。例如沙漠 scrub 使用0–.35，最后一条 barren 不限制。已发布区域配方的次要分区取25–35%。群系海拔使用实际可生成表面上限318；坡度和地貌贡献保留原规划几何。干类型可直接按坑底、坑缘、裂谷和火山坡分区，无需依赖湿度。前面的规则未覆盖所有表面时，需显式写入无限制的末条规则；没有规则匹配会令规划失败。材质规则 `kolustar:surface` 参数：block、depth_min/max、temperature_min/max、slope_min、shore、biome（空字符串匹配全部）。
 
 体积参数：density（0–8，乘preferences.density）、radius/height（2–64）、offset（-64–96）、operation（fill/carve）、slope_min/max（0–200）、cave_connection。悬挑和下凹必须找到形状内部的上坡锚点，并朝较低的地面伸出；放置回调生成并保存切向单位方向 wall_x/wall_z。浮岩是单独的配方类型，仅声明它的类型生成。洞口与天坑先搜索实际地下双噪声洞穴，再保存连接形状；只在有界范围内依序叠加fill/carve，再以该列已有water_level回填最终空气隙，保留FILL实体；不做与水面的全局连通性模拟。冰雪按最终暴露顶面处理，随后道路和结构覆盖。群系图和真实区块、表面查询、LOD使用同一最终列，空气隙不会被远景补实。
 
 结构组合顺序保存在规划中，允许重叠；后站点覆盖前站点。bury真实下移结构，并把地下AIR回填为地面材质；回填可覆盖先前站点的同位置方块。damage保存确定的移除量，cut保存明确的类型化引用；每个站点的cut约束自己的地形适配，后站点再按顺序执行。原始模板和recipes保留，重放按最终列与最终owner恢复方块及块实体。关系引用使用kind+列表索引，结构使用稳定site.id；道路的两端村庄各有connects关系。
 
-道路在共享网格上使用8邻域、按物理坡度代价求最短路，保存控制节点、整平高度及逐段GROUND/BRIDGE/CUT。统一球面三次曲线让拐弯切线连续；跨越检测、实际道路方块与离线叠图都读取该曲线。跨越检测沿段以至多1格、且至多最窄河宽一半的物理间距采样，读取河流、湖海、峡谷剖面与挖空体积；bridge使用木板桥面，cut段不铺路。road_continuity只在规划时决定桥或断路。选址读取最终有体积的表面与群系；`starfold:river_settlements`结构标签偏好河岸平地，`starfold:highland_ruins`偏好高处，脱离地面的浮岩面有支持惩罚。desolation、burial、damage、overlap、density分别控制候选概率、埋深概率、破损量、候选间距与地貌/体积密度。
+道路在共享网格上使用8邻域、按物理坡度代价求最短路，保存控制节点、整平高度及逐段GROUND/BRIDGE/CUT。统一球面三次曲线让拐弯切线连续；跨越检测、实际道路方块与离线叠图都读取该曲线。跨越检测沿段以至多1格、且至多最窄河宽一半的物理间距采样，读取河流、湖海、峡谷剖面与挖空体积；bridge使用木板桥面，cut段不铺路。road_continuity只在规划时决定桥或断路。选址读取最终有体积的表面与群系；`kolustar:river_settlements`结构标签偏好河岸平地，`kolustar:highland_ruins`偏好高处，脱离地面的浮岩面有支持惩罚。desolation、burial、damage、overlap、density分别控制候选概率、埋深概率、破损量、候选间距与地貌/体积密度。
 
 扩展 API 为 `TerrainRegistries.LANDFORMS/VOLUMES/MATERIALS/BIOMES.register(id, codec, implementation)` 与 `registerStage(id, stage)`。内置实现用同一接口；地貌实现提供剖面与放置，规则提供匹配/材质与规划回调。求值按固定操作执行。体积实现提供规范盒[-1,1]内的形状、参数Codec和放置回调。求值使用确定的球面切向基与完整包围盒，支持接缝上的非圆形状。
 
@@ -84,12 +84,12 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
   "version": 2,
   "planner": {
     "stages": [
-      "starfold:plates",
-      "starfold:landforms",
-      "starfold:erosion",
-      "starfold:climate",
-      "starfold:biomes",
-      "starfold:volumes"
+      "kolustar:plates",
+      "kolustar:landforms",
+      "kolustar:erosion",
+      "kolustar:climate",
+      "kolustar:biomes",
+      "kolustar:volumes"
     ]
   },
   "land_fraction": 0.4,
@@ -112,7 +112,7 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
   },
   "biomes": [
     {
-      "type": "starfold:climate",
+      "type": "kolustar:climate",
       "parameters": {
         "biome": "minecraft:ocean",
         "temperature_min": -300,
@@ -126,7 +126,7 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
       }
     },
     {
-      "type": "starfold:climate",
+      "type": "kolustar:climate",
       "parameters": {
         "biome": "minecraft:desert",
         "temperature_min": 20,
@@ -140,7 +140,7 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
       }
     },
     {
-      "type": "starfold:climate",
+      "type": "kolustar:climate",
       "parameters": {
         "biome": "minecraft:forest",
         "temperature_min": -15,
@@ -154,7 +154,7 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
       }
     },
     {
-      "type": "starfold:climate",
+      "type": "kolustar:climate",
       "parameters": {
         "biome": "minecraft:plains",
         "temperature_min": -300,
@@ -170,7 +170,7 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
   ],
   "materials": [
     {
-      "type": "starfold:surface",
+      "type": "kolustar:surface",
       "parameters": {
         "block": "minecraft:gravel",
         "depth_min": 0,
@@ -183,7 +183,7 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
       }
     },
     {
-      "type": "starfold:surface",
+      "type": "kolustar:surface",
       "parameters": {
         "block": "minecraft:stone",
         "depth_min": 0,
@@ -196,7 +196,7 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
       }
     },
     {
-      "type": "starfold:surface",
+      "type": "kolustar:surface",
       "parameters": {
         "block": "minecraft:sand",
         "depth_min": 0,
@@ -209,7 +209,7 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
       }
     },
     {
-      "type": "starfold:surface",
+      "type": "kolustar:surface",
       "parameters": {
         "block": "minecraft:grass_block",
         "depth_min": 0,
@@ -222,7 +222,7 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
       }
     },
     {
-      "type": "starfold:surface",
+      "type": "kolustar:surface",
       "parameters": {
         "block": "minecraft:dirt",
         "depth_min": 1,
@@ -321,7 +321,7 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
 ## 世界预设
 
 世界预设是原版的格式：一个 `dimensions` 对象，其中每个维度有 `type` 和 `generator`。星球位于维度
-`starfold:native_planet`，它的生成器类型是 `starfold:native_system`：
+`kolustar:native_planet`，它的生成器类型是 `kolustar:native_system`：
 
 | 字段 | 类型与范围 | 默认 | 含义 |
 |---|---|---|---|
@@ -347,11 +347,11 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
 
 **完整写出的星球条目**（第一颗必须这样写）：
 
-完整生成器采用 `planet_format: 3`、`terrain_version: 14`。`planet_generation` 必须包含 type、surface_version=10、recipe（上述完整 terrain）、size、depth、shell、creatures、features、structures 和 environment。`planet_biomes` 为 terrain_seed 与 palette（配方涉及的群系ID列表）。旧格式一律拒绝。网络协议18，Profile为 `starfold:native_planet_v17_profile`；FORMAT=4的PlanetPlan同时保存地形和结构，并复用有界分包与摘要缓存。每颗星球即使关闭structures也持久化/同步地形规划。TerrainPlan FORMAT=3 使用定点场：高度、温度、水面和地层位移为 1/8 单位，粗糙度为 1/1024，湿度为 1/16384；规划内也采用相同量化，保存前后求值一致。旧格式拒绝，需要新世界。
+完整生成器采用 `planet_format: 3`、`terrain_version: 14`。`planet_generation` 必须包含 type、surface_version=10、recipe（上述完整 terrain）、size、depth、shell、creatures、features、structures 和 environment。`planet_biomes` 为 terrain_seed 与 palette（配方涉及的群系ID列表）。旧格式一律拒绝。网络协议18，Profile为 `kolustar:native_planet_v17_profile`；FORMAT=4的PlanetPlan同时保存地形和结构，并复用有界分包与摘要缓存。每颗星球即使关闭structures也持久化/同步地形规划。TerrainPlan FORMAT=3 使用定点场：高度、温度、水面和地层位移为 1/8 单位，粗糙度为 1/1024，湿度为 1/16384；规划内也采用相同量化，保存前后求值一致。旧格式拒绝，需要新世界。
 
 ## 内置类型与预设
 
-所有 ID 都以 `starfold:` 开头。
+所有 ID 都以 `kolustar:` 开头。
 
 | 类型 | 面宽 | 陆地比例 | 山脉/丘陵 | 地貌 | 水体 |
 |---|---:|---:|---:|---|---|
@@ -364,29 +364,29 @@ hive 另有 spacing（32–256）与 wall_slope（.1–4）；其几何邻居保
 | `archipelago` | 1024–2048 | 0.12 | 24/12 | volcano | water |
 | `steppe` | 1024–2048 | 0.4 | 24/12 | — | water |
 
-体验包提供12种类型（home、archipelago、lush、desert、ice、rocky、asteroid、basalt、crystal、end、mushroom、warden）；biotech 的 `starfold_biotech:flesh` 是第13种，使用血液和球面Voronoi巢穴格壁。类型各自显式声明大气；配方和已解析模板随星球固定。
+体验包提供12种类型（home、archipelago、lush、desert、ice、rocky、asteroid、basalt、crystal、end、mushroom、warden）；biotech 的 `kolustar_biotech:flesh` 是第13种，使用血液和球面Voronoi巢穴格壁。类型各自显式声明大气；配方和已解析模板随星球固定。
 
-布局 `starfold:default` 按上表顺序以权重 3、2、2、2、1、1、1、1 抽取这些类型，`density` 1，`star_gap` 137900，
-`ring` 12288，每颗太阳一到两颗行星。`starfold:small` 使用相同的类型和权重，是一个有二到四颗额外太阳的有限宇宙，显式间距仍为 98304。
+布局 `kolustar:default` 按上表顺序以权重 3、2、2、2、1、1、1、1 抽取这些类型，`density` 1，`star_gap` 137900，
+`ring` 12288，每颗太阳一到两颗行星。`kolustar:small` 使用相同的类型和权重，是一个有二到四颗额外太阳的有限宇宙，显式间距仍为 98304。
 
 ### 体验包航行尺度
 
-两个体验预设现在都选择已有手写恒星系格式 `starfold_worlds:experience`，无须扩展 codec。四颗太阳组成边长约 137900 格的四面体，
+两个体验预设现在都选择已有手写恒星系格式 `kolustar_worlds:experience`，无须扩展 codec。四颗太阳组成边长约 137900 格的四面体，
 每系三颗行星共用半径 17800、周期 24000 tick 的轨道，相差 120°。保留存储顺序、类型、尺寸和地形种子，分组为：
 炉心/苍翠/寂痕；砧星/霜原/赭沙；群澜/菌港/砾星；烬岩/晶棱/象牙。正式预设仍有出生船。
-炉心由匿名完整生成器改为引用 `starfold_worlds:home` 类型。同系任意两行星的直线在 epoch 0 以及后续相位都不会穿日。
+炉心由匿名完整生成器改为引用 `kolustar_worlds:home` 类型。同系任意两行星的直线在 epoch 0 以及后续相位都不会穿日。
 
 按未武装 Hauler 的 P1 加速加巡航估算，同系约 60.1 秒；体验包跨系约 188–292 秒，加力约减半。
 默认轴向相邻系的行星中心航线包络为 102300–173500 格，约 180.1–299.7 秒。不是实测起飞/抵达/着陆时间；对角和跨多格航线更长。
 自定义稀疏布局仍可能因空单元而使最近实际恒星更远。未改变船速。仍选择最近 24 颗太阳，太空绘制远面为 1000000 格，足够覆盖新航线。
 旧非手写存档重建轨道及之后发现的新单元会受新布局影响，建议新建世界；已保存手写 celestial 保持其写明的几何。
 
-世界预设 `starfold:native_universe`（“星海折越：随机宇宙”）把两颗母星完整写出：A 是面宽 2048、深度 652 的生态星球，B 是
-面宽 1024、深度 326 的岩石星球。在它们之外使用 `starfold:default`。
+世界预设 `kolustar:native_universe`（“星海折越：随机宇宙”）把两颗母星完整写出：A 是面宽 2048、深度 652 的生态星球，B 是
+面宽 1024、深度 326 的岩石星球。在它们之外使用 `kolustar:default`。
 
 ## 示例 1：在随机宇宙里加入一种新星球类型
 
-下面四个文件就是整个包。它新增类型 `demo:ash` 和布局 `demo:ash_universe`，并**替换**预设 `starfold:native_universe`：
+下面四个文件就是整个包。它新增类型 `demo:ash` 和布局 `demo:ash_universe`，并**替换**预设 `kolustar:native_universe`：
 A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带一颗灰岩星球。预设不能追加，这个文件是整个顶替模组里的那份。
 
 在**创建新世界**时的数据包界面里启用这个包，并选择世界类型“星海折越：随机宇宙”。被替换的预设本来就列在该界面里，
@@ -398,12 +398,12 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
 {
   "pack": {
     "pack_format": 48,
-    "description": "Starfold: an ash planet type (Minecraft 1.21.1)"
+    "description": "Kolustar: an ash planet type (Minecraft 1.21.1)"
   }
 }
 ```
 
-### `data/demo/starfold/planet_type/ash.json`
+### `data/demo/kolustar/planet_type/ash.json`
 
 ```json
 {
@@ -417,12 +417,12 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
     "version": 2,
     "planner": {
       "stages": [
-        "starfold:plates",
-        "starfold:landforms",
-        "starfold:erosion",
-        "starfold:climate",
-        "starfold:biomes",
-        "starfold:volumes"
+        "kolustar:plates",
+        "kolustar:landforms",
+        "kolustar:erosion",
+        "kolustar:climate",
+        "kolustar:biomes",
+        "kolustar:volumes"
       ]
     },
     "land_fraction": 1,
@@ -433,7 +433,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
     },
     "landforms": [
       {
-        "type": "starfold:crater",
+        "type": "kolustar:crater",
         "parameters": {
           "density": 0.25,
           "radius_min": 24,
@@ -456,7 +456,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
     },
     "biomes": [
       {
-        "type": "starfold:climate",
+        "type": "kolustar:climate",
         "parameters": {
           "biome": "minecraft:stony_peaks",
           "temperature_min": -300,
@@ -472,7 +472,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
     ],
     "materials": [
       {
-        "type": "starfold:surface",
+        "type": "kolustar:surface",
         "parameters": {
           "block": "minecraft:tuff",
           "depth_min": 0,
@@ -517,7 +517,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
 }
 ```
 
-### `data/demo/starfold/universe/ash_universe.json`
+### `data/demo/kolustar/universe/ash_universe.json`
 
 ```json
 {
@@ -537,9 +537,9 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
 }
 ```
 
-### `data/starfold/worldgen/world_preset/native_universe.json`
+### `data/kolustar/worldgen/world_preset/native_universe.json`
 
-[完整当前格式预设](../src/main/resources/data/starfold/worldgen/world_preset/native_universe.json)
+[完整当前格式预设](../src/main/resources/data/kolustar/worldgen/world_preset/native_universe.json)
 
 ## 恒星系
 
@@ -627,7 +627,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
       "radius": 512,
       "planets": [
         {
-          "type": "starfold:temperate",
+          "type": "kolustar:temperate",
           "size": 1024,
           "reach": 512,
           "orbit": {
@@ -635,7 +635,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
           },
           "moons": [
             {
-              "type": "starfold:rocky",
+              "type": "kolustar:rocky",
               "size": 512,
               "reach": 512,
               "name": "Moon",
@@ -666,12 +666,12 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
 {
   "pack": {
     "pack_format": 48,
-    "description": "Starfold: two hand-written suns and five planets"
+    "description": "Kolustar: two hand-written suns and five planets"
   }
 }
 ```
 
-#### `data/handwritten/starfold/planet_type/ash.json`
+#### `data/handwritten/kolustar/planet_type/ash.json`
 
 ```json
 {
@@ -685,12 +685,12 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
     "version": 2,
     "planner": {
       "stages": [
-        "starfold:plates",
-        "starfold:landforms",
-        "starfold:erosion",
-        "starfold:climate",
-        "starfold:biomes",
-        "starfold:volumes"
+        "kolustar:plates",
+        "kolustar:landforms",
+        "kolustar:erosion",
+        "kolustar:climate",
+        "kolustar:biomes",
+        "kolustar:volumes"
       ]
     },
     "land_fraction": 1,
@@ -701,7 +701,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
     },
     "landforms": [
       {
-        "type": "starfold:crater",
+        "type": "kolustar:crater",
         "parameters": {
           "density": 0.25,
           "radius_min": 24,
@@ -724,7 +724,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
     },
     "biomes": [
       {
-        "type": "starfold:climate",
+        "type": "kolustar:climate",
         "parameters": {
           "biome": "minecraft:stony_peaks",
           "temperature_min": -300,
@@ -740,7 +740,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
     ],
     "materials": [
       {
-        "type": "starfold:surface",
+        "type": "kolustar:surface",
         "parameters": {
           "block": "minecraft:tuff",
           "depth_min": 0,
@@ -789,7 +789,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
 }
 ```
 
-#### `data/handwritten/starfold/system/twin_lanterns.json`
+#### `data/handwritten/kolustar/system/twin_lanterns.json`
 
 ```json
 {
@@ -803,7 +803,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
       "radius": 512,
       "planets": [
         {
-          "type": "starfold:temperate",
+          "type": "kolustar:temperate",
           "size": 2048,
           "seed": 20261001,
           "name": "Aster",
@@ -826,7 +826,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
           }
         },
         {
-          "type": "starfold:ice",
+          "type": "kolustar:ice",
           "name": "Rime",
           "orbit": {
             "radius": 17000,
@@ -856,7 +856,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
           }
         },
         {
-          "type": "starfold:desert",
+          "type": "kolustar:desert",
           "size": 1024,
           "name": "Dune",
           "orbit": {
@@ -911,10 +911,10 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
         }
       }
     },
-    "starfold:native_planet": {
-      "type": "starfold:native_deep",
+    "kolustar:native_planet": {
+      "type": "kolustar:native_deep",
       "generator": {
-        "type": "starfold:native_system",
+        "type": "kolustar:native_system",
         "storage_layout": "six_face_square_v2",
         "system": "handwritten:twin_lanterns"
       }
@@ -942,7 +942,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
 - **专用服务器。** 停服后，把包放进一个**还没有 `level.dat`** 的世界目录的 `datapacks/example_system/`，并在
   `server.properties` 里设置 `level-type=handwritten:twin_lanterns` 和 `level-seed`。包会自动启用。不要通过修改已有
   世界的 `level-type` 来迁移它。
-- **星系之外的宇宙。** 在星系文件顶层加上 `"beyond": "starfold:default"`。示例没有写它，所以正好只有两颗太阳和五颗
+- **星系之外的宇宙。** 在星系文件顶层加上 `"beyond": "kolustar:default"`。示例没有写它，所以正好只有两颗太阳和五颗
   行星。
 
 ## 已保存的世界保留什么
@@ -961,7 +961,7 @@ A 星保持不变，B 星变成灰岩星球，之后每颗额外的太阳都带�
 ## 代码里固定的限制
 
 - **地形。** 噪声、洞穴和生态由代码决定，树木遵循受支持的群系模板；13类共用配方与逐点求值。海平面与液体来自water配方，允许水、熔岩、血或air。
-- **结构读取固定规划。** 候选沿用 `life.structures`、`starfold:planets` 结构集标签和结构自身的群系限制。
+- **结构读取固定规划。** 候选沿用 `life.structures`、`kolustar:planets` 结构集标签和结构自身的群系限制。
   标签内 11 集均参与：村庄／前哨、程序神殿／小屋、完整雪屋／废墟、含地下变体的传送门、沉船、宝藏和矿井。
   原版 jigsaw 读取有体积的最终地形表面拼装，保存所有部件及 NBT 配方；按部件 bbox 和 `terrain_adaptation` 适配地形，取代圆形 pad。
   刚性部件下填上挖到地基，外围 12 格平滑衔接；`terrain_matching` 道路贴 L1；`none` 不改变高度。结构允许跨面接缝，

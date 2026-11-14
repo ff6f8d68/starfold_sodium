@@ -2,7 +2,7 @@
 wait 300
 createworld
 wait 100
-createworld starfold_worlds:experience_named_preview
+createworld kolustar_worlds:experience_named_preview
 createworld go
 waitworld
 wait 200
@@ -11,7 +11,7 @@ cmd packprobe visit 0 4
 wait 700
 look free
 cmd gamerule doDaylightCycle false
-cmd starfold universe
+cmd kolustar universe
 wait 100
 skylook 1
 wait 1

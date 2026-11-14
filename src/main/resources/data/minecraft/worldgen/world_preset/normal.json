@@ -11,10 +11,10 @@
         }
       }
     },
-    "starfold:native_planet": {
-      "type": "starfold:native_deep",
+    "kolustar:native_planet": {
+      "type": "kolustar:native_deep",
       "generator": {
-        "type": "starfold:native_system",
+        "type": "kolustar:native_system",
         "storage_layout": "six_face_square_v2",
         "planets": [
           {
@@ -40,12 +40,12 @@
                 "version": 2,
                 "planner": {
                   "stages": [
-                    "starfold:plates",
-                    "starfold:landforms",
-                    "starfold:erosion",
-                    "starfold:climate",
-                    "starfold:biomes",
-                    "starfold:volumes"
+                    "kolustar:plates",
+                    "kolustar:landforms",
+                    "kolustar:erosion",
+                    "kolustar:climate",
+                    "kolustar:biomes",
+                    "kolustar:volumes"
                   ]
                 },
                 "land_fraction": 0.4,
@@ -68,7 +68,7 @@
                 },
                 "biomes": [
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:deep_ocean",
                       "temperature_min": -300,
@@ -82,7 +82,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:ocean",
                       "temperature_min": -300,
@@ -96,7 +96,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:beach",
                       "temperature_min": -300,
@@ -110,7 +110,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:river",
                       "temperature_min": -300,
@@ -124,7 +124,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:frozen_peaks",
                       "temperature_min": -300,
@@ -138,7 +138,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:stony_peaks",
                       "temperature_min": -300,
@@ -152,7 +152,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:snowy_plains",
                       "temperature_min": -300,
@@ -166,7 +166,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:taiga",
                       "temperature_min": -300,
@@ -180,7 +180,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:desert",
                       "temperature_min": 20,
@@ -194,7 +194,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:savanna",
                       "temperature_min": 19,
@@ -208,7 +208,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:jungle",
                       "temperature_min": 20,
@@ -222,7 +222,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:swamp",
                       "temperature_min": 12,
@@ -236,7 +236,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:birch_forest",
                       "temperature_min": 8,
@@ -250,7 +250,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:forest",
                       "temperature_min": -300,
@@ -264,7 +264,7 @@
                     }
                   },
                   {
-                    "type": "starfold:climate",
+                    "type": "kolustar:climate",
                     "parameters": {
                       "biome": "minecraft:plains",
                       "temperature_min": -300,
@@ -280,7 +280,7 @@
                 ],
                 "materials": [
                   {
-                    "type": "starfold:surface",
+                    "type": "kolustar:surface",
                     "parameters": {
                       "block": "minecraft:gravel",
                       "depth_min": 0,
@@ -293,7 +293,7 @@
                     }
                   },
                   {
-                    "type": "starfold:surface",
+                    "type": "kolustar:surface",
                     "parameters": {
                       "block": "minecraft:stone",
                       "depth_min": 0,
@@ -306,7 +306,7 @@
                     }
                   },
                   {
-                    "type": "starfold:surface",
+                    "type": "kolustar:surface",
                     "parameters": {
                       "block": "minecraft:sand",
                       "depth_min": 0,
@@ -319,7 +319,7 @@
                     }
                   },
                   {
-                    "type": "starfold:surface",
+                    "type": "kolustar:surface",
                     "parameters": {
                       "block": "minecraft:grass_block",
                       "depth_min": 0,
@@ -332,7 +332,7 @@
                     }
                   },
                   {
-                    "type": "starfold:surface",
+                    "type": "kolustar:surface",
                     "parameters": {
                       "block": "minecraft:dirt",
                       "depth_min": 1,
@@ -401,7 +401,7 @@
                 },
                 "volumes": [
                   {
-                    "type": "starfold:overhang",
+                    "type": "kolustar:overhang",
                     "parameters": {
                       "density": 0.18,
                       "radius": 18,
@@ -414,7 +414,7 @@
                     }
                   },
                   {
-                    "type": "starfold:undercut",
+                    "type": "kolustar:undercut",
                     "parameters": {
                       "density": 0.18,
                       "radius": 12,
@@ -427,7 +427,7 @@
                     }
                   },
                   {
-                    "type": "starfold:cave_mouth",
+                    "type": "kolustar:cave_mouth",
                     "parameters": {
                       "density": 0.18,
                       "radius": 5,
@@ -500,12 +500,12 @@
                 "version": 2,
                 "planner": {
                   "stages": [
-                    "starfold:plates",
-                    "starfold:landforms",
-                    "starfold:erosion",
-                    "starfold:climate",
-                    "starfold:biomes",
-                    "starfold:volumes"
+                    "kolustar:plates",
+                    "kolustar:landforms",
+                    "kolustar:erosion",
+                    "kolustar:climate",
+                    "kolustar:biomes",
+                    "kolustar:volumes"
                   ]
                 },
                 "land_fraction": 1,
@@ -516,7 +516,7 @@
                 },
                 "landforms": [
                   {
-                    "type": "starfold:crater",
+                    "type": "kolustar:crater",
                     "parameters": {
                       "density": 0.25,
                       "radius_min": 24,
@@ -539,7 +539,7 @@
                 },
                 "biomes": [
                   {
-                    "type": "starfold:terrain",
+                    "type": "kolustar:terrain",
                     "parameters": {
                       "biome": "minecraft:badlands",
                       "height_min": -1024,
@@ -553,7 +553,7 @@
                     }
                   },
                   {
-                    "type": "starfold:terrain",
+                    "type": "kolustar:terrain",
                     "parameters": {
                       "biome": "minecraft:stony_peaks",
                       "height_min": -1024,
@@ -567,7 +567,7 @@
                     }
                   },
                   {
-                    "type": "starfold:terrain",
+                    "type": "kolustar:terrain",
                     "parameters": {
                       "biome": "minecraft:windswept_gravelly_hills",
                       "height_min": -1024,
@@ -581,7 +581,7 @@
                 ],
                 "materials": [
                   {
-                    "type": "starfold:surface",
+                    "type": "kolustar:surface",
                     "parameters": {
                       "block": "minecraft:stone",
                       "depth_min": 0,
@@ -619,7 +619,7 @@
                 },
                 "volumes": [
                   {
-                    "type": "starfold:overhang",
+                    "type": "kolustar:overhang",
                     "parameters": {
                       "density": 0.18,
                       "radius": 18,
@@ -658,7 +658,7 @@
             }
           }
         ],
-        "universe": "starfold:default"
+        "universe": "kolustar:default"
       }
     }
   }

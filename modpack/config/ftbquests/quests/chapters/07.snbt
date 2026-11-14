@@ -182,7 +182,7 @@
         {
           "id": "1000000000070A01",
           "type": "kill",
-          "entity": "starfold_biotech:host",
+          "entity": "kolustar_biotech:host",
           "value": 1
         }
       ],
@@ -210,7 +210,7 @@
           "id": "1000000000070B01",
           "type": "item",
           "item": {
-            "id": "starfold_biotech:host_ganglion",
+            "id": "kolustar_biotech:host_ganglion",
             "count": 1
           },
           "count": 1

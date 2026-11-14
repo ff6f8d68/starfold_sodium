@@ -1,0 +1,19 @@
+package dev.kolustar.mixin;
+
+import dev.kolustar.ground.GroundHost;
+
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.*;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+/** Cleanup only after a completed player death, never after a cancelled LivingDeathEvent. */
+@Mixin(ServerPlayer.class)
+public abstract class GroundDeathMixin {
+    @Inject(method = "die", at = @At("TAIL"))
+    private void kolustar$afterDeath(DamageSource source, CallbackInfo ci) {
+        GroundHost.get().afterDeath((ServerPlayer) (Object) this);
+    }
+}

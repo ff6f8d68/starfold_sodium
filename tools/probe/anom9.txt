@@ -1,6 +1,6 @@
 waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 cmd effect give @s minecraft:night_vision infinite 0 true
@@ -8,7 +8,7 @@ key sneak on
 until ground 5000
 key sneak off
 wait 40
-cmd starfold face 0
+cmd kolustar face 0
 wait 60
 cmd tp @s 1948 190 100 -135 25
 wait 3

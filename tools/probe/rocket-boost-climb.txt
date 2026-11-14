@@ -4,7 +4,7 @@ waitworld
 wait 160
 waitworld
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 80
 cmd tp @s 4147.5 132.6 1014.5 90 52
 fly off

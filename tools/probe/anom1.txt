@@ -1,6 +1,6 @@
 waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 cmd gamerule doDaylightCycle false
@@ -10,7 +10,7 @@ until ground 4000
 key sneak off
 wait 40
 nav landed
-cmd starfold face 0
+cmd kolustar face 0
 wait 60
 cmd tp @s 1850 190 1850 -45 5
 wait 3

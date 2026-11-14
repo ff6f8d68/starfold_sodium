@@ -7,7 +7,7 @@ import struct
 import zlib
 
 ROOT = Path(__file__).resolve().parents[1] / 'src/main/resources'
-NS = 'starfold_materials'
+NS = 'kolustar_materials'
 
 
 def write(path, value):
@@ -88,7 +88,7 @@ for name, color, mass, metal in zip(names, [(180, 195, 208), (57, 74, 96)], [.5,
                  {'O': {'tag': 'c:ingots/osmium'}, 'I': {'tag': 'c:ingots/iron'}},
           'result': {'id': full, 'count': 4}})
 write(f'data/{NS}/tags/block/pressure_hulls.json', {'replace': False, 'values': [f'{NS}:osmium_pressure_hull', f'{NS}:osmium_pressure_hull_slab']})
-write(f'data/{NS}/starfold/hull_pressure/osmium_pressure_hull.json', {'blocks': f'#{NS}:pressure_hulls', 'pressure': .85})
+write(f'data/{NS}/kolustar/hull_pressure/osmium_pressure_hull.json', {'blocks': f'#{NS}:pressure_hulls', 'pressure': .85})
 aluminum_blocks = ['bauxite_ore', 'deepslate_bauxite_ore', 'raw_aluminum_block', 'aluminum_block']
 write('data/minecraft/tags/block/mineable/pickaxe.json', {'replace': False, 'values': [f'{NS}:{b}' for b in all_blocks + aluminum_blocks]})
 write('data/minecraft/tags/block/needs_stone_tool.json', {'replace': False, 'values': [f'{NS}:{b}' for b in all_blocks[:2] + aluminum_blocks]})

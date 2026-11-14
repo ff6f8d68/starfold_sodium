@@ -1,6 +1,6 @@
 waitworld
 wait 40
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
 waitworld
 cmd effect give @s minecraft:night_vision infinite 0 true
@@ -8,7 +8,7 @@ cmd gamemode creative
 cmd tp @s 65920.5 240 384.5 0 60
 wait 160
 fly on
-cmd starfold universe
+cmd kolustar universe
 cmd fill 65919 -116 384 65921 60 384 air
 cmd fill 65919 61 384 65921 230 384 air
 wait 40

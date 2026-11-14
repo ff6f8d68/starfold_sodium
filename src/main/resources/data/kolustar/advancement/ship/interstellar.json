@@ -1,0 +1,14 @@
+{
+  "display": {
+    "icon": { "id": "kolustar:thruster" },
+    "title": { "translate": "advancement.kolustar.ship.interstellar.title" },
+    "description": { "translate": "advancement.kolustar.ship.interstellar.description" },
+    "frame": "challenge",
+    "show_toast": true,
+    "announce_to_chat": false,
+    "hidden": false
+  },
+  "criteria": { "earned": { "trigger": "minecraft:impossible" } },
+  "requirements": [["earned"]],
+  "parent": "kolustar:ship/skim"
+}

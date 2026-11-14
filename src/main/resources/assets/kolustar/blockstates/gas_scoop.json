@@ -1,0 +1,10 @@
+{
+  "variants": {
+    "facing=north": {"model": "kolustar:block/gas_scoop"},
+    "facing=south": {"model": "kolustar:block/gas_scoop", "y": 180},
+    "facing=west": {"model": "kolustar:block/gas_scoop", "y": 270},
+    "facing=east": {"model": "kolustar:block/gas_scoop", "y": 90},
+    "facing=up": {"model": "kolustar:block/gas_scoop", "x": 270},
+    "facing=down": {"model": "kolustar:block/gas_scoop", "x": 90}
+  }
+}

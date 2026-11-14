@@ -79,7 +79,7 @@ are complete. Every fuel value and travel budget below is provisional.
 
 ### Offline reference hull (actual structure, not the old generator mass total)
 
-Read `extras/src/main/resources/data/starfold_extras/structure/starter_ship.nbt`
+Read `extras/src/main/resources/data/kolustar_extras/structure/starter_ship.nbt`
 with the existing `tools/ship/pack/shipgen.py:read_nbt` parser. Ignore 8969 explicit
 air entries. The 2347 remaining blocks, using pinned Sable 2.0.5 mass tiers plus
 `src/main/resources/data/sable/tags/block/heavy.json`, sum as follows:
@@ -90,7 +90,7 @@ air entries. The 2347 remaining blocks, using pinned Sable 2.0.5 mass tiers plus
 | 0.25 (doors, trapdoors, ladders, bars, redstone links) | 25 | 6.25 |
 | 0.5 (slabs/stairs, chests, shaft) | 119 | 59.5 |
 | 1 (other hull/machinery blocks) | 2135 | 2135 |
-| 2 (58 Starfold components + 1 stone) | 59 | 118 |
+| 2 (58 Kolustar components + 1 stone) | 59 | 118 |
 | **Total** | **2347** | **2318.75** |
 
 The 58 heavy components are 46 thrusters, 2 gyros, 2 boosters, 2 scopes, 4 airstairs,
@@ -185,7 +185,7 @@ No game, server or GUI was run for this provisional calculation.
 
 ## Interstellar drive — 暂定初值（未实机平衡）
 
-- Plain core block/item `starfold:interstellar_drive`, no block entity, speed bonus
+- Plain core block/item `kolustar:interstellar_drive`, no block entity, speed bonus
   or new mechanism. Sable's highest existing tier is `super_heavy` (mass **4** per
   full block), separate from the ten `heavy` components above. Default pressure
   limit remains **0.5**; this is not a pressure shield.
@@ -205,7 +205,7 @@ No game, server or GUI was run for this provisional calculation.
 
 ## Oil drilling compatibility
 
-CDG's `oil_deposit` block tag now adds `starfold:core_shell` without replacing
+CDG's `oil_deposit` block tag now adds `kolustar:core_shell` without replacing
 its vanilla bedrock entry. Saved home chunks have a natural core-shell floor.
 This fixes a static integration gap, **not** a live extraction acceptance: the
 round-2 rig also had zero-speed motors and an offhand selection failure. Its
@@ -219,8 +219,8 @@ tanks remained empty; no command-injected crude or diesel is counted as output.
    diamond_ore/deepslate_diamond_ore, from=.65, to=1, rarity=.99.
    Crystal gets a smaller diamond supply at rarity=.995 with the same depth range.
    All are first guesses, not measured yields; home/habitable tables have no diamonds.
-3. `starfold:interstellar_drive` now supplies the hardware gate through
-   `starfold:interstellar_drives`: outside home, thrust requires a drive on the
+3. `kolustar:interstellar_drive` now supplies the hardware gate through
+   `kolustar:interstellar_drives`: outside home, thrust requires a drive on the
    same hull and interstellar deuterium. Host Ganglion gates the pack recipe;
    no separate runtime boss-permission flag is used.
    Neither this hardware/fuel rule nor the quest chain prohibits inertial coasting.
@@ -231,27 +231,27 @@ tanks remained empty; no command-injected crude or diesel is counted as output.
 6. Biotech supplies Flesh and the Host encounter in its hive crater. The pack
    uses the Host kill and ganglion as the interstellar fabrication route; terrain,
    encounter completion, loot pickup and mechanical crafting need in-game acceptance.
-7. Normal world-preset tag is replaced with only `starfold_worlds:experience`, making
+7. Normal world-preset tag is replaced with only `kolustar_worlds:experience`, making
    it the normal creation choice; confirm the create-world screen offline limitation
    in a later authorized game run. Dedicated servers need
-   `level-type=starfold_worlds:experience` in their instance's `server.properties`.
+   `level-type=kolustar_worlds:experience` in their instance's `server.properties`.
 
 
 ## Hull materials / aluminum — 暂定初值（未实机平衡）
 
-- `starfold_materials` 独立 jar 提供铝合金板和锇耐压壳及半砖；完整质量分别
+- `kolustar_materials` 独立 jar 提供铝合金板和锇耐压壳及半砖；完整质量分别
   **0.5 / 4**，半砖 **0.25 / 2**，双半砖 **0.5 / 4**；耐压 **0.5 / 0.85**。
   质量、硬度、配方产率及耐压全部暂定，详见 `materials/BALANCE.md`。
 - 配方初值：8铝锭→4铝板；5锇锭+4铁锭→4耐压壳；3完整板→6半砖。
   不提供整舰压力护盾；其他暴露船件仍按各自定义损坏。
-- `starfold_materials` 仅注册铝的矿石、粗矿、锭、粒及存储块；不加世界生成。
+- `kolustar_materials` 仅注册铝的矿石、粗矿、锭、粒及存储块；不加世界生成。
   锇由 Mekanism 提供，船体配方继续使用 `c:` 通用锭标签。
 
 | 星球类型 | 新增矿物 | from → to | rarity（越高越少） |
 | --- | --- | --- | --- |
 | desert（干旱/沙漠） | 铝土矿 | 0 → 1 | 0.90 |
 
-使用 `starfold_materials:bauxite_ore` 与 `starfold_materials:deepslate_bauxite_ore`。
+使用 `kolustar_materials:bauxite_ore` 与 `kolustar_materials:deepslate_bauxite_ore`。
 只有沙漠类星球矿表放置铝土矿，母星/宜居类不新增铝。矿表数值保持原暂定值；
 粗铝/矿石熔炼及高炉冶炼产铝锭，存储采用原版式 9 合 1 / 1 拆 9。
 详细采炼、挖掘和标签契约见 `materials/BALANCE.md`。

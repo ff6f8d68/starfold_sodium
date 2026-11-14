@@ -2,9 +2,9 @@ waitworld
 wait 60
 cmd ride @s dismount
 cmd gamemode creative
-cmd starfold terrain
+cmd kolustar terrain
 wait 160
-cmd starfold face 0
+cmd kolustar face 0
 wait 100
 cmd tp @s 300.5 168 2040.5 90 0
 wait 140
@@ -71,7 +71,7 @@ cmd setblock 15 0 2040 minecraft:gold_block
 cmd fill 14 0 2039 15 2 2041 minecraft:diamond_block
 wait 20
 blockat 15 0 2040
-cmd execute if block 15 0 2040 starfold:anomaly_core run tellraw @s "CLOSURE_COMMANDS_DENIED"
+cmd execute if block 15 0 2040 kolustar:anomaly_core run tellraw @s "CLOSURE_COMMANDS_DENIED"
 break 15 0 2040
 wait 40
 blockat 15 0 2040
@@ -95,9 +95,9 @@ cmd setblock 16 0 2040 minecraft:air
 cmd summon minecraft:tnt 17.5 1 2040.5 {fuse:20s}
 wait 130
 blockat 15 0 2040
-cmd execute if block 15 0 2040 starfold:anomaly_core run tellraw @s "CLOSURE_TNT_INTACT"
+cmd execute if block 15 0 2040 kolustar:anomaly_core run tellraw @s "CLOSURE_TNT_INTACT"
 shot closure-immutable
-cmd starfold face 0
+cmd kolustar face 0
 wait 100
 cmd tp @s 10.5 168 2008.5 90 0
 wait 100
@@ -113,7 +113,7 @@ key forward off
 corner seam-x-end
 shot closure-seam-x
 cmd gamemode creative
-cmd starfold face 0
+cmd kolustar face 0
 wait 100
 cmd tp @s 40.5 168 2038.5 0 0
 wait 100

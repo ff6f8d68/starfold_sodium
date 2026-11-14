@@ -12,7 +12,7 @@ log solar-layout-surface
 shot solar-layout-surface
 boardblock helm
 wait 30
-find starfold:helm
+find kolustar:helm
 wait 6
 usehit helm
 wait 30

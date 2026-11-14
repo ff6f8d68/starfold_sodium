@@ -1,0 +1,16 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "building",
+  "pattern": [
+    "HHH"
+  ],
+  "key": {
+    "H": {
+      "tag": "kolustar_materials:osmium_pressure_hull"
+    }
+  },
+  "result": {
+    "id": "kolustar_materials:osmium_pressure_hull_slab",
+    "count": 6
+  }
+}

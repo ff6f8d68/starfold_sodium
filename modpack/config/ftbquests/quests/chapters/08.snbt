@@ -133,7 +133,7 @@
           "id": "1000000000080901",
           "type": "item",
           "item": {
-            "id": "starfold_materials:osmium_pressure_hull",
+            "id": "kolustar_materials:osmium_pressure_hull",
             "count": 1
           },
           "count": 4
@@ -163,7 +163,7 @@
           "id": "1000000000080501",
           "type": "item",
           "item": {
-            "id": "starfold:gas_scoop",
+            "id": "kolustar:gas_scoop",
             "count": 1
           },
           "count": 1
@@ -248,7 +248,7 @@
           "id": "1000000000080A01",
           "type": "item",
           "item": {
-            "id": "starfold:interstellar_drive",
+            "id": "kolustar:interstellar_drive",
             "count": 1
           },
           "count": 1

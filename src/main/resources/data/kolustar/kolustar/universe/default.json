@@ -1,0 +1,43 @@
+{
+  "planets": {
+    "min": 1,
+    "max": 2
+  },
+  "star_gap": 137900,
+  "ring": 12288,
+  "types": [
+    {
+      "type": "kolustar:rocky",
+      "weight": 3
+    },
+    {
+      "type": "kolustar:desert",
+      "weight": 2
+    },
+    {
+      "type": "kolustar:ice",
+      "weight": 2
+    },
+    {
+      "type": "kolustar:temperate",
+      "weight": 2
+    },
+    {
+      "type": "kolustar:lush",
+      "weight": 1
+    },
+    {
+      "type": "kolustar:arid",
+      "weight": 1
+    },
+    {
+      "type": "kolustar:archipelago",
+      "weight": 1
+    },
+    {
+      "type": "kolustar:steppe",
+      "weight": 1
+    }
+  ],
+  "density": 1.0
+}

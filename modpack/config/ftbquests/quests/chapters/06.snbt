@@ -133,7 +133,7 @@
           "id": "1000000000060501",
           "type": "item",
           "item": {
-            "id": "starfold:scope_precise",
+            "id": "kolustar:scope_precise",
             "count": 1
           },
           "count": 1
@@ -313,7 +313,7 @@
           "id": "1000000000060B01",
           "type": "item",
           "item": {
-            "id": "starfold_materials:aluminum_hull_plating",
+            "id": "kolustar_materials:aluminum_hull_plating",
             "count": 1
           },
           "count": 4
