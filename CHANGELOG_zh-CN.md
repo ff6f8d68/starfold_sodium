@@ -3,6 +3,10 @@
 [English](CHANGELOG.md)
 
 
+## 0.3.8「向星而行」— 2026-11-14
+
+- 将 `GroundFarMesh` 中基于体素盒子的远景地形/LOD 网格改为降采样多边形高度场：远景瓦片按 LOD 步长对地形表面采样（基于种子/世界生成算法的缓存摘要），生成连续的多边形面片与边缘裙边，而非堆叠的盒体柱。目标是更平滑、更轻量的远景地形；在 Kolustar 弯曲星球图面/着色器下的视觉正确性与兼容性仍需实机验证。
+
 ## 0.3.7「向星而行」— 2026-11-14
 
 - 修复 NeoForge 启动崩溃（`Decoration with key 'fabric-modId' already exists on config kolustar.hbm.mixins.json`）：`kolustar.hbm.mixins.json` 在 `neoforge.mods.toml` 中被注册了两次。

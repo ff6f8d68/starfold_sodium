@@ -3,6 +3,10 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.8 “Starward” — 2026-11-14
+
+- Replace voxel-box far terrain/LOD meshing in `GroundFarMesh` with a downsampled polygon heightfield: far tiles sample terrain surfaces at LOD step resolution (seed/worldgen-derived cached summaries) and emit continuous triangulated/quads with edge skirts instead of stacked box columns. This targets smoother, lighter far terrain; visual correctness and compatibility with Kolustar's curved planet charts/shaders still need in-game validation.
+
 ## 0.3.7 “Starward” — 2026-11-14
 
 - Fix a launch crash on NeoForge (`Decoration with key 'fabric-modId' already exists on config kolustar.hbm.mixins.json`) caused by `kolustar.hbm.mixins.json` being registered twice in `neoforge.mods.toml`.

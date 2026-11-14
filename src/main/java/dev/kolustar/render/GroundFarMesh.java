@@ -86,17 +86,57 @@ final class GroundFarMesh {
         return build(shape,Face.VALUES[GroundViewPolicy.face(patch)],GroundViewPolicy.x(patch),GroundViewPolicy.z(patch),256,step,field);
     }
     static List<Quad> build(PlanetShape shape,Face face,int x,int z,int width,int step,Field field) {
+        int x1=Math.min(x+width,shape.size()), z1=Math.min(z+width,shape.size());
         var cached=cached(shape,field);
-        var quads=VoxelMesher.boxes(x,z,Math.min(x+width,shape.size()),Math.min(z+width,shape.size()),step,
-                (u,v)->cached.cell(face,u,v,step).column());
+        int nx=Math.max(1,(x1-x)/step), nz=Math.max(1,(z1-z)/step);
+        var samples=new Surface[(nx+1)*(nz+1)];
+        for(int j=0;j<=nz;j++) for(int i=0;i<=nx;i++) {
+            int sx=Math.min(x+i*step,shape.size()-1), sz=Math.min(z+j*step,shape.size()-1);
+            samples[i+j*(nx+1)]=cached.cell(face,sx,sz,step);
+        }
         var out=new ArrayList<Quad>();
-        for(var q:quads) {
-            var shifted=new Quad(q.material(),q.axis()/2,q.points().stream().map(p->new Point(p.x(),p.y()-128,p.z())).toList(),q.volume(),
-                    step>=4 && q.material().is(net.minecraft.tags.BlockTags.LEAVES) ? -2
-                            : step>=4 && q.axis()==3 && q.material().getFluidState().isEmpty() ? -3 : -1);
-            subdivide(shifted,out);
+        double base=-128;
+        for(int j=0;j<nz;j++) for(int i=0;i<nx;i++) {
+            int ax=x+i*step,bx=Math.min(x+(i+1)*step,x1),az=z+j*step,bz=Math.min(z+(j+1)*step,z1);
+            var s00=samples[i+j*(nx+1)];
+            var s10=samples[i+1+j*(nx+1)];
+            var s11=samples[i+1+(j+1)*(nx+1)];
+            var s01=samples[i+(j+1)*(nx+1)];
+            double h00=h(s00), h10=h(s10), h11=h(s11), h01=h(s01);
+            var mat=dominant(s00,s10,s11,s01);
+            if(!mat.isAir()) {
+                // Top polygon surface (downsampled/seed-approximated heightfield), not voxel boxes.
+                add(out,mat,3,new Point(ax,h00,az),new Point(bx,h10,az),new Point(bx,h11,bz),new Point(ax,h01,bz),
+                        step>=4 && mat.is(net.minecraft.tags.BlockTags.LEAVES) ? -2
+                                : step>=4 && mat.getFluidState().isEmpty() ? -3 : -1, false);
+                if(!mat.getFluidState().isEmpty()) {
+                    add(out,mat,2,new Point(ax,base,az),new Point(bx,base,az),new Point(bx,base,bz),new Point(ax,base,bz),-1,true);
+                }
+            }
+            // Skirts at tile edges so far terrain reads as continuous ground, not floating sheets.
+            if(i==0) skirt(out,mat,ax,az,ax,bz,h00,h01,base,0);
+            if(i==nx-1) skirt(out,mat,bx,bz,bx,az,h11,h10,base,1);
+            if(j==0) skirt(out,mat,bx,az,ax,az,h10,h00,base,4);
+            if(j==nz-1) skirt(out,mat,ax,bz,bx,bz,h01,h11,base,5);
         }
         return List.copyOf(out);
+    }
+
+    private static double h(Surface s) { return s==null ? -128 : s.height(); }
+    private static BlockState dominant(Surface a, Surface b, Surface c, Surface d) {
+        for (var s : new Surface[]{a,b,c,d}) if (s != null && !s.material().isAir()) return s.material();
+        return net.minecraft.world.level.block.Blocks.AIR.defaultBlockState();
+    }
+    private static void add(List<Quad> out, BlockState mat, int axis,
+            Point p0, Point p1, Point p2, Point p3, int rgb, boolean volume) {
+        if (mat.isAir() && axis==3) return;
+        var q = new Quad(mat, axis/2, List.of(p0,p1,p2,p3), volume, rgb);
+        subdivide(q,out);
+    }
+    private static void skirt(List<Quad> out, BlockState mat, double x0,double z0,double x1,double z1,
+            double h0,double h1,double base,int axis) {
+        if (mat.isAir() || (h0<=base && h1<=base)) return;
+        add(out, mat, axis, new Point(x0,base,z0), new Point(x1,base,z1), new Point(x1,h1,z1), new Point(x0,h0,z0), -1, true);
     }
     /** Shared 16-block bend nodes, including side edges. All source faces remain axis-aligned. */
     private static void subdivide(Quad q,List<Quad> out) {
