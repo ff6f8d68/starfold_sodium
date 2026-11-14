@@ -3,6 +3,10 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.7 “Starward” — 2026-11-14
+
+- Fix a launch crash on NeoForge (`Decoration with key 'fabric-modId' already exists on config kolustar.hbm.mixins.json`) caused by `kolustar.hbm.mixins.json` being registered twice in `neoforge.mods.toml`.
+
 ## 0.3.6 “Starward” — 2026-11-14
 
 - Add bloom: an additive half-resolution post pass at `AFTER_LEVEL` (bright extraction with threshold/knee, one separable 9-tap Gaussian and a composite), so suns, glowing cores and engines bleed light into their surroundings. Targets are recreated on resize and released on world unload; GL state and the bound program are restored around the passes. Tunable with `-Dkolustar.bloom=false|threshold|knee|strength`. It only runs in Kolustar dimensions, so other worlds keep vanilla's look.

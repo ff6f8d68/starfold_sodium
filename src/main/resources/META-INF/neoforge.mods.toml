@@ -16,9 +16,6 @@ config="kolustar.mixins.json"
 [[mixins]]
 config="kolustar.hbm.mixins.json"
 
-[[mixins]]
-config="kolustar.hbm.mixins.json"
-
 [[dependencies.kolustar]]
 modId="neoforge"
 type="required"

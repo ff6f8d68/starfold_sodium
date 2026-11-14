@@ -3,6 +3,10 @@
 [English](CHANGELOG.md)
 
 
+## 0.3.7「向星而行」— 2026-11-14
+
+- 修复 NeoForge 启动崩溃（`Decoration with key 'fabric-modId' already exists on config kolustar.hbm.mixins.json`）：`kolustar.hbm.mixins.json` 在 `neoforge.mods.toml` 中被注册了两次。
+
 ## 0.3.6「向星而行」— 2026-11-14
 
 - 新增泛光（bloom）：在 `AFTER_LEVEL` 阶段执行加性的半分辨率后处理（带阈值/软膝的亮度提取、一次可分离 9 抽样高斯模糊与合成），让恒星、发光核心与引擎的光晕扩散到周围。窗口尺寸变化时重建目标，离开世界时释放；执行前后会保存/恢复 GL 状态与绑定的着色器程序。可用 `-Dkolustar.bloom=false|threshold|knee|strength` 调整。仅在 Kolustar 维度启用，其他世界保持原版观感。
