@@ -7,6 +7,7 @@
 
 - Fix a launch crash on NeoForge (`Decoration with key 'fabric-modId' already exists on config kolustar.hbm.mixins.json`) caused by `kolustar.hbm.mixins.json` being registered twice in `neoforge.mods.toml`.
 - Disable the new bloom post pass by default (`-Dkolustar.bloom=true` to opt in) after reports of severe render corruption/overlays in modded packs; it needs in-game validation across Sodium/Iris/Veil pipelines before being on by default.
+- Add a hard kill switch for Kolustar's custom far terrain/LOD/cover rendering (`-Dkolustar.lod=false` or `-Dkolustar.farTerrain=false`) and skip building/drawing those meshes when Distant Horizons is present (also detects `distant_horizons`/`lod` mod ids) or when explicitly disabled, to avoid heavy CPU/GPU load and render issues in packs that use DH or shaders.
 
 ## 0.3.6 “Starward” — 2026-11-14
 

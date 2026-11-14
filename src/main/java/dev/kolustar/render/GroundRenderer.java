@@ -584,6 +584,7 @@ public final class GroundRenderer {
     }
 
     private static void updateCover(long coverDeadline) {
+        if (DistantHorizonsSupport.useExternalLods()) return;
         farPyramids.focus(selectionCamera);
         farPyramids.poll().stream()
                 .forEach(
@@ -1187,6 +1188,7 @@ public final class GroundRenderer {
     }
 
     private static void drawLods(RenderFrame c, int face, RenderType layer) {
+        if (DistantHorizonsSupport.useExternalLods()) return;
         var tiles = lodDrawCache.faces.get(face).get(layer);
         if (tiles == null || tiles.isEmpty()) return;
         var arena = lodArenas.get(face).get(layer);
@@ -1692,6 +1694,7 @@ public final class GroundRenderer {
     }
 
     private static void renderPatch(RenderFrame c, int face, int p, RenderType layer) {
+        if (DistantHorizonsSupport.useExternalLods()) return;
         float fade = patchPaired[p] ? VoxelLodPolicy.fade(patchCommitted[p], System.nanoTime()) : 1;
         render(c, face, patches[p], layer, true, fade);
     }
