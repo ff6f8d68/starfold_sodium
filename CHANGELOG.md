@@ -3,6 +3,8 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.2 “Starward” — 2026-11-14
+
 ## 0.3.1 “Starward” — 2026-11-14
 
 - Move the ground sky scattering integral from the CPU to the vertex shader (`atmosphere_color.vsh`), where it
