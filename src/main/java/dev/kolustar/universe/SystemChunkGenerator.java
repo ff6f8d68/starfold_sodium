@@ -582,9 +582,16 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
             for (var section : chunk.getSections()) section.acquire();
             long began = System.nanoTime();
             try {
-                // PERFORMANCE requests GL 4.3 compute chunk generation on non-macOS runtimes,
-                // but chunk generation executes without a GL context here; CPU generation is the
-                // deterministic compatibility path and current fallback.
+                if (mode == dev.kolustar.worldgen.ChunkGenMode.PERFORMANCE) {
+                    try {
+                        if (dev.kolustar.worldgen.GpuChunkGenerator.tryFill(
+                                chunk, start, id, planet(id).terrain())) {
+                            return chunk;
+                        }
+                    } catch (Throwable ignored) {
+                        // Fall through to deterministic CPU compatibility generation.
+                    }
+                }
                 return fill(chunk, start, id);
             } finally {
                 GENERATED.increment();

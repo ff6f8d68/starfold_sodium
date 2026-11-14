@@ -3,6 +3,11 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.5 “Starward” — 2026-11-14
+
+- Force chunk-generation performance mode on non-macOS GL 4.3-capable devices (macOS remains force-disabled/compatibility). `SystemChunkGenerator.fillFromNoise` now attempts GL 4.3 compute-assisted generation via `GpuChunkGenerator`, which compiles/dispatches `assets/kolustar/shaders/compute/chunk_gen.comp` with SSBO upload/readback when a live GL 4.3 context is available, and falls back to the deterministic CPU pipeline when compute/context/dispatch is unavailable. Final block/material composition remains CPU-authored through `SurfaceFunction` for terrain/plan correctness and deterministic output; chunk generation typically runs on worker threads without a GL context, so render-thread/client-side dispatch scheduling is still needed for consistent GPU execution.
+- Add targeted HBM Continuum (1.0.5) planet-chart compatibility: `HbmRadarPlanetMixin` guards `TileEntityMachineRadarNT` map sampling/prefetch slots that leave the local planet chart/storage and filters detected radar entries to the same planet, reducing invalid height/chunk reads and cross-planet radar hits on curved/wrapped charts. Existing dispatcher-level forced rendering for `hbm` block entities on planet levels remains in place to mitigate culling/flicker; HBM height/radar behavior and GemRender flicker still need in-game verification.
+
 ## 0.3.4 “Starward” — 2026-11-14
 
 - Add chunk generation modes: `-Dkolustar.chunkGenMode=compatibility|performance`. Compatibility uses the deterministic CPU pipeline. Performance is intended for GL 4.3 compute-assisted generation on non-macOS runtimes but is force-disabled on macOS and currently falls back to the CPU pipeline because chunk generation runs without a guaranteed GL context; a GL 4.3 compute shader scaffold (`assets/kolustar/shaders/compute/chunk_gen.comp`) is included for future wiring.

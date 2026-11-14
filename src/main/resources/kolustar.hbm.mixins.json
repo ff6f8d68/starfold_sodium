@@ -5,6 +5,7 @@
   "package": "dev.kolustar.mixin.hbm",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "HbmRadarPlanetMixin"
   ],
   "client": [
     "HbmPlanetRenderMixin"

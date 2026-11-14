@@ -3,6 +3,11 @@
 [English](CHANGELOG.md)
 
 
+## 0.3.5「向星而行」— 2026-11-14
+
+- 在支持 GL 4.3 的非 macOS 设备上强制启用区块生成性能模式（macOS 保持强制禁用/兼容模式）。`SystemChunkGenerator.fillFromNoise` 现在会通过 `GpuChunkGenerator` 尝试 GL 4.3 计算着色器辅助生成：在存在可用 GL 4.3 上下文时编译/调度 `assets/kolustar/shaders/compute/chunk_gen.comp` 并进行 SSBO 上传/回读；若计算/上下文/调度不可用则回退到确定性的 CPU 流程。为保证地形/规划正确性与确定性输出，最终方块/材质组合仍由 CPU 的 `SurfaceFunction` 完成；区块生成通常运行在没有 GL 上下文的工作线程上，因此若要稳定执行 GPU 路径仍需接入渲染线程/客户端调度。
+- 增加针对 HBM Continuum（1.0.5）星球图表的兼容修复：`HbmRadarPlanetMixin` 会跳过离开本地星球图表/存储区域的 `TileEntityMachineRadarNT` 地图采样与预取槽位，并将检测到的雷达条目过滤为同一星球，减少曲面/环绕图表上的无效高度/区块读取与跨星球雷达命中。对星球维度中 `hbm` 方块实体的调度器级强制渲染仍保留以缓解剔除/闪烁；HBM 高度/雷达行为与 GemRender 闪烁仍需实机验证。
+
 ## 0.3.4「向星而行」— 2026-11-14
 
 - 新增区块生成模式：`-Dkolustar.chunkGenMode=compatibility|performance`。兼容模式使用确定性的 CPU 流程。性能模式面向非 macOS 运行时的 GL 4.3 计算着色器辅助生成，但在 macOS 上会被强制禁用；由于区块生成当前不保证拥有 GL 上下文，性能模式目前会回退到 CPU 流程。已包含 GL 4.3 计算着色器脚手架（`assets/kolustar/shaders/compute/chunk_gen.comp`），供后续接入使用。

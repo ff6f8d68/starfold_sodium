@@ -1,21 +1,47 @@
 #version 430 core
-// Performance-mode chunk generation compute scaffold (GL 4.3). Not dispatched by the
-// default CPU chunk pipeline yet; reserved for future GPU-assisted terrain generation.
-layout(local_size_x = 16, local_size_y = 1, local_size_z = 16) in;
 
-layout(std430, binding = 0) buffer HeightData {
-    float heights[];
+// Deterministic per-column compute stage for performance chunk generation.
+// This shader runs on GL 4.3-capable, non-macOS contexts and produces per-column
+// height hints; final block/material composition is applied by the CPU terrain
+// pipeline for correctness and determinism.
+
+layout(local_size_x = 16, local_size_y = 16, local_size_z = 1) in;
+
+layout(std430, binding = 0) readonly buffer InputCols {
+    vec4 cols[]; // x=wx-local, y=wz-local, z=face ordinal, w=seed bits
 };
 
-uniform int ChunkX;
-uniform int ChunkZ;
-uniform int Size;
-uniform float Seed;
+layout(std430, binding = 1) writeonly buffer OutputHeights {
+    int heights[];
+};
+
+uniform int uSeed;
+uniform int uFloor;
+uniform int uSea;
+
+uint hash3(int x, int y, int z, int s) {
+    uint h = uint(x) * 374761393u ^ uint(y) * 668265263u ^ uint(z) * 2246822519u ^ uint(s) * 3266489917u;
+    h = (h ^ (h >> 13u)) * 1274126177u;
+    return h ^ (h >> 16u);
+}
+
+float n01(uint h) {
+    return float(h & 0x00ffffffu) / float(0x01000000u);
+}
 
 void main() {
-    uint x = gl_GlobalInvocationID.x;
-    uint z = gl_GlobalInvocationID.z;
-    if (x >= uint(Size) || z >= uint(Size)) return;
-    // Placeholder: real terrain sampling/voxel generation remains CPU-side for correctness.
-    heights[z * uint(Size) + x] = 0.0;
+    uvec2 id = gl_GlobalInvocationID.xy;
+    if (id.x >= 16u || id.y >= 16u) return;
+    uint idx = id.y * 16u + id.x;
+    vec4 c = cols[idx];
+    int x = int(floor(c.x));
+    int z = int(floor(c.y));
+    int face = int(floor(c.z));
+    uint h0 = hash3(x, 0, z, uSeed ^ face * 131);
+    uint h1 = hash3(x / 8, 0, z / 8, uSeed * 31 + 7);
+    uint h2 = hash3(x / 32, 0, z / 32, uSeed * 17 + 101);
+    float n = n01(h0) * 0.18 + n01(h1) * 0.52 + n01(h2) * 0.30;
+    int base = uSea - 8 + int(floor((n - 0.5) * 24.0));
+    if (base < uFloor + 1) base = uFloor + 1;
+    heights[idx] = base;
 }
