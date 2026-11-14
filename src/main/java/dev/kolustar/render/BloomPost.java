@@ -29,8 +29,10 @@ import java.io.UncheckedIOException;
  * in dimensions Kolustar does not draw, so other worlds keep vanilla's look.
  */
 public final class BloomPost {
+    // Default off: the post-process path needs in-game validation across Sodium/Iris/Veil
+    // pipelines before it is safe to enable for everyone. Opt in with -Dkolustar.bloom=true.
     private static final boolean ENABLED =
-            !"false".equalsIgnoreCase(System.getProperty("kolustar.bloom", "true"));
+            "true".equalsIgnoreCase(System.getProperty("kolustar.bloom", "false"));
     private static final float THRESHOLD = property("kolustar.bloom.threshold", 0.72f);
     private static final float KNEE = property("kolustar.bloom.knee", 0.35f);
     private static final float STRENGTH = property("kolustar.bloom.strength", 0.9f);

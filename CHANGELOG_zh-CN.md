@@ -6,6 +6,7 @@
 ## 0.3.7「向星而行」— 2026-11-14
 
 - 修复 NeoForge 启动崩溃（`Decoration with key 'fabric-modId' already exists on config kolustar.hbm.mixins.json`）：`kolustar.hbm.mixins.json` 在 `neoforge.mods.toml` 中被注册了两次。
+- 将新增的泛光后处理默认关闭（可用 `-Dkolustar.bloom=true` 手动开启）：在大型整合包中有用户报告严重渲染损坏/屏幕覆盖纹理（“atlas hell”），该效果需在 Sodium/Iris/Veil 等渲染管线下完成实机验证后再默认启用。
 
 ## 0.3.6「向星而行」— 2026-11-14
 

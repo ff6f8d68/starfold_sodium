@@ -6,6 +6,7 @@
 ## 0.3.7 “Starward” — 2026-11-14
 
 - Fix a launch crash on NeoForge (`Decoration with key 'fabric-modId' already exists on config kolustar.hbm.mixins.json`) caused by `kolustar.hbm.mixins.json` being registered twice in `neoforge.mods.toml`.
+- Disable the new bloom post pass by default (`-Dkolustar.bloom=true` to opt in) after reports of severe render corruption/overlays in modded packs; it needs in-game validation across Sodium/Iris/Veil pipelines before being on by default.
 
 ## 0.3.6 “Starward” — 2026-11-14
 
