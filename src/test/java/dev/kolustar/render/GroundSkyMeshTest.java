@@ -67,18 +67,21 @@ class GroundSkyMeshTest {
     }
 
     @Test
-    void meshOwnsReusableStorageAndReleasesItOnReloadAndShutdown() throws Exception {
+    void domeIsUploadedOnceAndTheShaderAppliesTheFrameBasis() throws Exception {
         var mesh = Files.readString(Path.of("src/main/java/dev/kolustar/render/GroundSkyMesh.java"));
-        assertTrue(mesh.contains("glBufferSubData"));
+        // One static upload in the constructor: a frame must not rewrite or re-upload vertices.
+        assertTrue(mesh.contains("glBufferData"));
+        assertTrue(mesh.contains("GL_STATIC_DRAW"));
+        assertFalse(mesh.contains("glBufferSubData"));
+        assertFalse(mesh.contains("GL_DYNAMIC_DRAW"));
+        assertFalse(mesh.contains("private final ByteBuffer"));
+        assertFalse(mesh.contains("void upload()"));
+        assertFalse(mesh.contains("void begin()"));
         assertFalse(mesh.contains("glGet"));
-        var upload = mesh.substring(mesh.indexOf("void upload()"), mesh.indexOf("void drawWithShader"));
-        assertFalse(upload.contains("memAlloc"));
-        assertFalse(upload.contains("glBufferData"));
         var draw = mesh.substring(mesh.indexOf("void drawWithShader"), mesh.indexOf("public void close"));
         assertTrue(draw.indexOf("setDefaultUniforms") < draw.indexOf("shader.apply()"));
         assertTrue(draw.indexOf("shader.apply()") < draw.indexOf("drawElements"));
         assertTrue(draw.contains("VertexBuffer.unbind()"));
-        assertTrue(mesh.contains("MemoryUtil.memFree(vertices)"));
         for (var name : new String[] {"vbo", "ebo"})
             assertTrue(mesh.contains("_glDeleteBuffers(" + name + ")"));
         var sky = Files.readString(Path.of("src/main/java/dev/kolustar/render/GroundAtmosphere.java"));
@@ -87,6 +90,17 @@ class GroundSkyMeshTest {
         assertFalse(broad.contains("new int["));
         assertFalse(broad.contains("Tesselator"));
         assertFalse(broad.contains("Math.sin"));
+        // The frame hands the basis over instead of walking the dome on the render thread.
+        assertFalse(broad.contains("skyMesh.vertex("));
+        assertFalse(broad.contains("skyMesh.upload()"));
+        assertFalse(broad.contains("GroundSkyMesh.direction("));
+        for (var uniform : new String[] {"SkyEast", "SkyUp", "SkyNorth"})
+            assertTrue(sky.contains("shader.getUniform(\"" + uniform + "\")"));
+        var shader = Files.readString(
+                Path.of("src/main/resources/assets/kolustar/shaders/core/atmosphere_color.vsh"));
+        assertTrue(shader.contains("uniform vec3 SkyEast, SkyUp, SkyNorth;"));
+        assertTrue(shader.contains("SkyEast*Position.x+SkyUp*Position.y+SkyNorth*Position.z"));
+        assertTrue(shader.contains("vec4(scatterColor(position)*SkyScale,1.0)"));
         assertTrue(sky.contains("skyMesh.close()"));
         assertTrue(Files.readString(Path.of("src/main/java/dev/kolustar/render/GroundCelestials.java"))
                 .contains("GroundAtmosphere.clear()"));

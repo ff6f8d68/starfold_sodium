@@ -271,7 +271,7 @@ class AtmosphereProgramStateTest {
         assertTrue(source.contains("air.density() == 0 || highAltitude == 1 || gasTransmission == 0"));
         assertTrue(
                 source.contains(
-                        "scatterUniforms(air, eye, sun, gasTransmission, black ? 0 : 1 - highAltitude)"),
+                        "scatterUniforms(air, eye, sun, gasTransmission, black ? 0 : 1 - highAltitude,"),
                 "the shader receives the black and high-altitude scale");
         assertTrue(source.contains("draw(null, skyMatrix(c), true)"), "keep the black background draw");
     }

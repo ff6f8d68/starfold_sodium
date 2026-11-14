@@ -27,7 +27,7 @@ public final class GroundAtmosphere {
     private static GroundSkyMesh skyMesh;
 
     private static final Matrix4f MODEL_VIEW = new Matrix4f();
-    private static final Point BLACK = new Point(0, 0, 0), WHITE = new Point(1, 1, 1);
+    private static final Point WHITE = new Point(1, 1, 1);
     private static PlanetAtmosphere frameAir;
     private static Point frameEye, frameSun, frameFog, frameGrade;
     private static double frameRadius, frameTransmission, frameStrength;
@@ -165,7 +165,6 @@ public final class GroundAtmosphere {
                         || living.hasEffect(net.minecraft.world.effect.MobEffects.DARKNESS)))
             return;
         if (skyMesh == null) skyMesh = new GroundSkyMesh();
-        skyMesh.begin();
         context();
         var eye = frameEye;
         double highAltitude =
@@ -177,12 +176,10 @@ public final class GroundAtmosphere {
         var up = PlanetSpace.unit(eye);
         var east = AtmosphereScattering.horizon(up, new Point(1, 0, 0));
         var north = up.cross(east);
-        // Only the dome directions are CPU work: the scattering integral runs in the vertex
-        // shader (atmosphere_color.vsh), which is where this used to cost a millisecond a frame.
-        for (int i = 0; i < GroundSkyMesh.VERTICES; i++)
-            skyMesh.vertex(GroundSkyMesh.direction(i, east, up, north), BLACK);
-        skyMesh.upload();
-        scatterUniforms(air, eye, sun, gasTransmission, black ? 0 : 1 - highAltitude);
+        // The dome is uploaded once; a frame only hands its observer basis to the shader, which
+        // applies it to every stored direction (atmosphere_color.vsh), so no vertex is rebuilt.
+        scatterUniforms(air, eye, sun, gasTransmission, black ? 0 : 1 - highAltitude,
+                east, up, north);
         draw(null, skyMatrix(c), true);
         if (highAltitude > 0) {
             // The thin current-body limb replaces the broad background, even before the native
@@ -205,8 +202,14 @@ public final class GroundAtmosphere {
 
     /** Inputs of the GPU scattering twin; the rim and fog keep the CPU integrator. */
     private static void scatterUniforms(
-            PlanetAtmosphere air, Point eye, Point sun, double transmission, double scale) {
+            PlanetAtmosphere air, Point eye, Point sun, double transmission, double scale,
+            Point east, Point up, Point north) {
         var tint = AtmosphereScattering.tint(air);
+        shader.getUniform("SkyEast")
+                .set((float) east.x(), (float) east.y(), (float) east.z());
+        shader.getUniform("SkyUp").set((float) up.x(), (float) up.y(), (float) up.z());
+        shader.getUniform("SkyNorth")
+                .set((float) north.x(), (float) north.y(), (float) north.z());
         shader.getUniform("SkyRadius").set((float) frameRadius);
         shader.getUniform("SkyDensity").set((float) air.density());
         shader.getUniform("SkyTransmission").set((float) transmission);

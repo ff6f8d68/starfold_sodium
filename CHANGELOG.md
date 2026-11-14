@@ -9,6 +9,9 @@
   runs per vertex on the GPU instead of 1225 CPU ray marches every frame. Fog, star extinction and remote limbs keep
   the CPU integrator, and both copies share the same constants. Measured on the same inputs: 1.16 ms to 0.01 ms of
   frame CPU, with the sky unchanged (float parity within 8-bit colour precision).
+- Upload the sky dome once and rotate it per vertex in `atmosphere_color.vsh` from a three-vector observer
+  basis, so a frame no longer rebuilds 1225 directions or re-uploads the dome. Measured on the same inputs:
+  6.9 µs of frame CPU and the whole 19.6 KB per-frame upload removed (0.4 ms of CPU per second at 60 fps).
 - Cut the CPU cost of uploading a LOD tile: the tile extent is now one min/max pass instead of two
   `AABB` allocations per vertex, and the material palette interns by field probing instead of allocating a
   key object and hashing it for every vertex. Measured on a 4000-vertex tile: 0.38 ms to 0.17 ms of render-thread

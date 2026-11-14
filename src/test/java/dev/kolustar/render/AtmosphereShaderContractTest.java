@@ -71,13 +71,19 @@ class AtmosphereShaderContractTest {
         assertEquals(3, declared.get("SkyEye"));
         assertEquals(3, declared.get("SkySun"));
         assertEquals(3, declared.get("SkyTint"));
+        assertEquals(3, declared.get("SkyEast"));
+        assertEquals(3, declared.get("SkyUp"));
+        assertEquals(3, declared.get("SkyNorth"));
         for (var name : List.of("SkyScatter", "SkyRadius", "SkyDensity", "SkyTransmission",
                 "SkyScale"))
             assertTrue(shader.contains("uniform float " + name) || shader.contains(", " + name)
                     || shader.contains(" " + name + ",") || shader.contains(name + ";"), name);
         assertTrue(shader.contains("uniform vec3 SkyEye, SkySun, SkyTint;"));
+        assertTrue(shader.contains("uniform vec3 SkyEast, SkyUp, SkyNorth;"));
         // The dome must not silently fall back to CPU-baked colours.
-        assertTrue(shader.contains("SkyScatter>0.5?vec4(scatterColor(Position)*SkyScale,1.0):Color;"));
+        assertTrue(shader.contains("SkyScatter>0.5?vec4(scatterColor(position)*SkyScale,1.0):Color;"));
+        // The static dome stores its own frame; the shader rotates it, so a CPU rebuild can go.
+        assertTrue(shader.contains("SkyEast*Position.x+SkyUp*Position.y+SkyNorth*Position.z"));
         assertNotNull(GlslParser.preprocessParse(shader, new HashMap<>()));
     }
 }

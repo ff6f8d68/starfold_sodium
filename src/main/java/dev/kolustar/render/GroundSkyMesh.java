@@ -16,7 +16,10 @@ import org.lwjgl.system.MemoryUtil;
 
 import java.nio.ByteBuffer;
 
-/** Fixed sky topology with one reusable upload buffer; only physical positions/colours change. */
+/**
+ * Fixed sky topology and directions, uploaded once; the per-frame observer basis is a uniform the
+ * vertex shader applies, so a frame rebuilds no vertices.
+ */
 final class GroundSkyMesh implements AutoCloseable {
     static final int NX = AtmosphereSettings.SKY_LONGITUDES, NY = AtmosphereSettings.SKY_LATITUDES;
     static final int VERTICES = (NX + 1) * (NY + 1);
@@ -46,6 +49,10 @@ final class GroundSkyMesh implements AutoCloseable {
             }
     }
 
+    /**
+     * CPU reference for the basis combination atmosphere_color.vsh now does with SkyEast/SkyUp/
+     * SkyNorth; the mesh itself stores the unit-frame directions below.
+     */
     static Point direction(int i, Point east, Point up, Point north) {
         return new Point(
                 east.x() * EAST[i] + up.x() * UP[i] + north.x() * NORTH[i],
@@ -63,8 +70,6 @@ final class GroundSkyMesh implements AutoCloseable {
         out.put((byte) 255);
     }
 
-    private final ByteBuffer vertices = MemoryUtil.memAlloc(
-            VERTICES * DefaultVertexFormat.POSITION_COLOR.getVertexSize());
     private final int vao = GlStateManager._glGenVertexArrays();
     private final int vbo = GlStateManager._glGenBuffers();
     private final int ebo = GlStateManager._glGenBuffers();
@@ -73,7 +78,17 @@ final class GroundSkyMesh implements AutoCloseable {
         BufferUploader.invalidate();
         GlStateManager._glBindVertexArray(vao);
         GlStateManager._glBindBuffer(GL15.GL_ARRAY_BUFFER, vbo);
-        GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices.capacity(), GL15.GL_DYNAMIC_DRAW);
+        var vertices = MemoryUtil.memAlloc(
+                VERTICES * DefaultVertexFormat.POSITION_COLOR.getVertexSize());
+        try {
+            // Unit-frame directions: the shader rotates them into the observer frame per vertex.
+            for (int i = 0; i < VERTICES; i++)
+                vertex(vertices, new Point(EAST[i], UP[i], NORTH[i]), new Point(0, 0, 0));
+            vertices.flip();
+            GL15.glBufferData(GL15.GL_ARRAY_BUFFER, vertices, GL15.GL_STATIC_DRAW);
+        } finally {
+            MemoryUtil.memFree(vertices);
+        }
         DefaultVertexFormat.POSITION_COLOR.setupBufferState();
         var indices = MemoryUtil.memAlloc(INDICES.length * Short.BYTES);
         try {
@@ -85,21 +100,6 @@ final class GroundSkyMesh implements AutoCloseable {
             MemoryUtil.memFree(indices);
             VertexBuffer.unbind();
         }
-    }
-
-    void begin() {
-        vertices.clear();
-    }
-
-    void vertex(Point direction, Point color) {
-        vertex(vertices, direction, color);
-    }
-
-    void upload() {
-        vertices.flip();
-        GL15.glBindBuffer(GL31.GL_COPY_WRITE_BUFFER, vbo);
-        GL15.glBufferSubData(GL31.GL_COPY_WRITE_BUFFER, 0, vertices);
-        GL15.glBindBuffer(GL31.GL_COPY_WRITE_BUFFER, 0);
     }
 
     void drawWithShader(Matrix4f matrix, ShaderInstance shader) {
@@ -120,6 +120,5 @@ final class GroundSkyMesh implements AutoCloseable {
         GlStateManager._glDeleteBuffers(vbo);
         GlStateManager._glDeleteBuffers(ebo);
         GlStateManager._glDeleteVertexArrays(vao);
-        MemoryUtil.memFree(vertices);
     }
 }

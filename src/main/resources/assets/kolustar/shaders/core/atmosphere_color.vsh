@@ -9,6 +9,9 @@ uniform float Background, DepthFar;
 // copy. Every constant below must match dev.kolustar.sky.AtmosphereSettings.
 uniform float SkyScatter, SkyRadius, SkyDensity, SkyTransmission, SkyScale;
 uniform vec3 SkyEye, SkySun, SkyTint;
+// The dome mesh is static: its Position is the direction in the east/up/north frame, and these
+// per-frame basis vectors rotate it into the observer frame here instead of on the CPU.
+uniform vec3 SkyEast, SkyUp, SkyNorth;
 out float spaceFacing;
 out vec4 vertexColor;
 
@@ -119,8 +122,11 @@ vec4 spaceProject(vec4 view) {
     return mix(ordinary,stereo,SpaceLens.x);
 }
 void main() {
-    gl_Position=spaceProject(ModelViewMat*vec4(Position,1));
+    // Position is a unit-axis direction scaled by 128; the rim keeps its baked vertex colours.
+    vec3 position=SkyScatter>0.5
+            ?SkyEast*Position.x+SkyUp*Position.y+SkyNorth*Position.z
+            :Position;
+    gl_Position=spaceProject(ModelViewMat*vec4(position,1));
     gl_Position.z=mix(gl_Position.z,gl_Position.w*(1.0-0.000001)*DepthFar,Background);
-    // Position is the dome direction scaled by 128; the rim keeps its baked vertex colours.
-    vertexColor=SkyScatter>0.5?vec4(scatterColor(Position)*SkyScale,1.0):Color;
+    vertexColor=SkyScatter>0.5?vec4(scatterColor(position)*SkyScale,1.0):Color;
 }
