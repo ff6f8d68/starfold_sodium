@@ -3,6 +3,10 @@
 [English](CHANGELOG.md)
 
 
+## 0.3.4「向星而行」— 2026-11-14
+
+- 新增区块生成模式：`-Dkolustar.chunkGenMode=compatibility|performance`。兼容模式使用确定性的 CPU 流程。性能模式面向非 macOS 运行时的 GL 4.3 计算着色器辅助生成，但在 macOS 上会被强制禁用；由于区块生成当前不保证拥有 GL 上下文，性能模式目前会回退到 CPU 流程。已包含 GL 4.3 计算着色器脚手架（`assets/kolustar/shaders/compute/chunk_gen.comp`），供后续接入使用。
+
 ## 0.3.3「向星而行」— 2026-11-14
 
 - 为 NeoForge 1.21.1 新增可选 HBM Continuum 兼容脚手架：`libs/hbm/` 中的本地开发/构建 jar（`hbm-neoforge-1.0.5-1.21.1.jar`、`gemrender-0.1.20-neoforge-1.21.1.jar`、`golemcore-neoforge-1.0.5+1.21.1.jar`）已加入编译/测试/运行时类路径，并且仅在安装 HBM 时加载 `kolustar.hbm.mixins.json`。

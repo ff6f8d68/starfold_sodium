@@ -3,6 +3,10 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.4 “Starward” — 2026-11-14
+
+- Add chunk generation modes: `-Dkolustar.chunkGenMode=compatibility|performance`. Compatibility uses the deterministic CPU pipeline. Performance is intended for GL 4.3 compute-assisted generation on non-macOS runtimes but is force-disabled on macOS and currently falls back to the CPU pipeline because chunk generation runs without a guaranteed GL context; a GL 4.3 compute shader scaffold (`assets/kolustar/shaders/compute/chunk_gen.comp`) is included for future wiring.
+
 ## 0.3.3 “Starward” — 2026-11-14
 
 - Add optional HBM Continuum compatibility scaffolding for NeoForge 1.21.1: local development/build jars in `libs/hbm/` (`hbm-neoforge-1.0.5-1.21.1.jar`, `gemrender-0.1.20-neoforge-1.21.1.jar`, `golemcore-neoforge-1.0.5+1.21.1.jar`) are on the compile/test/runtime classpath, and `kolustar.hbm.mixins.json` loads only when HBM is installed.

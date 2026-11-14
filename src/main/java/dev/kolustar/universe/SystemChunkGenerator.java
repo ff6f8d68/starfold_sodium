@@ -577,10 +577,14 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
         var start = chunk.getPos();
         int id = owner(start.x, start.z);
         if (id < 0) return CompletableFuture.completedFuture(chunk);
+        var mode = dev.kolustar.worldgen.ChunkGenMode.forChunkGeneration();
         return CompletableFuture.supplyAsync(Util.wrapThreadWithTaskName("wgen_fill_noise", () -> {
             for (var section : chunk.getSections()) section.acquire();
             long began = System.nanoTime();
             try {
+                // PERFORMANCE requests GL 4.3 compute chunk generation on non-macOS runtimes,
+                // but chunk generation executes without a GL context here; CPU generation is the
+                // deterministic compatibility path and current fallback.
                 return fill(chunk, start, id);
             } finally {
                 GENERATED.increment();

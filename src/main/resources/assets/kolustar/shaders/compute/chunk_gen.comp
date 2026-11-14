@@ -1,0 +1,21 @@
+#version 430 core
+// Performance-mode chunk generation compute scaffold (GL 4.3). Not dispatched by the
+// default CPU chunk pipeline yet; reserved for future GPU-assisted terrain generation.
+layout(local_size_x = 16, local_size_y = 1, local_size_z = 16) in;
+
+layout(std430, binding = 0) buffer HeightData {
+    float heights[];
+};
+
+uniform int ChunkX;
+uniform int ChunkZ;
+uniform int Size;
+uniform float Seed;
+
+void main() {
+    uint x = gl_GlobalInvocationID.x;
+    uint z = gl_GlobalInvocationID.z;
+    if (x >= uint(Size) || z >= uint(Size)) return;
+    // Placeholder: real terrain sampling/voxel generation remains CPU-side for correctness.
+    heights[z * uint(Size) + x] = 0.0;
+}
