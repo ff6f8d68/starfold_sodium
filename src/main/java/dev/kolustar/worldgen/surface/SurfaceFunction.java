@@ -153,22 +153,43 @@ public final class SurfaceFunction {
 
     /** Exact comparison band from bottom upward, including exposed caves, vegetation and planned structures. */
     public BlockState[] blocks(Face face, int u, int v, int bottom) {
+        var result = new BlockState[PlanetTerrain.MAX_Y-terrain.floor()];
+        blocksInto(face, u, v, bottom, result);
+        return result;
+    }
+
+    /** Fills {@code result} (indexed by y - terrain.floor()) for reuse across columns in a chunk fill. */
+    public void blocksInto(Face face, int u, int v, int bottom, BlockState[] result) {
         var owner = Scatter.canonical(terrain,face,u,v);
         face = owner.face(); u = owner.u(); v = owner.v();
-        var column = column(face,u,v,ground(face,u,v),bottom);
-        var result = new BlockState[PlanetTerrain.MAX_Y-terrain.floor()];
+        int g = ground(face,u,v);
+        var structures = plan.column(face,u,v);
+        int top = terrain.closure(face,u,v) ? terrain.closureTop()
+                : terrain.surfaceTop(face,u,v,g);
+        if (structures.containsKey(top) && structures.get(top).isAir()) {
+            var substrate = column(face,u,v,g,terrain.floor());
+            while (top > terrain.floor() && structures.getOrDefault(top, substrate.state(top)).isAir()) top--;
+        }
+        var column = column(face,u,v,g,bottom);
         java.util.Arrays.fill(result, Blocks.AIR.defaultBlockState());
-        int top = groundTop(face,u,v);
         int floorY = terrain.floor();
         int lo = Math.max(floorY, column.bottom());
         int hi = Math.min(top, column.end() - 1);
         for (int y = lo; y <= hi; y++)
             result[y-floorY] = column.state(y);
-        for (var run : objects(face,u,v,column,top))
+        for (var run : objects(face,u,v,column,top,structures))
             for (int y = Math.max(top+1,run.bottom()); y <= Math.min(PlanetTerrain.MAX_Y-1,run.top()); y++) result[y-floorY] = run.block();
-        for(var e:plan.column(face,u,v).entrySet())if(e.getKey()>=floorY && e.getKey()<PlanetTerrain.MAX_Y)
-            result[e.getKey()-floorY]=e.getValue();
-        return result;
+        for (var e : structures.entrySet()) if (e.getKey() >= floorY && e.getKey() < PlanetTerrain.MAX_Y)
+            result[e.getKey()-floorY] = e.getValue();
+    }
+
+    private List<Run> objects(Face f, int u, int v, PlanetTerrain.Column col, int top, SortedMap<Integer,BlockState> structures) {
+        if (plan.sites().isEmpty()) return ecologyObjects(f,u,v,col,top,false);
+        var states = new TreeMap<Integer,BlockState>();
+        if (vegetation(f,u,v)) for (var run : ecologyObjects(f,u,v,col,top,false))
+            for (int y = run.bottom(); y <= run.top(); y++) states.put(y, run.block());
+        for (var e : structures.entrySet()) if (e.getKey() > top) states.put(e.getKey(), e.getValue());
+        return runs(states);
     }
 
     /** Coarse LOD reads four bounded grid summaries; fine LOD integrates exact columns. */

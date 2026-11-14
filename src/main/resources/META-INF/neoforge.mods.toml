@@ -16,6 +16,9 @@ config="kolustar.mixins.json"
 [[mixins]]
 config="kolustar.hbm.mixins.json"
 
+[[mixins]]
+config="kolustar.hbm.mixins.json"
+
 [[dependencies.kolustar]]
 modId="neoforge"
 type="required"
@@ -43,3 +46,10 @@ type="incompatible"
 versionRange="[0,)"
 ordering="NONE"
 side="BOTH"
+
+[[dependencies.kolustar]]
+modId="distanthorizons"
+type="optional"
+versionRange="[0,)"
+ordering="AFTER"
+side="CLIENT"

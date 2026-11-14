@@ -29,17 +29,25 @@ import org.slf4j.Logger;
 public final class GpuChunkGenerator {
     private static final Logger LOGGER = LogUtils.getLogger();
     private static final Object LOCK = new Object();
+    private static final ThreadLocal<Boolean> CONTEXT_AVAILABLE = new ThreadLocal<>();
     private static int program = 0;
     private static boolean attempted;
 
     private GpuChunkGenerator() {}
 
     public static boolean tryFill(ChunkAccess chunk, net.minecraft.world.level.ChunkPos start, int planetId, PlanetTerrain terrain) {
-        if (ChunkGenMode.isMacOs()) return false;
+        if (ChunkGenMode.isMacOs() || ChunkGenMode.isDedicatedServer()) return false;
+        Boolean available = CONTEXT_AVAILABLE.get();
+        if (Boolean.FALSE.equals(available)) return false;
         try {
             GLCapabilities caps = GL.getCapabilities();
-            if (caps == null || !caps.OpenGL43) return false;
+            if (caps == null || !caps.OpenGL43) {
+                CONTEXT_AVAILABLE.set(Boolean.FALSE);
+                return false;
+            }
+            CONTEXT_AVAILABLE.set(Boolean.TRUE);
         } catch (Throwable t) {
+            CONTEXT_AVAILABLE.set(Boolean.FALSE);
             return false;
         }
         synchronized (LOCK) {
@@ -156,13 +164,14 @@ public final class GpuChunkGenerator {
             BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
             int terrainFloor = terrain.floor();
             int low = Math.max(terrainFloor, chunk.getMinBuildHeight());
+            var generated = new net.minecraft.world.level.block.state.BlockState[PlanetTerrain.MAX_Y - terrainFloor];
             for (int x = 0; x < 16; x++) for (int z = 0; z < 16; z++) {
                 int idx = x * 16 + z;
                 // Touch GPU result so dispatch/readback is required and deterministic per column.
                 int gpuHint = heights.get(idx);
                 if (gpuHint < terrainFloor - 1024) return false;
                 Face face = Face.VALUES[Math.floorMod(faces[idx], 6)];
-                var generated = function.blocks(face, us[idx], vs[idx]);
+                function.blocksInto(face, us[idx], vs[idx], terrainFloor, generated);
                 var liquid = terrain.liquid(face, us[idx], vs[idx]);
                 int wx = start.getMinBlockX() + x, wz = start.getMinBlockZ() + z;
                 int hi = Math.min(PlanetTerrain.MAX_Y - 1, chunk.getMaxBuildHeight() - 1);

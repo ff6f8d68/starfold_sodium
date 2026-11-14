@@ -615,12 +615,13 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
         var pos = new BlockPos.MutableBlockPos();
         int terrainFloor = terrain.floor();
         int low = Math.max(terrainFloor, chunk.getMinBuildHeight());
+        var generated = new net.minecraft.world.level.block.state.BlockState[PlanetTerrain.MAX_Y - terrainFloor];
         for (int x = 0; x < 16; x++)
             for (int z = 0; z < 16; z++) {
                 int wx = start.getMinBlockX() + x, wz = start.getMinBlockZ() + z;
                 var cell =
                         GroundTopology.cell(new BlockPos(wx - originX(id), 128, wz - originZ(id)));
-                var generated = function.blocks(cell.face(), cell.u(), cell.v());
+                function.blocksInto(cell.face(), cell.u(), cell.v(), terrainFloor, generated);
                 var liquid = terrain.liquid(cell.face(), cell.u(), cell.v());
                 // Written straight into the sections, from the top: the generation heightmaps are
                 // kept here, so the chunk's own per-block bookkeeping would only repeat them for

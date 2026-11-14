@@ -218,7 +218,7 @@ public final class PlanetTerrain {
         var prior = columns.putIfAbsent(key, value);
         if (prior != null)
             return prior;
-        if (columns.size() > 4096) {
+        if (columns.size() > 2048) {
             var it = columns.keySet().iterator();
             for (int i = 0; i < 512 && it.hasNext(); i++) {
                 it.next();

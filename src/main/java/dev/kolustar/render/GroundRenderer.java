@@ -247,6 +247,7 @@ public final class GroundRenderer {
                     }
                 });
         ClientPlayLifecycle();
+        BloomPost.initialize(modBus);
         modBus.addListener(
                 (net.neoforged.neoforge.client.event.RegisterColorHandlersEvent.Block event) ->
                         event.register(
@@ -331,6 +332,7 @@ public final class GroundRenderer {
         planet = -1;
         mask = null;
         ready = false;
+        BloomPost.clear();
     }
 
     public static int probeParentTiles() {
@@ -820,6 +822,11 @@ public final class GroundRenderer {
     }
 
     private static void updateLod(long deadline) {
+        if (DistantHorizonsSupport.useExternalLods()) {
+            lodStarted = false;
+            selectionChanged = false;
+            return;
+        }
         if (!GroundViewClient.coverageReady()) return;
         if (!lodStarted) {
             selectionChanged = true;

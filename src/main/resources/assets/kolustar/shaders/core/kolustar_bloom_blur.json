@@ -1,0 +1,10 @@
+{
+  "vertex": "kolustar:kolustar_bloom",
+  "fragment": "kolustar:kolustar_bloom_blur",
+  "attributes": ["Position", "UV0"],
+  "samplers": [{ "name": "Sampler0" }],
+  "uniforms": [
+    { "name": "TexelSize", "type": "float", "count": 2, "values": [0.001953125, 0.001953125] },
+    { "name": "Direction", "type": "float", "count": 2, "values": [1.0, 0.0] }
+  ]
+}

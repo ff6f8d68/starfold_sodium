@@ -3,6 +3,13 @@
 [English](CHANGELOG.md)
 
 
+## 0.3.6「向星而行」— 2026-11-14
+
+- 新增泛光（bloom）：在 `AFTER_LEVEL` 阶段执行加性的半分辨率后处理（带阈值/软膝的亮度提取、一次可分离 9 抽样高斯模糊与合成），让恒星、发光核心与引擎的光晕扩散到周围。窗口尺寸变化时重建目标，离开世界时释放；执行前后会保存/恢复 GL 状态与绑定的着色器程序。可用 `-Dkolustar.bloom=false|threshold|knee|strength` 调整。仅在 Kolustar 维度启用，其他世界保持原版观感。
+- 安装 Distant Horizons 时，远景地形交由 DH 处理：跳过 Kolustar 自有的 CPU LOD 任务/网格流程，避免两套系统重复构建同一距离的地形。`distanthorizons` 声明为可选客户端依赖且不打包。DH 是否与弯曲星球图面对齐仍需实机验证。
+- 降低区块生成的 CPU 与内存分配开销：每个区块复用一个 `BlockState` 列缓冲，不再逐列分配（`SurfaceFunction.blocksInto`）；每列的规范单元/地面/结构查询只计算一次；行星地形列缓存更早淘汰；工作线程会记住没有 GL 上下文，避免每个区块重复探测。
+- 专用服务器强制使用兼容模式区块生成；性能模式在非 macOS 且支持 GL 4.3 的客户端上强制开启，在 macOS 上强制禁用。
+
 ## 0.3.5「向星而行」— 2026-11-14
 
 - 在支持 GL 4.3 的非 macOS 设备上强制启用区块生成性能模式（macOS 保持强制禁用/兼容模式）。`SystemChunkGenerator.fillFromNoise` 现在会通过 `GpuChunkGenerator` 尝试 GL 4.3 计算着色器辅助生成：在存在可用 GL 4.3 上下文时编译/调度 `assets/kolustar/shaders/compute/chunk_gen.comp` 并进行 SSBO 上传/回读；若计算/上下文/调度不可用则回退到确定性的 CPU 流程。为保证地形/规划正确性与确定性输出，最终方块/材质组合仍由 CPU 的 `SurfaceFunction` 完成；区块生成通常运行在没有 GL 上下文的工作线程上，因此若要稳定执行 GPU 路径仍需接入渲染线程/客户端调度。

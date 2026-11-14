@@ -3,6 +3,13 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.6 “Starward” — 2026-11-14
+
+- Add bloom: an additive half-resolution post pass at `AFTER_LEVEL` (bright extraction with threshold/knee, one separable 9-tap Gaussian and a composite), so suns, glowing cores and engines bleed light into their surroundings. Targets are recreated on resize and released on world unload; GL state and the bound program are restored around the passes. Tunable with `-Dkolustar.bloom=false|threshold|knee|strength`. It only runs in Kolustar dimensions, so other worlds keep vanilla's look.
+- Defer distant terrain to Distant Horizons when it is installed: Kolustar's own CPU LOD job/mesh pipeline is skipped and DH owns far terrain, instead of both systems meshing the same distance. `distanthorizons` is declared as an optional client dependency and is not bundled. Whether DH lines up with the curved planet charts still needs an in-game check.
+- Cut chunk-generation CPU and allocation cost: one `BlockState` column buffer is reused per chunk instead of allocating one per column (`SurfaceFunction.blocksInto`), the canonical cell/ground/structure lookups are computed once per column, the planet terrain column cache evicts earlier, and worker threads remember that no GL context is available instead of re-probing it every chunk.
+- Dedicated servers are forced to compatibility chunk generation; performance mode stays forced on for non-macOS GL 4.3 clients and force-disabled on macOS.
+
 ## 0.3.5 “Starward” — 2026-11-14
 
 - Force chunk-generation performance mode on non-macOS GL 4.3-capable devices (macOS remains force-disabled/compatibility). `SystemChunkGenerator.fillFromNoise` now attempts GL 4.3 compute-assisted generation via `GpuChunkGenerator`, which compiles/dispatches `assets/kolustar/shaders/compute/chunk_gen.comp` with SSBO upload/readback when a live GL 4.3 context is available, and falls back to the deterministic CPU pipeline when compute/context/dispatch is unavailable. Final block/material composition remains CPU-authored through `SurfaceFunction` for terrain/plan correctness and deterministic output; chunk generation typically runs on worker threads without a GL context, so render-thread/client-side dispatch scheduling is still needed for consistent GPU execution.
