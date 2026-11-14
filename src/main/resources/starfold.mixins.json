@@ -138,7 +138,9 @@
     "CoreShaderProgramMixin",
     "CoreShaderVeilProcessorMixin",
     "CoreShaderShaderMixin",
-    "CoreShaderRenderMixin"
+    "CoreShaderRenderMixin",
+    "Weather2SceneEnhancerMixin",
+    "ParticleRainSpawnerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

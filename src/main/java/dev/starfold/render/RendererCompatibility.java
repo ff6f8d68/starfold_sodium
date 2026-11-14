@@ -22,6 +22,11 @@ public final class RendererCompatibility {
             return Boolean.getBoolean("starfold.portProbe");
         // Both hook Sodium's own chunk program; without Sodium they cannot resolve a target.
         if (mixin.startsWith("dev.starfold.mixin.Sodium")) return loaded.test("sodium");
+        // Third-party weather renderers target their own classes; only apply when they exist.
+        if (mixin.equals("dev.starfold.mixin.Weather2SceneEnhancerMixin"))
+            return loaded.test("weather2");
+        if (mixin.equals("dev.starfold.mixin.ParticleRainSpawnerMixin"))
+            return loaded.test("particlerain");
         // Sodium, Embeddium and Canvas overwrite renderSectionLayer and setupRender, so the
         // section observer would have no draw call left to wrap. Frame start lives separately.
         if (mixin.equals("dev.starfold.mixin.GroundNativeDrawMixin"))

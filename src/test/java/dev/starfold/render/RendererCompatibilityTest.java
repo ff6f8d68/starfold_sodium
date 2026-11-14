@@ -30,7 +30,9 @@ class RendererCompatibilityTest {
                     "SableFuelMassMixin",
                     "SableShipReadinessMixin",
                     "DevPortCameraMixin",
-                    "DevPortClockMixin");
+                    "DevPortClockMixin",
+                    "Weather2SceneEnhancerMixin",
+                    "ParticleRainSpawnerMixin");
 
     /** Wraps vanilla's section draw call, which these renderers overwrite with their own. */
     private static final Set<String> RENDERER_SPECIFIC = Set.of("GroundNativeDrawMixin");
@@ -71,6 +73,15 @@ class RendererCompatibilityTest {
                 }
             }
         assertTrue(RendererCompatibility.supported(Set.of("sable", "veil", "create")::contains));
+        for (String mod : Set.of("weather2", "particlerain"))
+            assertTrue(
+                    RendererCompatibility.apply(
+                            "dev.starfold.mixin."
+                                    + (mod.equals("weather2")
+                                            ? "Weather2SceneEnhancerMixin"
+                                            : "ParticleRainSpawnerMixin"),
+                            mod::equals),
+                    mod);
         assertTrue(
                 Sources.text("RendererMixinPlugin")
                         .contains("LoadingModList.get().getModFileById(id)!=null"));

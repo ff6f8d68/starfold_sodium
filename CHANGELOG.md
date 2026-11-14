@@ -8,6 +8,12 @@
 - Project planet terrain through Sodium 0.8: its chunk shader receives the same warp, projection uniforms
   and native-chunk coverage as the vanilla core shaders. Iris is supported while no shader pack is enabled;
   an active Iris pack, Embeddium or Canvas still disables planet terrain projection and far views.
+- Add Particle Rain and Weather2 compatibility as optional, mod-gated client hooks: Particle Rain precipitation asks
+  each planet's own weather instead of the level rain flag (so airless worlds and space stay dry), and Weather2's
+  flat-world clouds, storm walls, fog override and precipitation sheets are skipped inside Starfold planet levels
+  while its simulation, wind, sounds, radar and particles keep running. Normal dimensions are untouched.
+- Fix the Veil depth hook targeting two framebuffer wrapper classes that Veil 4.3-4.5 no longer contains, which made
+  the whole patch fail to apply; only classes present across those versions are targeted now.
 - Make the default (Normal) world type a Starfold native universe so new worlds spawn players on an earth-like home planet by default.
 
 ## 0.3.0-alpha.1 “Starward” — 2026-11-09
