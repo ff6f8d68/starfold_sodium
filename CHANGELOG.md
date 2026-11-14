@@ -3,7 +3,7 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
-## Unreleased
+## 0.3.1 “Starward” — 2026-11-14
 
 - Move the ground sky scattering integral from the CPU to the vertex shader (`atmosphere_color.vsh`), where it
   runs per vertex on the GPU instead of 1225 CPU ray marches every frame. Fog, star extinction and remote limbs keep
