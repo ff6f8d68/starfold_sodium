@@ -75,7 +75,11 @@ public final class AtlasScreen extends AtlasMapScreen {
         PlanetMapApi.refreshMarkers();
         if (globe == null && !spatial()) {
             if (initial == Layer.GALAXY || initial == Layer.SYSTEM) { layer = destination = initial; system.enter(initial == Layer.GALAXY); }
-            else recenter();
+            else {
+                recenter();
+                // A ground map keybind opens the wrapping chart directly instead of the globe.
+                if (initial == Layer.GROUND && ground != null) layer(Layer.GROUND);
+            }
         }
     }
     private boolean modal() { return pending != null || selected != null || selectedShip != null || selectedNode != null; }

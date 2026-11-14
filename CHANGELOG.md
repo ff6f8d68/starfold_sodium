@@ -9,6 +9,12 @@
   runs per vertex on the GPU instead of 1225 CPU ray marches every frame. Fog, star extinction and remote limbs keep
   the CPU integrator, and both copies share the same constants. Measured on the same inputs: 1.16 ms to 0.01 ms of
   frame CPU, with the sky unchanged (float parity within 8-bit colour precision).
+- Add a planet minimap (default `J`) and a dedicated world map (default `K`). Both draw the same cube-face
+  ground chart the atlas already uses, so the map continues across face edges and cube corners instead of
+  stopping at a flat world border the way a world-texture minimap does. The minimap is a compact HUD panel
+  (terrain, north-up, waypoint bearing); the map screen opens straight on the surface layer with zoom, pan,
+  coordinates and the north-up toggle. Map tiles are uploaded as GPU textures and drawn as quads, so the
+  chart itself costs no per-frame CPU beyond what is already on screen.
 - Upload the sky dome once and rotate it per vertex in `atmosphere_color.vsh` from a three-vector observer
   basis, so a frame no longer rebuilds 1225 directions or re-uploads the dome. Measured on the same inputs:
   6.9 µs of frame CPU and the whole 19.6 KB per-frame upload removed (0.4 ms of CPU per second at 60 fps).

@@ -15,7 +15,7 @@ public final class GroundView implements AutoCloseable {
     private GroundChart chart;
     private double centreU, centreV, scale = 2, angle;
     private int north, x, y, width, height, sampleStep = 1;
-    private boolean northUp = true, following = true;
+    private boolean northUp = true, following = true, compact;
     private Pick target;
 
     public GroundView(PlanetMapApi.Body body) {
@@ -59,6 +59,10 @@ public final class GroundView implements AutoCloseable {
     }
     public void recentre() { following = true; update(observer()); }
     public void northUp(boolean on) { northUp = on; update(observer()); }
+    /** Corner-panel mode: terrain only, no grid, labels, readout or topology markers. */
+    public void compact(boolean on) { compact = on; }
+    /** Pixels per block; the render pass raises it to the smallest readable scale. */
+    public void scale(double value) { scale = Math.clamp(value, minimumScale(), Math.max(8, minimumScale())); }
     /** Optional local selection, e.g. a ship. Null restores Kolustar's active waypoint. */
     public void target(Pick target) { this.target = target; }
     public Pick pick(double mouseX, double mouseY) {
@@ -81,9 +85,9 @@ public final class GroundView implements AutoCloseable {
         scale = Math.max(scale, minimumScale());
         g.enableScissor(x, y, x + width, y + height);
         g.fill(x, y, x + width, y + height, 0xff080f18);
-        anomalies(g);
+        if (!compact) anomalies(g);
         var labels = new MapLabels();
-        labels.place(new MapLabels.Rect(x, y + height - 27, width, 27));
+        if (!compact) labels.place(new MapLabels.Rect(x, y + height - 27, width, 27));
         if (Atlas.surveys.available()) {
             raster.begin(Atlas.surveys.record(body), PlanetMapApi.surface(body.index(), 4),
                     PlanetMapApi.surface(body.index(), 64), Minecraft.getInstance().level.getGameTime());
@@ -98,7 +102,9 @@ public final class GroundView implements AutoCloseable {
     }
     private void terrain(GuiGraphics g) {
         int step = scale >= 2 ? 1 : 4;
-        while (GroundRaster.SIDE * step * scale < Math.max(32, Math.max(width, height) / 20.)) step *= 2;
+        // A corner panel is a few tiles across; land must stay recognisable without pixel tiles.
+        double target = compact ? 24 : Math.max(32, Math.max(width, height) / 20.);
+        while (GroundRaster.SIDE * step * scale < target) step *= 2;
         sampleStep = step;
         int span = GroundRaster.SIDE * step, count = (body.faceSize() + span - 1) / span;
         for (var t : chart.tiles) {
@@ -158,6 +164,7 @@ public final class GroundView implements AutoCloseable {
         }
     }
     private void grid(GuiGraphics g, MapLabels labels, boolean names) {
+        if (compact) return;
         int spacing = 16;
         while (spacing * scale < 70) spacing *= 2;
         for (var t : chart.tiles) {
@@ -226,6 +233,7 @@ public final class GroundView implements AutoCloseable {
         if (p != null) labels.place(new MapLabels.Rect((int) p.x() - 5, (int) p.y() - 5, 11, 11));
     }
     private void label(GuiGraphics g, MapLabels labels, Component text, GroundChart.Point p, int color) {
+        if (compact) return;
         var font = Minecraft.getInstance().font;
         int w = font.width(text);
         for (int dy : new int[]{-4, 9, -17}) {
@@ -237,6 +245,7 @@ public final class GroundView implements AutoCloseable {
         }
     }
     private void readout(GuiGraphics g) {
+        if (compact) return;
         var font = Minecraft.getInstance().font;
         var at = chart.pick(centreU, centreV);
         if (at != null) g.drawString(font, text("coordinates", text("face." + at.face()), (int) at.u(), (int) at.v()), x + 6, y + height - 24, 0xffaad4dd, true);
