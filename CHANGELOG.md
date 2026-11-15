@@ -3,6 +3,10 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.17 “Starward” — 2026-11-14
+
+- `generation.planBudgetMs` now defaults to 50 ms (allowed range 10–600000), so a planet plan can no longer hold world load for a noticeable time. A 50 ms budget surveys and places only what fits in that window, so expect very few or no planned structures on newly generated planets; raise the value when you want them back. Cached plans are unaffected.
+
 ## 0.3.16 “Starward” — 2026-11-14
 
 - Cut the remaining planet-plan stalls. The plan budget is now one hard deadline shared by site survey and structure placement (previously each phase got its own, so a 3 s setting could block for about 5 s), and the default drops to 1500 ms.

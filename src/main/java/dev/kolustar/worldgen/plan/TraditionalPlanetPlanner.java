@@ -50,7 +50,7 @@ public final class TraditionalPlanetPlanner {
         long planBudgetMs = dev.kolustar.KolustarConfig.planBudgetMs();
         // One deadline for the whole pass: the survey and the placement share the budget instead
         // of each taking a full one, so world load cannot wait for twice the configured time.
-        long planDeadline = selectionStart + Math.max(250L, planBudgetMs) * 1_000_000L;
+        long planDeadline = selectionStart + Math.max(10L, planBudgetMs) * 1_000_000L;
         long selectionDeadline = planDeadline;
         PlanetPlanProgress.update("Preparing universe: surveying sites...", 5, 100);
         var candidates=new ArrayList<Candidate>();
