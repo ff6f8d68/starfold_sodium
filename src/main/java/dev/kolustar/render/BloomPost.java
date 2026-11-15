@@ -24,18 +24,28 @@ import java.io.UncheckedIOException;
  * blur and a composite back onto the main framebuffer. Emissive suns, glowing cores and engines
  * bleed into their surroundings without the CPU sampling anything.
  *
- * <p>Configurable with {@code -Dkolustar.bloom=false}, {@code -Dkolustar.bloom.threshold=0.72},
- * {@code -Dkolustar.bloom.knee=0.35} and {@code -Dkolustar.bloom.strength=0.9}. Bloom is skipped
- * in dimensions Kolustar does not draw, so other worlds keep vanilla's look.
+ * <p>Tuned from the config screen ({@code bloom}, {@code bloomThreshold}, {@code bloomKnee},
+ * {@code bloomStrength}). Bloom is skipped in dimensions Kolustar does not draw, so other worlds
+ * keep vanilla's look.
  */
 public final class BloomPost {
-    // Default off: the post-process path needs in-game validation across Sodium/Iris/Veil
-    // pipelines before it is safe to enable for everyone. Opt in with -Dkolustar.bloom=true.
-    private static final boolean ENABLED =
-            "true".equalsIgnoreCase(System.getProperty("kolustar.bloom", "false"));
-    private static final float THRESHOLD = property("kolustar.bloom.threshold", 0.72f);
-    private static final float KNEE = property("kolustar.bloom.knee", 0.35f);
-    private static final float STRENGTH = property("kolustar.bloom.strength", 0.9f);
+    // Off by default: the post-process path needs in-game validation across Sodium/Iris/Veil
+    // pipelines before it is safe to enable for everyone. Enable it in the config.
+    private static boolean enabled() {
+        return dev.kolustar.KolustarConfig.bloom();
+    }
+
+    private static float threshold() {
+        return (float) dev.kolustar.KolustarConfig.bloomThreshold();
+    }
+
+    private static float knee() {
+        return (float) Math.max(1e-4, dev.kolustar.KolustarConfig.bloomKnee());
+    }
+
+    private static float strength() {
+        return (float) dev.kolustar.KolustarConfig.bloomStrength();
+    }
 
     private static ShaderInstance extract, blur, composite;
     private static final int[] framebuffers = {-1, -1};
@@ -74,16 +84,8 @@ public final class BloomPost {
                 DefaultVertexFormat.POSITION_TEX);
     }
 
-    private static float property(String name, float fallback) {
-        try {
-            return Float.parseFloat(System.getProperty(name, Float.toString(fallback)));
-        } catch (NumberFormatException e) {
-            return fallback;
-        }
-    }
-
     private static void render() {
-        if (!ENABLED || broken || extract == null || blur == null || composite == null) return;
+        if (!enabled() || broken || extract == null || blur == null || composite == null) return;
         if (!GroundClient.active() && !dev.kolustar.space.SpaceClient.active()) return;
         var main = Minecraft.getInstance().getMainRenderTarget();
         if (main == null || main.width <= 0 || main.height <= 0) return;
@@ -101,8 +103,8 @@ public final class BloomPost {
             RenderSystem.setShaderColor(1, 1, 1, 1);
 
             // Bright pass: everything above the knee becomes the bloom source.
-            set(extract, "Threshold", THRESHOLD);
-            set(extract, "Knee", Math.max(KNEE, 1e-4f));
+            set(extract, "Threshold", threshold());
+            set(extract, "Knee", knee());
             pass(extract, framebuffers[0], main.getColorTextureId(), w, h);
 
             // Separable Gaussian: horizontal into the scratch target, vertical back.
@@ -122,7 +124,7 @@ public final class BloomPost {
                     GlStateManager.DestFactor.ONE);
             RenderSystem.setShader(() -> composite);
             composite.setSampler("Sampler0", textures[0]);
-            set(composite, "Strength", STRENGTH);
+            set(composite, "Strength", strength());
             quad();
             composite.clear();
         } finally {

@@ -51,7 +51,8 @@ final class GroundFarMesh {
     }
     static int level(double distance,int previous,double fov,int height) {
         // Whole-planet fallback stays coarse until bounded resident tiles replace its pixels.
-        return Math.max(16,VoxelLodPolicy.screenStep(distance,previous,fov,height));
+        return Math.max(Math.max(16, dev.kolustar.KolustarConfig.coarseStep()),
+                VoxelLodPolicy.screenStep(distance,previous,fov,height));
     }
     /** Remote planets have no resident detail layer: their visible colours need the screen-sized mip. */
     static int remoteLevel(double distance, int previous, double fov, int height) {

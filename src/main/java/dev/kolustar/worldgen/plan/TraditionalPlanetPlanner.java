@@ -47,7 +47,7 @@ public final class TraditionalPlanetPlanner {
     }
     private Archive generateCached(Iterable<Holder<StructureSet>> sets) {
         long selectionStart=System.nanoTime();
-        long planBudgetMs = Long.getLong("kolustar.planBudgetMs", 12000L);
+        long planBudgetMs = dev.kolustar.KolustarConfig.planBudgetMs();
         long selectionDeadline = selectionStart + Math.max(2000L, planBudgetMs / 2) * 1_000_000L;
         PlanetPlanProgress.update("Preparing universe: surveying sites...", 5, 100);
         var candidates=new ArrayList<Candidate>();
@@ -195,7 +195,7 @@ public final class TraditionalPlanetPlanner {
         var villages = sites.stream().filter(site -> structureRegistry.getHolderOrThrow(
             net.minecraft.resources.ResourceKey.create(Registries.STRUCTURE,site.structure())).is(RIVER_SETTLEMENTS)).toList();
         var terrain = TerrainRoadPlanner.connect(planet.terrain().terrainPlan(),villages,links);
-        if(budgetHit) skipped.put("kolustar:planet_plan","time budget reached after "+sites.size()+" sites; increase -Dkolustar.planBudgetMs to place more");
+        if(budgetHit) skipped.put("kolustar:planet_plan","time budget reached after "+sites.size()+" sites; raise generation.planBudgetMs to place more");
         measuredPlan=new PlanetPlan(size,terrain,sites,templates);
         planet.terrain().initializeTerrain(terrain);
         return new Archive(measuredPlan,recipes,skipped);

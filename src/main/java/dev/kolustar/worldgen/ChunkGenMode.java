@@ -27,19 +27,10 @@ public enum ChunkGenMode {
         return MAC_OS;
     }
 
-    /** Configured mode from {@code -Dkolustar.chunkGenMode=compatibility|performance}. */
+    /** Configured mode from the common config's {@code generation.gpuChunkGeneration}. */
     public static ChunkGenMode configured() {
         if (MAC_OS || DEDICATED_SERVER) return COMPATIBILITY;
-        String raw = System.getProperty("kolustar.chunkGenMode", "performance").trim();
-        for (ChunkGenMode mode : values()) {
-            if (mode.name().equalsIgnoreCase(raw)) {
-                // On non-macOS client devices that support GL 4.3, performance mode is forced on.
-                if (mode == COMPATIBILITY && computeCapableRuntime()) return PERFORMANCE;
-                return mode;
-            }
-        }
-        LOGGER.warn("Unknown kolustar.chunkGenMode '{}', using performance when available", raw);
-        return PERFORMANCE;
+        return dev.kolustar.KolustarConfig.gpuChunkGeneration() ? PERFORMANCE : COMPATIBILITY;
     }
 
     /** Whether this runtime is a non-macOS client platform where GL 4.3 compute can be used. */
@@ -47,10 +38,12 @@ public enum ChunkGenMode {
         return !MAC_OS && !DEDICATED_SERVER;
     }
 
-    /** Effective mode: PERFORMANCE forced off on macOS/dedicated servers, forced on for non-macOS GL 4.3-capable clients. */
+    /** Effective mode: PERFORMANCE only when enabled in the config on a GL 4.3-capable client. */
     public static ChunkGenMode effective() {
         if (MAC_OS || DEDICATED_SERVER) return COMPATIBILITY;
-        return supportsComputeShaders() ? PERFORMANCE : COMPATIBILITY;
+        return supportsComputeShaders() && dev.kolustar.KolustarConfig.gpuChunkGeneration()
+                ? PERFORMANCE
+                : COMPATIBILITY;
     }
 
     /** Whether the current GL context can run chunk-generation compute shaders. */
@@ -71,8 +64,6 @@ public enum ChunkGenMode {
     }
 
     public static ChunkGenMode forChunkGeneration() {
-        if (MAC_OS || DEDICATED_SERVER) return COMPATIBILITY;
-        // On non-macOS client devices that support GL 4.3, performance mode is forced on.
-        return PERFORMANCE;
+        return configured();
     }
 }

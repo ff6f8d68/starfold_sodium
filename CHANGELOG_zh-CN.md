@@ -3,6 +3,12 @@
 [English](CHANGELOG.md)
 
 
+## 0.3.14「向星而行」— 2026-11-14
+
+- 所有 `-Dkolustar.*` 调整参数改为真正的配置文件与游戏内配置界面（Mods → Kolustar → Config）：泛光（含阈值/过渡/强度）、远景地形开关、交由 Distant Horizons 渲染、LOD 与地表构建线程数、远景网格步长、星球结构、星球规划时间预算、实验性 GPU 区块生成、HBM 兼容 mixin。文件：`config/kolustar-client.toml` 与 `config/kolustar-common.toml`。
+- 减少进入世界/加入时的卡顿：星球结构规划时间预算默认从 12 秒降为 3 秒，`generation.planetStructures=false` 可完全跳过该阶段。规划结果会缓存，已有世界在重新生成星球前不受影响；想要更多结构可调高 `generation.planBudgetMs`。
+- HBM 兼容开关改为启动时从公共配置读取，无需启动参数。
+
 ## 0.3.13「向星而行」— 2026-11-14
 
 - 修复星球上转动视角时 HBM Continuum 机器模型部件消失的问题。Golem Core 的 GemRender 会学习每台机器的模型包围盒并据此剔除整机或单个部件（`dev.golem.core.render.Frustums.isVisible`），而这些包围盒按平面原版星图计算，因此转动镜头时部件会消失又出现。Kolustar 现在只在星球维度跳过该视锥测试，渲染器仍自行决定绘制内容。（`-Dkolustar.hmbCompat=false` 可关闭兼容 mixin；Golem 自带的 `-Dgolem.gem.cull=off` 可在全局关闭其剔除。）

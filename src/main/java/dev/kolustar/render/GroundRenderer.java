@@ -74,9 +74,13 @@ public final class GroundRenderer {
     private static boolean selectionChanged, lodStarted;
     // CPU meshing runs off the render thread; only GL upload stays here. Kept low so
     // background tile builds do not starve the game thread while the player moves.
-    private static final int LOD_THREADS =
-            Math.clamp(Integer.getInteger("kolustar.lodThreads",
-                    Math.max(1, Runtime.getRuntime().availableProcessors() / 4 - 1)), 1, 2);
+    private static final int LOD_THREADS = lodThreads();
+
+    private static int lodThreads() {
+        int configured = dev.kolustar.KolustarConfig.lodThreads();
+        if (configured > 0) return Math.clamp(configured, 1, 8);
+        return Math.clamp(Math.max(1, Runtime.getRuntime().availableProcessors() / 4 - 1), 1, 2);
+    }
     private static final GroundMeshScheduler lodWorkers = GroundMeshScheduler.shared;
     private static final List<LodJob> lodJobs = new ArrayList<>();
     private static long lodBytes;

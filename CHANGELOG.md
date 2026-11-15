@@ -3,6 +3,12 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.14 “Starward” — 2026-11-14
+
+- Replace every `-Dkolustar.*` tuning flag with a real config file and an in-game config screen (Mods → Kolustar → Config): bloom (plus threshold/knee/strength), far terrain on/off, defer-to-Distant-Horizons, LOD and surface build thread counts, coarse far-terrain step, planet structures, the planet-plan time budget, experimental GPU chunk generation and the HBM compatibility mixins. Files: `config/kolustar-client.toml` and `config/kolustar-common.toml`.
+- Cut the world-load/join stall: the planet structure-plan time budget now defaults to 3 seconds instead of 12, and `generation.planetStructures=false` removes the pass entirely. Plans are cached, so existing worlds are unaffected until a planet is regenerated; raise `generation.planBudgetMs` if you want more structures placed.
+- The HBM compatibility switch is read from the common config at startup, so it survives without launch arguments.
+
 ## 0.3.13 “Starward” — 2026-11-14
 
 - Fix HBM Continuum machines losing model parts as the camera turns on planets. Golem Core's GemRender learns each machine's model bounds and culls whole machines and individual parts against them (`dev.golem.core.render.Frustums.isVisible`); those bounds assume the flat vanilla chart, so parts dropped out and reappeared while looking around. Kolustar now skips that frustum test on planet levels only; the renderer still decides what to draw. (`-Dkolustar.hbmCompat=false` disables the compat mixins; Golem's own `-Dgolem.gem.cull=off` also disables its culling everywhere.)

@@ -46,8 +46,12 @@ public final class GroundBaseCache {
     // A byte budget, not a planet count: a sky can hold ten small bodies, and a count below that evicts and refills them in a loop.
     static final long BUDGET=256L*1024*1024;
     // Whole-planet background work must leave CPU for nearby chunks, even on a fresh cache.
-    static final int THREADS=Math.clamp(Integer.getInteger("kolustar.surfaceThreads",
-            Math.min(2,Math.max(1,Runtime.getRuntime().availableProcessors()/2-1))),1,256);
+    static final int THREADS=surfaceThreads();
+    private static int surfaceThreads(){
+        int configured=dev.kolustar.KolustarConfig.surfaceThreads();
+        if(configured>0)return Math.clamp(configured,1,16);
+        return Math.clamp(Math.min(2,Math.max(1,Runtime.getRuntime().availableProcessors()/2-1)),1,256);
+    }
     private static final ExecutorService coordinator=Executors.newSingleThreadExecutor(r->{
         var t=new Thread(r,"kolustar-surface-build"); t.setDaemon(true); return t;
     });

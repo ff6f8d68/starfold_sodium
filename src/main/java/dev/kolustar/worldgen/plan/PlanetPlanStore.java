@@ -64,8 +64,8 @@ public final class PlanetPlanStore {
                 finally { PlanetPlanProgress.clear(); }
             }
             long start=System.nanoTime();
-            boolean structures = planet.generation().structures()
-                    && !"false".equalsIgnoreCase(System.getProperty("kolustar.planetStructures", "true"));
+            boolean structures =
+                    planet.generation().structures() && dev.kolustar.KolustarConfig.planetStructures();
             PlanetPlanProgress.start(planetSlot(planet), "Preparing universe...", structures ? 100 : 1);
             var archive=structures ? new TraditionalPlanetPlanner(planet,context).generate()
                     : new TraditionalPlanetPlanner.Archive(new PlanetPlan(planet.terrain().shape().size(),planet.terrain().terrainPlan(),List.of(),List.of()),Map.of(),Map.of());

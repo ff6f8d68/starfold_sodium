@@ -19,11 +19,38 @@ public final class HbmCompatMixinPlugin implements IMixinConfigPlugin {
         return null;
     }
 
+    private static Boolean enabled;
+
+    /**
+     * Mixins are applied while classes load, potentially before NeoForge configs are available, so
+     * the common config file is read directly. It is a single boolean in a file we own.
+     */
+    private static boolean configured() {
+        Boolean known = enabled;
+        if (known != null) return known;
+        boolean value = true;
+        try {
+            var file =
+                    net.neoforged.fml.loading.FMLPaths.CONFIGDIR.get().resolve("kolustar-common.toml");
+            if (java.nio.file.Files.exists(file)) {
+                var matcher =
+                        java.util.regex.Pattern.compile(
+                                        "(?m)^\\s*hbmCompat\\s*=\\s*(true|false)")
+                                .matcher(java.nio.file.Files.readString(file));
+                if (matcher.find()) value = Boolean.parseBoolean(matcher.group(1));
+            }
+        } catch (Throwable ignored) {
+            // A missing or unreadable config keeps the compatibility mixins on.
+        }
+        enabled = value;
+        return value;
+    }
+
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
         // HBM's multi-block renderers can double-draw or clip under the planet projection; the
-        // switch isolates the compatibility tweaks when diagnosing model problems.
-        if ("false".equalsIgnoreCase(System.getProperty("kolustar.hbmCompat", "true"))) return false;
+        // config switch isolates the compatibility tweaks when diagnosing model problems.
+        if (!configured()) return false;
         return LoadingModList.get().getModFileById("hbm") != null;
     }
 

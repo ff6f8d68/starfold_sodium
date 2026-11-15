@@ -577,7 +577,6 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
         var start = chunk.getPos();
         int id = owner(start.x, start.z);
         if (id < 0) return CompletableFuture.completedFuture(chunk);
-        var mode = dev.kolustar.worldgen.ChunkGenMode.forChunkGeneration();
         return CompletableFuture.supplyAsync(Util.wrapThreadWithTaskName("wgen_fill_noise", () -> {
             for (var section : chunk.getSections()) section.acquire();
             long began = System.nanoTime();
@@ -588,8 +587,9 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
                 // lock and a GPU round-trip while producing nothing the CPU fill does not already
                 // compute. Keep it opt-in for experiments; normal chunk generation is the parallel
                 // CPU path.
-                if (mode == dev.kolustar.worldgen.ChunkGenMode.PERFORMANCE
-                        && Boolean.getBoolean("kolustar.chunkGenGpu")) {
+                if (dev.kolustar.worldgen.ChunkGenMode.forChunkGeneration()
+                                == dev.kolustar.worldgen.ChunkGenMode.PERFORMANCE
+                        && dev.kolustar.KolustarConfig.gpuChunkGeneration()) {
                     try {
                         if (dev.kolustar.worldgen.GpuChunkGenerator.tryFill(
                                 chunk, start, id, planet(id).terrain())) {
