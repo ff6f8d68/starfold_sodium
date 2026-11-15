@@ -3,6 +3,10 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.15 “Starward” — 2026-11-14
+
+- `generation.gpuChunkGeneration` now defaults to on. The GL compute path only runs on the render thread, because world-generation workers have no current GL context; off-thread generation falls back to the parallel CPU fill and logs that once. The compute stage still produces column hints the CPU composition does not consume, so this does not reduce CPU work yet — it also no longer performs the per-chunk synchronous readback that stalled chunk streaming.
+
 ## 0.3.14 “Starward” — 2026-11-14
 
 - Replace every `-Dkolustar.*` tuning flag with a real config file and an in-game config screen (Mods → Kolustar → Config): bloom (plus threshold/knee/strength), far terrain on/off, defer-to-Distant-Horizons, LOD and surface build thread counts, coarse far-terrain step, planet structures, the planet-plan time budget, experimental GPU chunk generation and the HBM compatibility mixins. Files: `config/kolustar-client.toml` and `config/kolustar-common.toml`.

@@ -32,11 +32,30 @@ public final class GpuChunkGenerator {
     private static final ThreadLocal<Boolean> CONTEXT_AVAILABLE = new ThreadLocal<>();
     private static int program = 0;
     private static boolean attempted;
+    private static final java.util.concurrent.atomic.AtomicBoolean reportedFallback =
+            new java.util.concurrent.atomic.AtomicBoolean();
 
     private GpuChunkGenerator() {}
 
+    /** GL is only valid on the thread that owns Minecraft's context; worldgen runs elsewhere. */
+    private static boolean renderThread() {
+        try {
+            return net.neoforged.fml.loading.FMLEnvironment.dist.isClient()
+                    && com.mojang.blaze3d.systems.RenderSystem.isOnRenderThread();
+        } catch (Throwable ignored) {
+            return false;
+        }
+    }
+
     public static boolean tryFill(ChunkAccess chunk, net.minecraft.world.level.ChunkPos start, int planetId, PlanetTerrain terrain) {
         if (ChunkGenMode.isMacOs() || ChunkGenMode.isDedicatedServer()) return false;
+        if (!renderThread()) {
+            if (reportedFallback.compareAndSet(false, true))
+                LOGGER.info(
+                        "GPU chunk generation is enabled but chunk generation runs off the render thread;"
+                                + " using the parallel CPU fill instead");
+            return false;
+        }
         Boolean available = CONTEXT_AVAILABLE.get();
         if (Boolean.FALSE.equals(available)) return false;
         try {

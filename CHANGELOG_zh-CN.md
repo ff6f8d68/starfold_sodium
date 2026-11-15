@@ -3,6 +3,10 @@
 [English](CHANGELOG.md)
 
 
+## 0.3.15「向星而行」— 2026-11-14
+
+- `generation.gpuChunkGeneration` 现默认开启。GL compute 路径只在渲染线程运行，因为区块生成工作线程没有当前 GL 上下文；线程外的生成会回退到并行 CPU 填充并只记录一次日志。该 compute 阶段目前只产生 CPU 组合未使用的列提示，因此暂时不会减少 CPU 工作量；同时它也不再执行此前导致区块流式生成卡顿的逐区块同步回读。
+
 ## 0.3.14「向星而行」— 2026-11-14
 
 - 所有 `-Dkolustar.*` 调整参数改为真正的配置文件与游戏内配置界面（Mods → Kolustar → Config）：泛光（含阈值/过渡/强度）、远景地形开关、交由 Distant Horizons 渲染、LOD 与地表构建线程数、远景网格步长、星球结构、星球规划时间预算、实验性 GPU 区块生成、HBM 兼容 mixin。文件：`config/kolustar-client.toml` 与 `config/kolustar-common.toml`。

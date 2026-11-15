@@ -89,10 +89,14 @@ public final class KolustarConfig {
                         .defineInRange("planBudgetMs", 3000, 250, 600000);
         GPU_CHUNK_GENERATION =
                 common.comment(
-                                "Use the experimental GL 4.3 compute path for chunk generation.",
-                                "Off by default: it reads results back synchronously per chunk and is slower than",
-                                "the parallel CPU fill on current drivers.")
-                        .define("gpuChunkGeneration", false);
+                                "Use the GL 4.3 compute path for chunk generation when a client GL context is",
+                                "available.",
+                                "World generation runs on worker threads where Minecraft's GL context is not",
+                                "current, so the compute stage only engages where a context exists; otherwise",
+                                "the parallel CPU fill generates the chunk. The compute stage currently",
+                                "produces column hints that the CPU composition does not consume, so it does",
+                                "not reduce CPU work yet.")
+                        .define("gpuChunkGeneration", true);
         common.pop();
         common.comment("Mod compatibility").push("compatibility");
         HBM_COMPAT =
@@ -149,7 +153,7 @@ public final class KolustarConfig {
     }
 
     public static boolean gpuChunkGeneration() {
-        return bool(COMMON_SPEC, GPU_CHUNK_GENERATION, false);
+        return bool(COMMON_SPEC, GPU_CHUNK_GENERATION, true);
     }
 
     public static boolean hbmCompat() {
