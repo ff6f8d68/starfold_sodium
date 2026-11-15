@@ -24,12 +24,41 @@ public final class PlanetAccess {
                 && GroundTopology.inChart(PlanetShape.of(planet), PlanetStorage.local(planet, pos));
     }
 
+    /**
+     * Storage addresses are pure geometry: a column's owner and rotation never change. Collision,
+     * seams and image streaming ask for the same columns every tick, so answers are memoised per
+     * thread instead of rebuilt (three allocations plus topology maths each time).
+     */
+    private static final int MEMO_LIMIT = 4096;
+    private static final ThreadLocal<java.util.HashMap<Long, GroundTopology.Address>> ADDRESSES =
+            ThreadLocal.withInitial(java.util.HashMap::new);
+    private static final ThreadLocal<java.util.HashMap<Long, Cell>> CELLS =
+            ThreadLocal.withInitial(java.util.HashMap::new);
+
+    private static long column(BlockPos pos) {
+        return ((long) pos.getX() << 32) ^ (pos.getZ() & 0xffffffffL);
+    }
+
     public GroundTopology.Address address(BlockPos pos) {
-        return PlanetStorage.address(pos).oriented();
+        var memo = ADDRESSES.get();
+        long key = column(pos);
+        var cached = memo.get(key);
+        if (cached != null) return cached;
+        var value = PlanetStorage.address(pos).oriented();
+        if (memo.size() >= MEMO_LIMIT) memo.clear();
+        memo.put(key, value);
+        return value;
     }
 
     public Cell cell(BlockPos pos) {
-        return GroundTopology.cell(PlanetStorage.local(PlanetStorage.planet(pos), pos));
+        var memo = CELLS.get();
+        long key = column(pos);
+        var cached = memo.get(key);
+        if (cached != null) return cached;
+        var value = GroundTopology.cell(PlanetStorage.local(PlanetStorage.planet(pos), pos));
+        if (memo.size() >= MEMO_LIMIT) memo.clear();
+        memo.put(key, value);
+        return value;
     }
 
     public GroundTopology.Notification notification(BlockPos target, BlockPos source) {

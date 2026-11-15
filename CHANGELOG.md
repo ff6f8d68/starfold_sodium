@@ -3,6 +3,14 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.21 “Starward” — 2026-11-14
+
+Second pass on the spark profile (Kolustar 24.3% → 21.4% of server-thread samples in 0.3.20; this attacks the next three items).
+
+- Storage addresses and chart cells are memoised per thread. `PlanetAccess.address` alone was 3.6% of the server thread, rebuilt on every collision, seam and image lookup although a column's owner and rotation never change; each call also allocated three objects.
+- The planet clock is memoised per level. `GroundFlightServer.mask` was 1.7% for what should be a field read, because every call went through the level's saved-data lookup.
+- Chunk image streaming drops to a 2.5 ms tick budget with a 1 ms relight share (was 3 ms / 1.5 ms).
+
 ## 0.3.20 “Starward” — 2026-11-14
 
 Measured against a spark profile of a real world (Kolustar was about a quarter of server-thread samples); these are the two largest items in it.

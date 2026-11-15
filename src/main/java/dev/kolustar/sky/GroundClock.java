@@ -51,7 +51,23 @@ public final class GroundClock extends SavedData {
         return value;
     }
 
+    private static final java.util.Map<ServerLevel, GroundClock> CLOCKS =
+            java.util.Collections.synchronizedMap(new java.util.WeakHashMap<>());
+
+    /**
+     * The saved clock of a planet level. Every collision, seam and gravity query asks for it, so
+     * the saved-data lookup is memoised; the instance itself is the one the level saves.
+     */
     public static GroundClock get(ServerLevel level) {
+        if (!PlanetLevels.is(level)) throw new IllegalArgumentException("Dimension");
+        var cached = CLOCKS.get(level);
+        if (cached != null) return cached;
+        var value = read(level);
+        CLOCKS.put(level, value);
+        return value;
+    }
+
+    private static GroundClock read(ServerLevel level) {
         if (!PlanetLevels.is(level)) throw new IllegalArgumentException("Dimension");
         var storage = level.getDataStorage();
         var value =
