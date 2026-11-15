@@ -41,6 +41,7 @@ public final class GroundCollisions implements Iterable<VoxelShape> {
             int x = minX, y = minY, z = minZ;
             boolean ended;
             VoxelShape next;
+            final VoxelShape query = Shapes.create(box);
             final BlockPos.MutableBlockPos pos = new BlockPos.MutableBlockPos();
 
             private void advance() {
@@ -60,7 +61,7 @@ public final class GroundCollisions implements Iterable<VoxelShape> {
                     var shape = state.getCollisionShape(view, pos, context).move(x, y, z);
                     advance();
                     if (!shape.isEmpty()
-                            && Shapes.joinIsNotEmpty(shape, Shapes.create(box), BooleanOp.AND))
+                            && Shapes.joinIsNotEmpty(shape, query, BooleanOp.AND))
                         next = shape;
                 }
             }

@@ -21,8 +21,38 @@ public final class GroundDaylight {
                     net.minecraft.core.registries.Registries.BIOME,
                     net.minecraft.resources.ResourceLocation.parse("kolustar:sunless"));
 
+    /**
+     * Biome lookups are per 4×4×4 cell and this is asked for every spawn attempt and every burning
+     * entity, so the answer is memoised per thread, keyed by level and biome cell.
+     */
+    private static final int SUNLESS_SLOTS = 2048;
+
+    private static final class SunlessMemo {
+        final Object[] levels = new Object[SUNLESS_SLOTS];
+        final long[] keys = new long[SUNLESS_SLOTS];
+        final byte[] values = new byte[SUNLESS_SLOTS];
+
+        SunlessMemo() {
+            java.util.Arrays.fill(keys, Long.MIN_VALUE);
+        }
+    }
+
+    private static final ThreadLocal<SunlessMemo> SUNLESS_MEMO =
+            ThreadLocal.withInitial(SunlessMemo::new);
+
     public static boolean sunless(net.minecraft.world.level.LevelReader level, BlockPos pos) {
-        return level.getBiome(pos).is(SUNLESS);
+        long key =
+                ((long) (pos.getX() >> 2) << 42)
+                        ^ ((long) (pos.getY() >> 2) << 21)
+                        ^ (pos.getZ() >> 2);
+        var memo = SUNLESS_MEMO.get();
+        int slot = (int) (((key * 0x9E3779B97F4A7C15L) >>> 53) & (SUNLESS_SLOTS - 1));
+        if (memo.keys[slot] == key && memo.levels[slot] == level) return memo.values[slot] != 0;
+        boolean sunless = level.getBiome(pos).is(SUNLESS);
+        memo.keys[slot] = key;
+        memo.levels[slot] = level;
+        memo.values[slot] = (byte) (sunless ? 1 : 0);
+        return sunless;
     }
 
     /** How much of a sun reaches an eye past a planet: none behind the planet, all beside it, and all where the planet is the farther of the two. */

@@ -29,35 +29,58 @@ public final class PlanetAccess {
      * seams and image streaming ask for the same columns every tick, so answers are memoised per
      * thread instead of rebuilt (three allocations plus topology maths each time).
      */
-    private static final int MEMO_LIMIT = 4096;
-    private static final ThreadLocal<java.util.HashMap<Long, GroundTopology.Address>> ADDRESSES =
-            ThreadLocal.withInitial(java.util.HashMap::new);
-    private static final ThreadLocal<java.util.HashMap<Long, Cell>> CELLS =
-            ThreadLocal.withInitial(java.util.HashMap::new);
+    private static final int MEMO_SLOTS = 4096;
+
+    /** Direct-mapped column memo: no boxing, no node allocation, one array probe per lookup. */
+    private static final class Memo {
+        final long[] keys = new long[MEMO_SLOTS];
+        final Object[] values = new Object[MEMO_SLOTS];
+
+        Memo() {
+            java.util.Arrays.fill(keys, Long.MIN_VALUE);
+        }
+
+        static int slot(long key) {
+            long mixed = key * 0x9E3779B97F4A7C15L;
+            return (int) (mixed >>> 52) & (MEMO_SLOTS - 1);
+        }
+    }
+
+    private static final ThreadLocal<Memo> ADDRESSES = ThreadLocal.withInitial(Memo::new);
+    private static final ThreadLocal<Memo> CELLS = ThreadLocal.withInitial(Memo::new);
 
     private static long column(BlockPos pos) {
         return ((long) pos.getX() << 32) ^ (pos.getZ() & 0xffffffffL);
     }
 
+    private static Object cached(ThreadLocal<Memo> memo, long key) {
+        var slots = memo.get();
+        int slot = Memo.slot(key);
+        return slots.keys[slot] == key ? slots.values[slot] : null;
+    }
+
+    private static void remember(ThreadLocal<Memo> memo, long key, Object value) {
+        var slots = memo.get();
+        int slot = Memo.slot(key);
+        slots.keys[slot] = key;
+        slots.values[slot] = value;
+    }
+
     public GroundTopology.Address address(BlockPos pos) {
-        var memo = ADDRESSES.get();
         long key = column(pos);
-        var cached = memo.get(key);
-        if (cached != null) return cached;
+        var cached = cached(ADDRESSES, key);
+        if (cached != null) return (GroundTopology.Address) cached;
         var value = PlanetStorage.address(pos).oriented();
-        if (memo.size() >= MEMO_LIMIT) memo.clear();
-        memo.put(key, value);
+        remember(ADDRESSES, key, value);
         return value;
     }
 
     public Cell cell(BlockPos pos) {
-        var memo = CELLS.get();
         long key = column(pos);
-        var cached = memo.get(key);
-        if (cached != null) return cached;
+        var cached = cached(CELLS, key);
+        if (cached != null) return (Cell) cached;
         var value = GroundTopology.cell(PlanetStorage.local(PlanetStorage.planet(pos), pos));
-        if (memo.size() >= MEMO_LIMIT) memo.clear();
-        memo.put(key, value);
+        remember(CELLS, key, value);
         return value;
     }
 

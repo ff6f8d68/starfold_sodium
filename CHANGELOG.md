@@ -3,6 +3,14 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.24 “Starward” — 2026-11-14
+
+Fourth pass on the spark profile (Kolustar 30.8% → 25.8% of server-thread samples in 0.3.23; image streaming is down from 20.4% to 6.4%).
+
+- **Column memos without boxing.** `PlanetAccess.address`/`cell` were 1.85% and 1.82% even after 0.3.21 cached them: the cache itself was a `HashMap<Long,…>`, allocating a `Long` and a node per lookup. They now use a per-thread direct-mapped array — one array probe, no allocation.
+- **A collision sweep no longer builds its query shape per block.** `GroundCollisions.hasNext` was 3.77% of the server thread; it allocated a fresh `Shapes.create(box)` for every block it tested. The shape is built once per iterator.
+- **`sunless` biome lookups are memoised** per thread and per 4×4×4 biome cell, keyed by level. `GroundDaylight.sunless` was 1.71% because every mob spawn attempt and every burning entity went through `getBiome`.
+
 ## 0.3.23 “Starward” — 2026-11-14
 
 - The chunk-image send throttle from 0.3.22 is per player view instead of shared state. It was static, so on a server one player's expensive rotated send would pause every other player's chunk streaming for two ticks; each view now keeps its own send cost and quiet ticks.
