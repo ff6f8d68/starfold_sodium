@@ -23,7 +23,8 @@ public final class PlanetPlanStore {
     private final Map<Integer,Map<net.minecraft.world.level.ChunkPos,List<PlanetPlan.Site>>> entityChunks=new java.util.concurrent.ConcurrentHashMap<>();
     public List<PlanetPlan.Site> entitySites(int planetId,net.minecraft.world.level.ChunkPos chunk) {
         // Chunk generation must never wait for a plan that is still being built.
-        if(!loading.isDone())return List.of();
+        var current=loading;
+        if(current==null || !current.isDone())return List.of();
         return entityChunks.computeIfAbsent(planetId,id->{
             var result=new HashMap<net.minecraft.world.level.ChunkPos,List<PlanetPlan.Site>>();
             var archive=archive();
@@ -38,22 +39,45 @@ public final class PlanetPlanStore {
             result.replaceAll((k,v)->List.copyOf(v));return Map.copyOf(result);
         }).getOrDefault(chunk,List.of());
     }
-    private final CompletableFuture<TraditionalPlanetPlanner.Archive> loading;
+    /** Plan work gets its own low-priority thread, so it never occupies a worldgen worker. */
+    private static final java.util.concurrent.ExecutorService PLANS =
+            java.util.concurrent.Executors.newSingleThreadExecutor(
+                    runnable -> {
+                        var thread = new Thread(runnable, "kolustar-plan");
+                        thread.setDaemon(true);
+                        thread.setPriority(Thread.MIN_PRIORITY);
+                        return thread;
+                    });
+    private final Path file;
+    /** Started on first use: planets nobody has visited must not plan at world load. */
+    private volatile CompletableFuture<TraditionalPlanetPlanner.Archive> loading;
     public PlanetPlanStore(PlanetChunkGenerator planet,StructureSandbox.Context context,Path file) {
-        this(planet,context,file,CompletableFuture.completedFuture(null));
+        this.planet=planet;this.context=context;this.file=file;
     }
     PlanetPlanStore(PlanetChunkGenerator planet,StructureSandbox.Context context,Path file,CompletableFuture<?> previous) {
-        this(planet,context,previous.handle((value,error)->null).thenApplyAsync(ignored->loadArchive(file,planet,context),Util.backgroundExecutor()));
+        this(planet,context,file);
     }
     PlanetPlanStore(PlanetChunkGenerator planet,StructureSandbox.Context context,CompletableFuture<TraditionalPlanetPlanner.Archive> loading) {
-        this.planet=planet;this.context=context;this.loading=loading;
+        this.planet=planet;this.context=context;this.file=null;this.loading=loading;
+    }
+    private CompletableFuture<TraditionalPlanetPlanner.Archive> start() {
+        var current=loading;
+        if(current!=null)return current;
+        synchronized(this) {
+            if(loading==null)
+                loading=CompletableFuture.supplyAsync(()->loadArchive(file,planet,context),PLANS);
+            return loading;
+        }
     }
     public boolean ready() {
-        if(!loading.isDone())return false;
-        loading.join(); // Propagate failures instead of silently retrying forever.
+        var current=loading;
+        // Asking is what starts a planet's plan; the gate stays shut until it is done.
+        if(current==null)current=start();
+        if(!current.isDone())return false;
+        current.join(); // Propagate failures instead of silently retrying forever.
         return true;
     }
-    public TraditionalPlanetPlanner.Archive archive() { return loading.join(); }
+    public TraditionalPlanetPlanner.Archive archive() { return start().join(); }
     public PlanetPlan plan() { return archive().plan(); }
     public StructureSandbox.Result replay(PlanetPlan.Site site) {
         return replays.computeIfAbsent(site.id(),id->StructureSandbox.merge(StructureSandbox.runPieces(planet,context,site.face(),site,archive().recipes().get(id),id)));
@@ -205,13 +229,11 @@ public final class PlanetPlanStore {
         for(var player:level.players())
             if(!dev.kolustar.sky.Space.in(player))order.add(dev.kolustar.planet.PlanetSystem.planet(player));
         for(int id=0;id<system.count();id++)order.add(id);
-        CompletableFuture<?> previous=CompletableFuture.completedFuture(null);
         for(int id:order) {
             var planet=system.planet(id);
             if(planet.generation().surfaceVersion()!=PlanetGeneration.SURFACE_VERSION || planet.planStore()!=null)continue;
-            var store=new PlanetPlanStore(planet,context,folder.resolve(id+".dat"),previous);
-            planet.initializePlan(store);
-            previous=store.loading;
+            // Installed, not started: each plan begins when its planet is first loaded or entered.
+            planet.initializePlan(new PlanetPlanStore(planet,context,folder.resolve(id+".dat")));
         }
     }
 }

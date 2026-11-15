@@ -3,6 +3,13 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.20 “Starward” — 2026-11-14
+
+Measured against a spark profile of a real world (Kolustar was about a quarter of server-thread samples); these are the two largest items in it.
+
+- **Planets no longer plan at world load.** Every planet of the starting system used to build its structure plan immediately, one after another on Minecraft's shared worldgen thread pool: 3–8 seconds each, twenty times, while chunk generation queued behind them. Plans now start only when a planet is actually loaded or entered, and they run on their own low-priority `kolustar-plan` thread instead of a worldgen worker. The home planet is still prepared before players join.
+- **Chunk image streaming costs half a tick budget.** `ImageStream.tick` was the single biggest Kolustar item on the server thread (10% of samples: relight queue, packet forwarding, sends). Its per-tick budget drops from 6 ms to 3 ms, its relight share to 1.5 ms, and chunks per tick from 24 to 12. Chunks still arrive nearest-first; the ring simply fills over a few more ticks.
+
 ## 0.3.19 “Starward” — 2026-11-14
 
 - `farTerrain.enabled` now defaults to **false**: Kolustar's own far-terrain LOD meshes, the planet-wide coarse surface build they need, and the LOD thread pool stay off unless you turn them on in the config screen. With Distant Horizons installed you keep far terrain through DH; without it, drawing stops at loaded chunks. Raise `farTerrain.enabled` (or set `farTerrain.deferToDistantHorizons` for DH-only) to bring Kolustar's LODs back.

@@ -64,8 +64,8 @@ public final class ImageStream {
     private static final Map<ServerPlayer, View> VIEWS = new WeakHashMap<>();
     private static final Map<ServerLevel, Set<BlockPos>> DIRTY = new WeakHashMap<>();
     private static final Map<ServerLevel, Map<Long, LightChanges>> LIT = new WeakHashMap<>();
-    public static final int CHUNKS_PER_TICK = 24;
-    public static final long BUDGET_NS = 6_000_000;
+    public static final int CHUNKS_PER_TICK = 12;
+    public static final long BUDGET_NS = 3_000_000;
     static final long RELIGHT_BUDGET_NS = BUDGET_NS / 2;
 
     public static boolean active(ServerPlayer player) {
