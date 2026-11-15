@@ -3,6 +3,10 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.23 “Starward” — 2026-11-14
+
+- The chunk-image send throttle from 0.3.22 is per player view instead of shared state. It was static, so on a server one player's expensive rotated send would pause every other player's chunk streaming for two ticks; each view now keeps its own send cost and quiet ticks.
+
 ## 0.3.22 “Starward” — 2026-11-14
 
 Third pass on the spark profile; the old profile showed 17.6% of the server thread inside a single chunk-image send (6.7% of it light sampling out of StarLight).

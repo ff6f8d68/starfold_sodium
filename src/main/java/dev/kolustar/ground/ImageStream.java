@@ -53,6 +53,13 @@ public final class ImageStream {
         final RelightQueue light = new RelightQueue();
         final Map<Long, LightChanges> lightChanges = new HashMap<>();
         final Map<Long, Column[]> lightColumns = new HashMap<>();
+        /**
+         * This player's own send schedule: after an expensive send the view sends nothing for two
+         * ticks, so streaming costs the same in total but never becomes a long tick. Per view, so
+         * one player's rebuild cannot pause another player's streaming.
+         */
+        long lastSendCost;
+        int ticksSinceSend;
         Set<Long> owners = Set.of();
         final Map<Long, byte[]> probeLight = new HashMap<>();
 
@@ -64,12 +71,7 @@ public final class ImageStream {
     private static final Map<ServerPlayer, View> VIEWS = new WeakHashMap<>();
     private static final Map<ServerLevel, Set<BlockPos>> DIRTY = new WeakHashMap<>();
     private static final Map<ServerLevel, Map<Long, LightChanges>> LIT = new WeakHashMap<>();
-    /**
-     * A rebuilt (rotated) image chunk costs far more than the tick budget, so ticks after an
-     * expensive send send none at all: streaming costs the same in total, spread over ticks.
-     */
-    private static long lastSendCost;
-    private static int ticksSinceSend;
+    /** A rebuilt (rotated) image chunk costs far more than the tick budget. */
     private static final long EXPENSIVE_SEND_NS = 6_000_000L;
 
     public static final int CHUNKS_PER_TICK = 12;
@@ -281,7 +283,7 @@ public final class ImageStream {
                         }
                     }
             long start = System.nanoTime(), deadline = start + BUDGET_NS;
-            ticksSinceSend++;
+            view.ticksSinceSend++;
             int queued = view.light.size();
             // Reserve half for lighting so new chunks cannot starve it; unused time goes to new
             // chunks.
@@ -305,7 +307,7 @@ public final class ImageStream {
             long relightNanos = System.nanoTime() - start;
             int count = 0, attempts = processed;
             boolean maySend =
-                    ticksSinceSend >= 3 || lastSendCost < EXPENSIVE_SEND_NS;
+                    view.ticksSinceSend >= 3 || view.lastSendCost < EXPENSIVE_SEND_NS;
             for (var it = view.pending.iterator();
                     it.hasNext()
                             && attempts < CHUNKS_PER_TICK
@@ -314,8 +316,8 @@ public final class ImageStream {
                 attempts++;
                 long began = System.nanoTime();
                 boolean sent = send(level, player, frame, new ChunkPos(image));
-                lastSendCost = System.nanoTime() - began;
-                ticksSinceSend = 0;
+                view.lastSendCost = System.nanoTime() - began;
+                view.ticksSinceSend = 0;
                 if (sent) {
                     view.sent.put(image, plan(access, frame, new ChunkPos(image)));
                     it.remove();
