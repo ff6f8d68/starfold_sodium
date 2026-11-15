@@ -3,6 +3,10 @@
 [English](CHANGELOG.md)
 
 
+## 0.3.19「向星而行」— 2026-11-14
+
+- `farTerrain.enabled` 默认值改为 **false**：Kolustar 自带的远景 LOD 网格、其依赖的整颗星球粗略地表构建，以及 LOD 线程池，均需在配置界面手动开启。安装 Distant Horizons 时远景交由 DH 绘制；未安装时只在已加载区块内绘制。需要恢复 Kolustar 远景时开启 `farTerrain.enabled`（或仅用 DH 时设置 `farTerrain.deferToDistantHorizons`）。
+
 ## 0.3.18「向星而行」— 2026-11-14
 
 针对服务端 tick 与区块生成热路径的优化（探索星球时真正在跑的那部分）。

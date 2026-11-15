@@ -3,6 +3,10 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.19 “Starward” — 2026-11-14
+
+- `farTerrain.enabled` now defaults to **false**: Kolustar's own far-terrain LOD meshes, the planet-wide coarse surface build they need, and the LOD thread pool stay off unless you turn them on in the config screen. With Distant Horizons installed you keep far terrain through DH; without it, drawing stops at loaded chunks. Raise `farTerrain.enabled` (or set `farTerrain.deferToDistantHorizons` for DH-only) to bring Kolustar's LODs back.
+
 ## 0.3.18 “Starward” — 2026-11-14
 
 Server-tick and chunk-generation cost work, all in the hot path that runs while you explore.

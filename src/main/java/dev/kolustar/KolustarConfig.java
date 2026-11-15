@@ -51,8 +51,12 @@ public final class KolustarConfig {
 
         client.comment("Distant terrain").push("farTerrain");
         FAR_TERRAIN =
-                client.comment("Draw Kolustar's own far terrain and level-of-detail meshes.")
-                        .define("enabled", true);
+                client.comment(
+                                "Draw Kolustar's own far terrain and level-of-detail meshes.",
+                                "Off by default: those LODs cost client CPU and memory, and Distant Horizons",
+                                "already draws far terrain when it is installed. Turn on to get distant ground",
+                                "without DH.")
+                        .define("enabled", false);
         DEFER_DISTANT_HORIZONS =
                 client.comment(
                                 "Let Distant Horizons draw far terrain instead of Kolustar.",
@@ -125,7 +129,7 @@ public final class KolustarConfig {
     }
 
     public static boolean farTerrain() {
-        return bool(CLIENT_SPEC, FAR_TERRAIN, true);
+        return bool(CLIENT_SPEC, FAR_TERRAIN, false);
     }
 
     public static boolean deferToDistantHorizons() {
