@@ -3,6 +3,14 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.22 “Starward” — 2026-11-14
+
+Third pass on the spark profile; the old profile showed 17.6% of the server thread inside a single chunk-image send (6.7% of it light sampling out of StarLight).
+
+- **Light sampling is 16× cheaper for sections with no stored light layer.** Those sections have one value for all 4096 blocks, so one probe per column replaces sixteen `getLightValue` calls through the Starlight engine — the most expensive item in the profile — while mixed sections still sample per block exactly as before.
+- **Expensive sends no longer land on consecutive ticks.** A rebuilt (rotated) image chunk costs far more than the tick budget, and the loop used to force at least one send per tick, so a 15–30 ms send turned into a 15–30 ms tick. After an expensive send the next two ticks send nothing; streaming totals the same, spread out.
+- Block-change publishing per tick drops from 256 to 96 positions.
+
 ## 0.3.21 “Starward” — 2026-11-14
 
 Second pass on the spark profile (Kolustar 24.3% → 21.4% of server-thread samples in 0.3.20; this attacks the next three items).

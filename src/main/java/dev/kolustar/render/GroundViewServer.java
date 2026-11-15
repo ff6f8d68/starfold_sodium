@@ -156,7 +156,7 @@ public final class GroundViewServer {
     }
 
     private static void publishChanges(ServerLevel level, GroundClock clock) {
-        int budget = 256;
+        int budget = 96;
         var pending = changes.computeIfAbsent(level, l -> new LinkedHashSet<>());
         while (!pending.isEmpty() && budget-- > 0) {
             // No iterator survives callbacks, and unloaded edits must never generate chunks here.

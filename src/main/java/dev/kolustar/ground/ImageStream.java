@@ -64,6 +64,14 @@ public final class ImageStream {
     private static final Map<ServerPlayer, View> VIEWS = new WeakHashMap<>();
     private static final Map<ServerLevel, Set<BlockPos>> DIRTY = new WeakHashMap<>();
     private static final Map<ServerLevel, Map<Long, LightChanges>> LIT = new WeakHashMap<>();
+    /**
+     * A rebuilt (rotated) image chunk costs far more than the tick budget, so ticks after an
+     * expensive send send none at all: streaming costs the same in total, spread over ticks.
+     */
+    private static long lastSendCost;
+    private static int ticksSinceSend;
+    private static final long EXPENSIVE_SEND_NS = 6_000_000L;
+
     public static final int CHUNKS_PER_TICK = 12;
     public static final long BUDGET_NS = 2_500_000;
     static final long RELIGHT_BUDGET_NS = 1_000_000;
@@ -273,6 +281,7 @@ public final class ImageStream {
                         }
                     }
             long start = System.nanoTime(), deadline = start + BUDGET_NS;
+            ticksSinceSend++;
             int queued = view.light.size();
             // Reserve half for lighting so new chunks cannot starve it; unused time goes to new
             // chunks.
@@ -295,13 +304,19 @@ public final class ImageStream {
                             });
             long relightNanos = System.nanoTime() - start;
             int count = 0, attempts = processed;
+            boolean maySend =
+                    ticksSinceSend >= 3 || lastSendCost < EXPENSIVE_SEND_NS;
             for (var it = view.pending.iterator();
                     it.hasNext()
                             && attempts < CHUNKS_PER_TICK
-                            && (count == 0 || System.nanoTime() < deadline); ) {
+                            && (count == 0 ? maySend : System.nanoTime() < deadline); ) {
                 long image = it.next();
                 attempts++;
-                if (send(level, player, frame, new ChunkPos(image))) {
+                long began = System.nanoTime();
+                boolean sent = send(level, player, frame, new ChunkPos(image));
+                lastSendCost = System.nanoTime() - began;
+                ticksSinceSend = 0;
+                if (sent) {
                     view.sent.put(image, plan(access, frame, new ChunkPos(image)));
                     it.remove();
                     count++;
@@ -511,6 +526,19 @@ public final class ImageStream {
                     if (source == null && !cache.containsKey(c.chunk)) {
                         source = listener.getDataLayerData(SectionPos.of(c.chunk.getPos(), section));
                         cache.put(c.chunk, source);
+                    }
+                    if (source == null) {
+                        // No stored layer: the engine has one value for the whole section, so one
+                        // probe replaces sixteen per column.
+                        int probe = listener.getLightValue(
+                                pos.set(c.chunk.getPos().getMinBlockX() + c.x, section * 16,
+                                        c.chunk.getPos().getMinBlockZ() + c.z));
+                        if (probe == 0) continue;
+                        if (probe == 15) {
+                            for (int y = 0; y < 16; y++) out.set(c.x, y, c.z, 15);
+                            lit = true;
+                            continue;
+                        }
                     }
                     lit |= sampleColumn(out, i, source, c.x, c.z, listener, pos,
                             c.chunk.getPos().getMinBlockX() + c.x, section * 16,
