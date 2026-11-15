@@ -40,10 +40,7 @@ public final class PlanetDecoration {
         var pos = chunk.getPos();
         SectionPos section = SectionPos.of(pos, level.getMinSection());
         BlockPos origin = section.origin();
-        var byStep = new HashMap<Integer, List<Structure>>();
-        for (var structure : level.registryAccess().registryOrThrow(Registries.STRUCTURE))
-            byStep.computeIfAbsent(structure.step().ordinal(), k -> new ArrayList<>())
-                    .add(structure);
+        var byStep = byStep(level.registryAccess());
         var random =
                 new WorldgenRandom(new XoroshiroRandomSource(RandomSupport.generateUniqueSeed()));
         long seed = random.setDecorationSeed(level.getSeed(), origin.getX(), origin.getZ());
@@ -63,6 +60,24 @@ public final class PlanetDecoration {
         } finally {
             level.setCurrentlyGenerating(null);
         }
+    }
+
+    private static volatile Object cachedRegistry;
+    private static volatile Map<Integer, List<Structure>> cachedByStep = Map.of();
+
+    /** Grouping the structure registry by step never changes between datapack reloads; per chunk it did. */
+    private static Map<Integer, List<Structure>> byStep(net.minecraft.core.RegistryAccess access) {
+        var registry = access.registryOrThrow(Registries.STRUCTURE);
+        var cached = cachedByStep;
+        if (cachedRegistry == registry && !cached.isEmpty()) return cached;
+        var map = new HashMap<Integer, List<Structure>>();
+        for (var structure : registry)
+            map.computeIfAbsent(structure.step().ordinal(), k -> new ArrayList<>()).add(structure);
+        map.replaceAll((step, list) -> List.copyOf(list));
+        var result = Map.copyOf(map);
+        cachedRegistry = registry;
+        cachedByStep = result;
+        return result;
     }
 
     private static BoundingBox writable(ChunkAccess chunk) {

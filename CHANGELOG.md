@@ -3,6 +3,17 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.18 “Starward” — 2026-11-14
+
+Server-tick and chunk-generation cost work, all in the hot path that runs while you explore.
+
+- Generation heightmaps are now written once per column instead of once per placed block. A heightmap only ever rises, so the topmost matching block of a column is the whole update; on a deep planet this removes roughly 25 000 heightmap writes per generated chunk.
+- Blocks go into their section through a hoisted section array, so no per-block section lookup and division remain.
+- Column generation no longer allocates: the column buffer is reused per worldgen thread and the position probe is a single mutable instance, saving a ~400-entry array and 256 objects per chunk.
+- A planet whose plan has no sites (the normal case at `generation.planBudgetMs = 50`) now skips structure start scanning and biome decoration entirely, instead of walking 256 columns and the whole structure registry for every chunk.
+- The structure registry is grouped by generation step once and cached, rather than rebuilt for every chunk.
+- New server watchdog: when a tick misses 200 ms, the log reports the worst tick and how many chunks were generated in the same window, e.g. `[Kolustar] worst tick 3844 ms since last report; 214 chunks generated in 3120 ms`. This separates chunk generation from other server work without a profiler.
+
 ## 0.3.17 “Starward” — 2026-11-14
 
 - `generation.planBudgetMs` now defaults to 50 ms (allowed range 10–600000), so a planet plan can no longer hold world load for a noticeable time. A 50 ms budget surveys and places only what fits in that window, so expect very few or no planned structures on newly generated planets; raise the value when you want them back. Cached plans are unaffected.

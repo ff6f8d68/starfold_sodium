@@ -511,6 +511,8 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
         var pos = chunk.getPos();
         int id = owner(pos.x, pos.z);
         if (id < 0 || !planet(id).generation().structures()) return;
+        // A budgeted plan often has no sites at all: skip the per-chunk start scan entirely.
+        if (planet(id).terrain().plan().sites().isEmpty()) return;
         dev.kolustar.worldgen.plan.PlannedStructurePiece.createStarts(this, id, registries, manager, chunk);
     }
 
@@ -524,7 +526,8 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
         // Noise writes L5/L6 directly into sections. Notify before replay can replace any POI.
         PlanetDecoration.generatedPois(chunk,(pos,state)->level.getLevel().onBlockStateChange(
                 pos,net.minecraft.world.level.block.Blocks.AIR.defaultBlockState(),state));
-        if (planet(id).generation().structures()) PlanetDecoration.apply(this, level, chunk, structures);
+        if (planet(id).generation().structures() && !planet(id).terrain().plan().sites().isEmpty())
+            PlanetDecoration.apply(this, level, chunk, structures);
     }
 
     @Override
@@ -613,21 +616,35 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
             GENERATED = new java.util.concurrent.atomic.LongAdder(),
             NANOS = new java.util.concurrent.atomic.LongAdder();
 
+    /** Column buffers are per worker thread; a chunk no longer allocates one. */
+    private static final ThreadLocal<net.minecraft.world.level.block.state.BlockState[]> COLUMN_BUFFER =
+            new ThreadLocal<>();
+
     private ChunkAccess fill(
             ChunkAccess chunk, net.minecraft.world.level.ChunkPos start, int id) {
         var terrain = planet(id).terrain();
         var function = new dev.kolustar.worldgen.surface.SurfaceFunction(terrain);
         var surface = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.WORLD_SURFACE_WG);
-        var floor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
+        var oceanFloor = chunk.getOrCreateHeightmapUnprimed(Heightmap.Types.OCEAN_FLOOR_WG);
+        var surfaceTest = Heightmap.Types.WORLD_SURFACE_WG.isOpaque();
+        var floorTest = Heightmap.Types.OCEAN_FLOOR_WG.isOpaque();
         var pos = new BlockPos.MutableBlockPos();
+        var cellPos = new BlockPos.MutableBlockPos();
         int terrainFloor = terrain.floor();
         int low = Math.max(terrainFloor, chunk.getMinBuildHeight());
-        var generated = new net.minecraft.world.level.block.state.BlockState[PlanetTerrain.MAX_Y - terrainFloor];
+        int span = PlanetTerrain.MAX_Y - terrainFloor;
+        var generated = COLUMN_BUFFER.get();
+        if (generated == null || generated.length < span) {
+            generated = new net.minecraft.world.level.block.state.BlockState[span];
+            COLUMN_BUFFER.set(generated);
+        }
+        var sections = chunk.getSections();
+        int minSection = chunk.getMinSection();
         for (int x = 0; x < 16; x++)
             for (int z = 0; z < 16; z++) {
                 int wx = start.getMinBlockX() + x, wz = start.getMinBlockZ() + z;
                 var cell =
-                        GroundTopology.cell(new BlockPos(wx - originX(id), 128, wz - originZ(id)));
+                        GroundTopology.cell(cellPos.set(wx - originX(id), 128, wz - originZ(id)));
                 function.blocksInto(cell.face(), cell.u(), cell.v(), terrainFloor, generated);
                 var liquid = terrain.liquid(cell.face(), cell.u(), cell.v());
                 // Written straight into the sections, from the top: the generation heightmaps are
@@ -635,17 +652,28 @@ public final class SystemChunkGenerator extends FlatLevelSource implements Plane
                 // every layer of a deep column.
                 int hi = Math.min(PlanetTerrain.MAX_Y - 1, chunk.getMaxBuildHeight() - 1);
                 while (hi > low && generated[hi - terrainFloor].is(net.minecraft.world.level.block.Blocks.AIR)) hi--;
+                // A heightmap only ever rises, so the highest matching block of a column is the
+                // whole update. Scanning top-down makes that the first match.
+                int surfaceY = Integer.MIN_VALUE, floorY = Integer.MIN_VALUE;
+                net.minecraft.world.level.block.state.BlockState surfaceState = null, floorState = null;
                 for (int y = hi; y >= low; y--) {
                     var state = generated[y - terrainFloor];
                     if (state.is(net.minecraft.world.level.block.Blocks.AIR)) continue;
-                    chunk.getSection(chunk.getSectionIndex(y))
-                            .setBlockState(x, y & 15, z, state, false);
-                    surface.update(x, y, z, state);
-                    floor.update(x, y, z, state);
+                    sections[(y >> 4) - minSection].setBlockState(x, y & 15, z, state, false);
+                    if (surfaceY == Integer.MIN_VALUE && surfaceTest.test(state)) {
+                        surfaceY = y;
+                        surfaceState = state;
+                    }
+                    if (floorY == Integer.MIN_VALUE && floorTest.test(state)) {
+                        floorY = y;
+                        floorState = state;
+                    }
                     if (!state.getFluidState().isEmpty()
                             && (liquid != null && y == liquid.level() - 1 || x == 0 || x == 15 || z == 0 || z == 15))
                         chunk.markPosForPostprocessing(pos.set(wx, y, wz));
                 }
+                if (surfaceState != null) surface.update(x, surfaceY, z, surfaceState);
+                if (floorState != null) oceanFloor.update(x, floorY, z, floorState);
             }
         return chunk;
     }

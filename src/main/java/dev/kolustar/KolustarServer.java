@@ -54,6 +54,7 @@ public final class KolustarServer {
         registerSleeping();
         registerClockTicks();
         registerCommands();
+        dev.kolustar.diag.TickWatchdog.initialize();
     }
 
     private static void initializeServerSystems(net.neoforged.bus.api.IEventBus modBus) {

@@ -73,6 +73,7 @@ public final class PlannedStructurePiece extends StructurePiece {
     }
     public static void createStarts(SystemChunkGenerator system,int planet,RegistryAccess registries,StructureManager manager,ChunkAccess chunk) {
         var terrain=system.planet(planet).terrain();var plan=terrain.plan();
+        if(plan.sites().isEmpty())return;
         var pos=chunk.getPos();
         int ox=PlanetStorage.column(planet)*PlanetStorage.PLANET_STRIDE,oz=PlanetStorage.row(planet)*PlanetStorage.ROW_STRIDE;
         int u=Math.floorMod(pos.getMinBlockX()-ox,4096),v=pos.getMinBlockZ()-oz;
