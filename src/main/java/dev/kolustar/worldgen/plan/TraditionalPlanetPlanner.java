@@ -48,7 +48,10 @@ public final class TraditionalPlanetPlanner {
     private Archive generateCached(Iterable<Holder<StructureSet>> sets) {
         long selectionStart=System.nanoTime();
         long planBudgetMs = dev.kolustar.KolustarConfig.planBudgetMs();
-        long selectionDeadline = selectionStart + Math.max(2000L, planBudgetMs / 2) * 1_000_000L;
+        // One deadline for the whole pass: the survey and the placement share the budget instead
+        // of each taking a full one, so world load cannot wait for twice the configured time.
+        long planDeadline = selectionStart + Math.max(250L, planBudgetMs) * 1_000_000L;
+        long selectionDeadline = planDeadline;
         PlanetPlanProgress.update("Preparing universe: surveying sites...", 5, 100);
         var candidates=new ArrayList<Candidate>();
         int size=planet.terrain().shape().size();
@@ -123,7 +126,6 @@ public final class TraditionalPlanetPlanner {
         candidates.sort(Comparator.comparingDouble(Candidate::score).thenComparing((a,b)->Long.compareUnsigned(a.id,b.id)));
         selectionNanos=System.nanoTime()-selectionStart;
         PlanetPlanProgress.update("Preparing universe: placing structures...", 30, 100);
-        long planDeadline = selectionStart + selectionNanos + Math.max(1000L, planBudgetMs) * 1_000_000L;
         var sites=new ArrayList<PlanetPlan.Site>();
         var footprints=new ArrayList<int[]>();
         var templates=new ArrayList<PlanetPlan.Template>();
@@ -198,6 +200,16 @@ public final class TraditionalPlanetPlanner {
         if(budgetHit) skipped.put("kolustar:planet_plan","time budget reached after "+sites.size()+" sites; raise generation.planBudgetMs to place more");
         measuredPlan=new PlanetPlan(size,terrain,sites,templates);
         planet.terrain().initializeTerrain(terrain);
+        com.mojang.logging.LogUtils.getLogger().info(
+                "Planet plan {}: {} sites, {} ms (survey {} / place {} / record {}, budget {} ms{})",
+                planet.seed(),
+                sites.size(),
+                (System.nanoTime()-selectionStart)/1_000_000,
+                selectionNanos/1_000_000,
+                assemblyNanos/1_000_000,
+                recordingNanos/1_000_000,
+                planBudgetMs,
+                budgetHit ? ", budget hit" : "");
         return new Archive(measuredPlan,recipes,skipped);
     }
     private static boolean intersects(int[] columns,BitSet footprint) {

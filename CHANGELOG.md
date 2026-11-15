@@ -3,6 +3,13 @@
 [中文](CHANGELOG_zh-CN.md)
 
 
+## 0.3.16 “Starward” — 2026-11-14
+
+- Cut the remaining planet-plan stalls. The plan budget is now one hard deadline shared by site survey and structure placement (previously each phase got its own, so a 3 s setting could block for about 5 s), and the default drops to 1500 ms.
+- Loading a cached plan no longer replays every structure recipe: structural checks still run for every site, but the deep template replay is capped at 250 ms per plan, and the log reports how many sites were verified in depth.
+- Chunk generation no longer waits for a planet plan that is still being built when it collects structure entity sites.
+- New timing lines for diagnosing stalls: `Planet plan <seed>: <n> sites, <ms> ms (survey … / place … / record …, budget hit)` and `Home planet plan held world load for <ms> ms` when that wait is 250 ms or more.
+
 ## 0.3.15 “Starward” — 2026-11-14
 
 - `generation.gpuChunkGeneration` now defaults to on. The GL compute path only runs on the render thread, because world-generation workers have no current GL context; off-thread generation falls back to the parallel CPU fill and logs that once. The compute stage still produces column hints the CPU composition does not consume, so this does not reduce CPU work yet — it also no longer performs the per-chunk synchronous readback that stalled chunk streaming.

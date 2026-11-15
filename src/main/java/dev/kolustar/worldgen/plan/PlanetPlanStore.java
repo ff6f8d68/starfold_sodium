@@ -22,6 +22,8 @@ public final class PlanetPlanStore {
     private final Map<Long,StructureSandbox.Result> replays=new java.util.concurrent.ConcurrentHashMap<>();
     private final Map<Integer,Map<net.minecraft.world.level.ChunkPos,List<PlanetPlan.Site>>> entityChunks=new java.util.concurrent.ConcurrentHashMap<>();
     public List<PlanetPlan.Site> entitySites(int planetId,net.minecraft.world.level.ChunkPos chunk) {
+        // Chunk generation must never wait for a plan that is still being built.
+        if(!loading.isDone())return List.of();
         return entityChunks.computeIfAbsent(planetId,id->{
             var result=new HashMap<net.minecraft.world.level.ChunkPos,List<PlanetPlan.Site>>();
             var archive=archive();
@@ -122,6 +124,11 @@ public final class PlanetPlanStore {
             if(recipes.put(entry.getLong("site"),recipe)!=null)throw new IOException("Duplicate planet recipe");
         }
         int[] verificationBudget={32_000_000};
+        // Replaying every site to compare its templates is the expensive half of loading a plan.
+        // Structural recipe checks still run for every site; the deep replay only while the budget
+        // lasts, so opening a world cannot stall on cache verification.
+        long verificationDeadline=System.nanoTime()+250_000_000L;
+        int deeplyVerified=0;
         for(var site:plan.sites()) {
             var recipe=recipes.get(site.id());
             if(recipe==null)throw new IOException("Missing planet recipe");
@@ -149,7 +156,9 @@ public final class PlanetPlanStore {
                     if(loaded instanceof net.minecraft.world.level.levelgen.structure.structures.MineshaftPieces.MineShaftCorridor
                             && tag.getInt("Num")!=Math.max(actual.getXSpan(),actual.getZSpan())/5)throw new IOException("Planet corridor sections");
                 }
+                if(System.nanoTime()>=verificationDeadline)continue;
                 var replay=StructureSandbox.runPieces(planet,context,site.face(),site,recipe,site.id(),verificationBudget);
+                deeplyVerified++;
                 if(!StructureEntities.save(replay).equals(recipe.getList("entities",Tag.TAG_COMPOUND)))throw new IOException("Planet entity recipe differs from recording");
                 for(int i=0;i<replay.size();i++) {
                     var piece=site.pieces().get(i);var blocks=new ArrayList<PlanetPlan.Voxel>();
@@ -162,6 +171,13 @@ public final class PlanetPlanStore {
                 }
             } catch(RuntimeException e) { throw new IOException("Invalid planet recipe",e); }
         }
+        if(deeplyVerified<plan.sites().size())
+            LogUtils.getLogger()
+                    .info(
+                            "Planet plan {}: verified {} of {} site recipes in depth (load-time budget)",
+                            planet.seed(),
+                            deeplyVerified,
+                            plan.sites().size());
         var skipped=new TreeMap<String,String>();var tags=root.getCompound("skipped");
         for(var key:tags.getAllKeys())skipped.put(key,tags.getString(key));
         return new TraditionalPlanetPlanner.Archive(plan,recipes,skipped);
@@ -169,7 +185,13 @@ public final class PlanetPlanStore {
     /** World startup waits for home before accepting players; other planets keep loading in the background. */
     public static void prepareHome(SystemChunkGenerator system) {
         var store=system.planet(0).planStore();
-        if(store!=null)store.archive();
+        if(store==null)return;
+        long start=System.nanoTime();
+        store.archive();
+        long ms=(System.nanoTime()-start)/1_000_000;
+        if(ms>=250)
+            LogUtils.getLogger()
+                    .warn("Home planet plan held world load for {} ms (generation.planBudgetMs)",ms);
     }
     public static boolean ready(ServerLevel level,int id) {
         return !(level.getChunkSource().getGenerator() instanceof SystemChunkGenerator system) || system.planet(id).planReady();

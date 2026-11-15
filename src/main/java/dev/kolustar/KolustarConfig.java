@@ -86,7 +86,7 @@ public final class KolustarConfig {
                                 "Milliseconds a planet plan may spend placing structures before it stops.",
                                 "Lower values start worlds faster and place fewer structures; plans are cached",
                                 "after the first generation, so this only affects new or regenerated planets.")
-                        .defineInRange("planBudgetMs", 3000, 250, 600000);
+                        .defineInRange("planBudgetMs", 1500, 250, 600000);
         GPU_CHUNK_GENERATION =
                 common.comment(
                                 "Use the GL 4.3 compute path for chunk generation when a client GL context is",
@@ -149,7 +149,7 @@ public final class KolustarConfig {
     }
 
     public static long planBudgetMs() {
-        return integer(COMMON_SPEC, PLAN_BUDGET_MS, 3000);
+        return integer(COMMON_SPEC, PLAN_BUDGET_MS, 1500);
     }
 
     public static boolean gpuChunkGeneration() {
